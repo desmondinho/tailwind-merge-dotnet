@@ -49,7 +49,7 @@ internal class TwMergeMapFactory
 
                 foreach( var validator in classGroup.Validators )
                 {
-                    current.Validators.Add( new( classGroup.ClassName, validator ) );
+                    current.Validators.Add( new ClassValidator( classGroup.Id, validator ) );
                 }
             }
         }
