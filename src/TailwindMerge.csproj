@@ -24,10 +24,14 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
 		<None Include="..\README.md" Pack="true" Visible="false" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="TailwindMerge.Tests" />
 	</ItemGroup>
 
 </Project>
