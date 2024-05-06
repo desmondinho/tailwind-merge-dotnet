@@ -1,9 +1,9 @@
-﻿namespace TailwindMerge.Models;
+﻿using TailwindMerge.Common;
+
+namespace TailwindMerge.Models;
 
 internal record ClassNameNode
 {
-    private const char Separator = '-';
-
     internal string? ClassGroupId { get; set; }
     internal List<ClassValidator>? Validators { get; set; }
     internal Dictionary<string, ClassNameNode>? Children { get; set; }
@@ -12,7 +12,7 @@ internal record ClassNameNode
     {
         var current = this;
 
-        foreach( var part in className.Split( Separator, StringSplitOptions.RemoveEmptyEntries ) )
+        foreach( var part in className.Split( Constants.ClassNameSeparator, StringSplitOptions.RemoveEmptyEntries ) )
         {
             current.Children ??= [];
 

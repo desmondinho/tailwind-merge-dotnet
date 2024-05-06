@@ -1551,18 +1551,17 @@ internal class TwMergeConfig
         new ClassGroup("forced-color-adjust", "forced-color-adjust", _autoAndNone),
     ];
 
+    internal string Separator { get; init; }
     internal ClassGroup[] ClassGroups { get; init; }
 
     internal TwMergeConfig()
     {
-        ClassGroups = [];
+        Separator = ":";
+        ClassGroups = _classGroups;
     }
 
     internal static TwMergeConfig Default()
     {
-        return new()
-        {
-            ClassGroups = _classGroups
-        };
+        return new();
     }
 }

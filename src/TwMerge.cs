@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+
+using TailwindMerge.Common;
 using TailwindMerge.Models;
 
 namespace TailwindMerge;
@@ -45,14 +47,44 @@ public partial class TwMerge
 
     private ClassInfo GetClassInfo( string className )
     {
-        var classGroupId = _context.GetClassGroupId( className );
+        var modifiersInfo = _context.SplitModifiers( className );
+        var hasPostfixModifier = modifiersInfo.PostfixModifierPosition.HasValue;
+
+        var baseClassName = hasPostfixModifier
+            ? modifiersInfo.BaseClassName[..modifiersInfo.PostfixModifierPosition!.Value]
+            : modifiersInfo.BaseClassName;
+
+        var classGroupId = _context.GetClassGroupId( baseClassName );
 
         if( string.IsNullOrEmpty( classGroupId ) )
         {
-            return new( false, className );
+            if( !hasPostfixModifier )
+            {
+                return new ClassInfo( className, isTailwindClass: false );
+            }
+
+            classGroupId = _context.GetClassGroupId( modifiersInfo.BaseClassName );
+
+            if( string.IsNullOrEmpty( classGroupId ) )
+            {
+                return new ClassInfo( className, isTailwindClass: false );
+            }
+
+            hasPostfixModifier = false;
         }
 
-        return new( true, classGroupId, className );
+        var variantModifier = string.Join( ':', _context.SortModifiers( modifiersInfo.Modifiers ) );
+        var modifierId = modifiersInfo.HasImportantModifier
+            ? variantModifier + Constants.ImportantModifier
+            : variantModifier;
+
+        return new ClassInfo( 
+            className, 
+            classGroupId, 
+            modifierId, 
+            isTailwindClass: true, 
+            hasPostfixModifier 
+        );
     }
 
     private IEnumerable<string> FilterConflictingClasses( IEnumerable<ClassInfo> classes )
@@ -69,12 +101,15 @@ public partial class TwMerge
                     return true;
                 }
 
-                if( conflictingClassGroups.Contains( c.GroupId! ) )
+                var classGroupId = c.ModifierId + c.GroupId;
+                if( conflictingClassGroups.Contains( classGroupId ) )
                 {
                     return false;
                 }
 
-                _ = conflictingClassGroups.Add( c.GroupId! );
+                _ = conflictingClassGroups.Add( classGroupId );
+                
+                // TODO: Handle conflicting class groups
 
                 return true;
             } )
