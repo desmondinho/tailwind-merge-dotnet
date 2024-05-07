@@ -24,13 +24,13 @@ internal class TwMergeMapFactory
         {
             foreach( var item in classGroup.Items! )
             {
-                _ = root.Insert( item, classGroup.Id );
+                _ = root.AddNextNode( item, classGroup.Id );
             }
         }
         // Process all other class groups
         else
         {
-            var current = root.Insert( classGroup.ClassName, classGroup.Id );
+            var current = root.AddNextNode( classGroup.ClassName, classGroup.Id );
 
             if( classGroup.Items is not null )
             {
@@ -38,18 +38,16 @@ internal class TwMergeMapFactory
                 {
                     if( !string.IsNullOrEmpty( item ) )
                     {
-                        _ = current.Insert( item, classGroup.Id );
+                        _ = current.AddNextNode( item, classGroup.Id );
                     }
                 }
             }
 
             if( classGroup.Validators is not null )
             {
-                current.Validators ??= [];
-
                 foreach( var validator in classGroup.Validators )
                 {
-                    current.Validators.Add( new ClassValidator( classGroup.Id, validator ) );
+                    current.AddValidator( validator, classGroup.Id );
                 }
             }
         }

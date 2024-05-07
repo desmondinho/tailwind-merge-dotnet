@@ -4,28 +4,41 @@ namespace TailwindMerge.Models;
 
 internal record ClassNameNode
 {
-    internal string? ClassGroupId { get; set; }
-    internal List<ClassValidator>? Validators { get; set; }
-    internal Dictionary<string, ClassNameNode>? Children { get; set; }
+    private List<ClassValidator>? _validators;
 
-    internal ClassNameNode Insert( string className, string classGroupId )
+    internal string ClassGroupId { get; set; }
+    internal Dictionary<string, ClassNameNode>? Next { get; set; }
+    internal IReadOnlyCollection<ClassValidator>? Validators => _validators?.AsReadOnly();
+
+    internal ClassNameNode()
+    {
+        ClassGroupId = string.Empty;
+    }
+
+    internal ClassNameNode AddNextNode( string className, string classGroupId )
     {
         var current = this;
 
         foreach( var part in className.Split( Constants.ClassNameSeparator, StringSplitOptions.RemoveEmptyEntries ) )
         {
-            current.Children ??= [];
+            current.Next ??= [];
 
-            if( !current.Children.TryGetValue( part, out var node ) )
+            if( !current.Next.TryGetValue( part, out var next ) )
             {
-                node = new ClassNameNode();
-                current.Children[part] = node;
+                next = new ClassNameNode();
+                current.Next[part] = next;
             }
 
-            current = node;
+            current = next;
         }
 
         current.ClassGroupId = classGroupId;
         return current;
+    }
+
+    internal void AddValidator( Func<string, bool> validator, string classGroupId )
+    {
+        _validators ??= [];
+        _validators.Add( new ClassValidator( classGroupId, validator ) );
     }
 }
