@@ -12,7 +12,7 @@ public class StandaloneClassesTests
         "inline hover:inline focus:inline hover:block hover:focus:block", 
         "inline focus:inline hover:block hover:focus:block" 
     )]
-    public void MergesStandaloneClassesFromSameGroupCorrectly( string classLists, string expected )
+    public void Merge_StandaloneClassesFromSameGroup_MergesCorrectly( string classLists, string expected )
     {
         // Act
         var actual = new TwMerge().Merge( classLists );
