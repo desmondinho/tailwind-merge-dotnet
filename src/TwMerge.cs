@@ -47,14 +47,16 @@ public partial class TwMerge
 
     private ClassInfo GetClassInfo( string className )
     {
-        var modifiersInfo = _context.SplitModifiers( className );
-        var hasPostfixModifier = modifiersInfo.PostfixModifierPosition.HasValue;
+        (var baseClassName, 
+            var hasImportantModifier, 
+            var postfixModifierPosition, 
+            var modifiers) = _context.SplitModifiers( className );
 
-        var baseClassName = hasPostfixModifier
-            ? modifiersInfo.BaseClassName[..modifiersInfo.PostfixModifierPosition!.Value]
-            : modifiersInfo.BaseClassName;
+        var hasPostfixModifier = postfixModifierPosition.HasValue;
 
-        var classGroupId = _context.GetClassGroupId( baseClassName );
+        var classGroupId = _context.GetClassGroupId( hasPostfixModifier
+            ? baseClassName[..postfixModifierPosition!.Value]
+            : baseClassName );
 
         if( string.IsNullOrEmpty( classGroupId ) )
         {
@@ -63,7 +65,7 @@ public partial class TwMerge
                 return new ClassInfo( className, isTailwindClass: false );
             }
 
-            classGroupId = _context.GetClassGroupId( modifiersInfo.BaseClassName );
+            classGroupId = _context.GetClassGroupId( baseClassName );
 
             if( string.IsNullOrEmpty( classGroupId ) )
             {
@@ -73,17 +75,17 @@ public partial class TwMerge
             hasPostfixModifier = false;
         }
 
-        var variantModifier = string.Join( ':', _context.SortModifiers( modifiersInfo.Modifiers ) );
-        var modifierId = modifiersInfo.HasImportantModifier
+        var variantModifier = string.Join( ':', _context.SortModifiers( modifiers ) );
+        var modifierId = hasImportantModifier
             ? variantModifier + Constants.ImportantModifier
             : variantModifier;
 
-        return new ClassInfo( 
-            className, 
-            classGroupId, 
-            modifierId, 
-            isTailwindClass: true, 
-            hasPostfixModifier 
+        return new ClassInfo(
+            className,
+            classGroupId,
+            modifierId,
+            IsTailwindClass: true,
+            hasPostfixModifier
         );
     }
 
@@ -108,7 +110,7 @@ public partial class TwMerge
                 }
 
                 _ = conflictingClassGroups.Add( classGroupId );
-                
+
                 // TODO: Handle conflicting class groups
 
                 return true;
