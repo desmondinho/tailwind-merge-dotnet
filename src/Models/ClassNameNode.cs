@@ -6,16 +6,11 @@ internal record ClassNameNode
 {
     private List<ClassValidator>? _validators;
 
-    internal string ClassGroupId { get; set; }
+    internal string? ClassGroupId { get; set; }
     internal Dictionary<string, ClassNameNode>? Next { get; set; }
     internal IReadOnlyCollection<ClassValidator>? Validators => _validators?.AsReadOnly();
 
-    internal ClassNameNode()
-    {
-        ClassGroupId = string.Empty;
-    }
-
-    internal ClassNameNode AddNextNode( string className, string classGroupId )
+    internal ClassNameNode AddNextNode( string className )
     {
         var current = this;
 
@@ -32,7 +27,6 @@ internal record ClassNameNode
             current = next;
         }
 
-        current.ClassGroupId = classGroupId;
         return current;
     }
 

@@ -24,21 +24,30 @@ internal class TwMergeMapFactory
         {
             foreach( var item in classGroup.Items! )
             {
-                _ = root.AddNextNode( item, classGroup.Id );
+                var current = root.AddNextNode( item );
+                current.ClassGroupId = classGroup.Id;
             }
         }
         // Process all other class groups
         else
         {
-            var current = root.AddNextNode( classGroup.ClassName, classGroup.Id );
+            var current = root.AddNextNode( classGroup.ClassName );
 
             if( classGroup.Items is not null )
             {
+                // To prevent class groups that have common class name (e.g. `border`) 
+                // from overriding each others `ClassGroupId`.
+                if( current.Next is null )
+                {
+                    current.ClassGroupId = classGroup.Id;
+                }
+
                 foreach( var item in classGroup.Items )
                 {
                     if( !string.IsNullOrEmpty( item ) )
                     {
-                        _ = current.AddNextNode( item, classGroup.Id );
+                        var next = current.AddNextNode( item );
+                        next.ClassGroupId = classGroup.Id;
                     }
                 }
             }
