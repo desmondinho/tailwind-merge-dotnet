@@ -28,6 +28,21 @@ internal class TwMergeContext
         return GetClassGroupIdRecursive( classNameParts, _classMap );
     }
 
+    internal string[]? GetConflictingClassGroupIds( string classGroupId, bool hasPostfixModifier )
+    {
+        var conflicts = _config.ConflictingClassGroups.GetValueOrDefault( classGroupId );
+
+        if( hasPostfixModifier && _config.ConflictingClassGroupModifiers.ContainsKey( classGroupId ) )
+        {
+            return [
+                .. conflicts, 
+                .. _config.ConflictingClassGroupModifiers[classGroupId]
+            ];
+        }
+
+        return conflicts;
+    }
+
     // TODO: Refactor
     internal ClassModifiersInfo SplitModifiers( string className )
     {

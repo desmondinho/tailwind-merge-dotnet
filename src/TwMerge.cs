@@ -47,9 +47,9 @@ public partial class TwMerge
 
     private ClassInfo GetClassInfo( string className )
     {
-        (var baseClassName, 
-            var hasImportantModifier, 
-            var postfixModifierPosition, 
+        (var baseClassName,
+            var hasImportantModifier,
+            var postfixModifierPosition,
             var modifiers) = _context.SplitModifiers( className );
 
         var hasPostfixModifier = postfixModifierPosition.HasValue;
@@ -111,7 +111,14 @@ public partial class TwMerge
 
                 _ = conflictingClassGroups.Add( classGroupId );
 
-                // TODO: Handle conflicting class groups
+                var classGroups = _context.GetConflictingClassGroupIds( c.GroupId!, c.HasPostfixModifier );
+                if( classGroups is { Length: > 0 } )
+                {
+                    foreach( var group in classGroups )
+                    {
+                        _ = conflictingClassGroups.Add( c.ModifierId + group );
+                    }
+                }
 
                 return true;
             } )
