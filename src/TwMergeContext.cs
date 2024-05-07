@@ -128,7 +128,7 @@ internal class TwMergeContext
 
         var currentClassNamePart = classNameParts[0];
 
-        if( node.Next!.TryGetValue( currentClassNamePart, out var nextNode ) )
+        if( node.Next is not null && node.Next.TryGetValue( currentClassNamePart, out var nextNode ) )
         {
             var classGroupId = GetClassGroupIdRecursive( classNameParts[1..], nextNode );
 
