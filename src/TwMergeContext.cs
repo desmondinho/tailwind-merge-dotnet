@@ -115,25 +115,38 @@ internal partial class TwMergeContext
             return modifiers;
         }
 
-        var anyModifiers = new List<string>();
-        var arbitraryModifiers = new List<string>();
+        var sortedModifiers = new List<string>();
+        var unsortedModifiers = new List<string>();
 
         foreach( var modifier in modifiers )
         {
             if( modifier.StartsWith( '[' ) )
             {
-                arbitraryModifiers.Add( modifier );
+                // Sort the unsorted modifiers and append to result
+                if( unsortedModifiers.Count > 0 )
+                {
+                    unsortedModifiers.Sort();
+                    sortedModifiers.AddRange( unsortedModifiers );
+                    unsortedModifiers.Clear();
+                }
+
+                // Append the arbitrary variant directly to maintain position
+                sortedModifiers.Add( modifier );
             }
             else
             {
-                anyModifiers.Add( modifier );
+                // Collect regular modifiers
+                unsortedModifiers.Add( modifier );
             }
         }
 
-        anyModifiers.Sort();
-        anyModifiers.AddRange( arbitraryModifiers );
+        if( unsortedModifiers.Count > 0 )
+        {
+            unsortedModifiers.Sort();
+            sortedModifiers.AddRange( unsortedModifiers );
+        }
 
-        return anyModifiers;
+        return sortedModifiers;
     }
 
     private string? GetClassGroupIdRecursive( string[] classNameParts, ClassNameNode node )
