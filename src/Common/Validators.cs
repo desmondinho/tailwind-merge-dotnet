@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace TailwindMerge.Common;
 
@@ -20,7 +21,7 @@ internal static partial class Validators
 
     internal static Func<string, bool> IsNumber = ( value ) =>
     {
-        return !string.IsNullOrEmpty( value ) && double.TryParse( value, out _ );
+        return !string.IsNullOrEmpty( value ) && double.TryParse( value, CultureInfo.InvariantCulture, out _ );
     };
 
     internal static Func<string, bool> IsInteger = ( value ) =>
