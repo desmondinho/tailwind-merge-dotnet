@@ -1624,13 +1624,13 @@ internal class TwMergeConfig
         ["border-color-y"] = ["border-color-t", "border-color-b"],
         ["scroll-m"] = [
                 "scroll-mx",
-                "scroll-my",
-                "scroll-ms",
-                "scroll-me",
-                "scroll-mt",
-                "scroll-mr",
-                "scroll-mb",
-                "scroll-ml"
+            "scroll-my",
+            "scroll-ms",
+            "scroll-me",
+            "scroll-mt",
+            "scroll-mr",
+            "scroll-mb",
+            "scroll-ml"
             ],
         ["scroll-mx"] = ["scroll-mr", "scroll-ml"],
         ["scroll-my"] = ["scroll-mt", "scroll-mb"],
@@ -1646,7 +1646,7 @@ internal class TwMergeConfig
         ],
         ["scroll-px"] = ["scroll-pr", "scroll-pl"],
         ["scroll-py"] = ["scroll-pt", "scroll-pb"],
-        ["touch"] =["touch-x", "touch-y", "touch-pz"],
+        ["touch"] = ["touch-x", "touch-y", "touch-pz"],
         ["touch-x"] = ["touch"],
         ["touch-y"] = ["touch"],
         ["touch-pz"] = ["touch"]
