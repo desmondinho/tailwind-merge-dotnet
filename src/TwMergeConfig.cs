@@ -192,7 +192,7 @@ internal class TwMergeConfig
          * Position
          * See https://tailwindcss.com/docs/position
          */
-        new ClassGroup( "position", "position", ["static", "fixed", "absolute", "relative", "sticky"] ),
+        new ClassGroup( "position", ["static", "fixed", "absolute", "relative", "sticky"] ),
         /*
          * Top / Right / Bottom / Left
          * See https://tailwindcss.com/docs/top-right-bottom-left
