@@ -1,9 +1,11 @@
-﻿using TailwindMerge.Common;
+﻿using System.Text.RegularExpressions;
+
+using TailwindMerge.Common;
 using TailwindMerge.Models;
 
 namespace TailwindMerge;
 
-internal class TwMergeContext
+internal partial class TwMergeContext
 {
     private readonly TwMergeConfig _config;
     private readonly ClassNameNode _classMap;
@@ -25,7 +27,7 @@ internal class TwMergeContext
             classNameParts = classNameParts.Skip( 1 ).ToArray();
         }
 
-        return GetClassGroupIdRecursive( classNameParts, _classMap );
+        return GetClassGroupIdRecursive( classNameParts, _classMap ) ?? GetGroupIdForArbitraryProperty( className );
     }
 
     internal string[]? GetConflictingClassGroupIds( string classGroupId, bool hasPostfixModifier )
@@ -35,7 +37,7 @@ internal class TwMergeContext
         if( hasPostfixModifier && _config.ConflictingClassGroupModifiers.ContainsKey( classGroupId ) )
         {
             return [
-                .. conflicts, 
+                .. conflicts,
                 .. _config.ConflictingClassGroupModifiers[classGroupId]
             ];
         }
@@ -162,4 +164,23 @@ internal class TwMergeContext
 
         return node.Validators?.FirstOrDefault( validator => validator.Validator( classNameRest ) ).ClassGroupId;
     }
+
+    private string? GetGroupIdForArbitraryProperty( string className )
+    {
+        var match = ArbitraryPropertyRegex().Match( className );
+        if( match.Success )
+        {
+            var arbitraryPropertyClassName = match.Groups[1].Value;
+            if( !string.IsNullOrEmpty( arbitraryPropertyClassName ) )
+            {
+                var property = arbitraryPropertyClassName[..arbitraryPropertyClassName.IndexOf( ':' )];
+                return "arbitrary.." + property;
+            }
+        }
+
+        return null;
+    }
+
+    [GeneratedRegex( @"^\[(.+)]" )]
+    private static partial Regex ArbitraryPropertyRegex();
 }
