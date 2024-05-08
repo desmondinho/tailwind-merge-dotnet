@@ -35,9 +35,9 @@ internal class TwMergeMapFactory
 
             if( classGroup.Items is not null )
             {
-                // To prevent class groups that have common class name (e.g. `border`) 
+                // Prevent class groups with common class names (e.g. `border`) 
                 // from overriding each others `ClassGroupId`.
-                if( current.Next is null )
+                if( string.IsNullOrEmpty( current.ClassGroupId ) )
                 {
                     current.ClassGroupId = classGroup.Id;
                 }
