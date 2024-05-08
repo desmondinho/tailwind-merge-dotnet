@@ -181,6 +181,6 @@ internal partial class TwMergeContext
         return null;
     }
 
-    [GeneratedRegex( @"^\[(.+)]" )]
+    [GeneratedRegex( @"^\[(.+)\]$" )]
     private static partial Regex ArbitraryPropertyRegex();
 }
