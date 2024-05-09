@@ -108,7 +108,7 @@ internal partial class TwMergeContext
         );
     }
 
-    internal IReadOnlyList<string> SortModifiers( IReadOnlyList<string> modifiers )
+    internal ICollection<string> SortModifiers( ICollection<string> modifiers )
     {
         if( modifiers.Count <= 1 )
         {
