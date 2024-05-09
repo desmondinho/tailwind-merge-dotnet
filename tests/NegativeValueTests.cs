@@ -1,6 +1,6 @@
 namespace TailwindMerge.Tests;
 
-public class NegativeValueClassesTests
+public class NegativeValueTests
 {
     [Theory]
     [InlineData( "-m-2 -m-5", "-m-5" )]
