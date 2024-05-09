@@ -1551,7 +1551,7 @@ internal class TwMergeConfig
         new ClassGroup( "forced-color-adjust", "forced-color-adjust", _autoAndNone ),
     ];
 
-    private static readonly Dictionary<string, string[]> _conflictingClassGroups = new()
+    private static readonly Dictionary<string, string[]> _conflictingClassGroups = new( 46 )
     {
         ["overflow"] = ["overflow-x", "overflow-y"],
         ["overscroll"] = ["overscroll-x", "overscroll-y"],
@@ -1623,7 +1623,7 @@ internal class TwMergeConfig
         ["border-color-x"] = ["border-color-r", "border-color-l"],
         ["border-color-y"] = ["border-color-t", "border-color-b"],
         ["scroll-m"] = [
-                "scroll-mx",
+            "scroll-mx",
             "scroll-my",
             "scroll-ms",
             "scroll-me",
@@ -1631,7 +1631,7 @@ internal class TwMergeConfig
             "scroll-mr",
             "scroll-mb",
             "scroll-ml"
-            ],
+        ],
         ["scroll-mx"] = ["scroll-mr", "scroll-ml"],
         ["scroll-my"] = ["scroll-mt", "scroll-mb"],
         ["scroll-p"] = [
@@ -1652,13 +1652,14 @@ internal class TwMergeConfig
         ["touch-pz"] = ["touch"]
     };
 
-    private static readonly Dictionary<string, string[]> _conflictingClassGroupModifiers = new()
+    private static readonly Dictionary<string, string[]> _conflictingClassGroupModifiers = new( 1 )
     {
         ["font-size"] = ["leading"]
     };
 
     internal string Separator { get; }
     internal ClassGroup[] ClassGroups { get; }
+    // Is it worth using FrozenDictionary here?
     internal IReadOnlyDictionary<string, string[]> ConflictingClassGroups { get; }
     internal IReadOnlyDictionary<string, string[]> ConflictingClassGroupModifiers { get; }
 
@@ -1666,8 +1667,8 @@ internal class TwMergeConfig
     {
         Separator = ":";
         ClassGroups = _classGroups;
-        ConflictingClassGroups = _conflictingClassGroups;
-        ConflictingClassGroupModifiers = _conflictingClassGroupModifiers;
+        ConflictingClassGroups = _conflictingClassGroups.AsReadOnly();
+        ConflictingClassGroupModifiers = _conflictingClassGroupModifiers.AsReadOnly();
     }
 
     internal static TwMergeConfig Default()
