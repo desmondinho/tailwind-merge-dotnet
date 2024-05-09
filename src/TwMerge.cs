@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 
+using LruCacheNet;
+
 using TailwindMerge.Common;
 using TailwindMerge.Models;
 
@@ -12,6 +14,7 @@ public partial class TwMerge
 {
     private readonly TwMergeConfig _config;
     private readonly TwMergeContext _context;
+    private readonly LruCache<string, string> _cache;
 
     /// <summary>
     /// Initializes a new instance of <see cref="TwMerge" />.
@@ -20,6 +23,7 @@ public partial class TwMerge
     {
         _config = TwMergeConfig.Default();
         _context = new TwMergeContext( _config );
+        _cache = new LruCache<string, string>( _config.CacheSize );
     }
 
     /// <summary>
@@ -31,7 +35,15 @@ public partial class TwMerge
     {
         var joinedClassNames = string.Join( ' ', classNames );
 
-        return Merge( joinedClassNames );
+        if( _cache.TryGetValue( joinedClassNames, out var cachedResult ) )
+        {
+            return cachedResult;
+        }
+
+        var result = Merge( joinedClassNames );
+        _cache.AddOrUpdate( joinedClassNames, result );
+
+        return result;
     }
 
     private string Merge( string classList )

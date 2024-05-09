@@ -1657,6 +1657,7 @@ internal class TwMergeConfig
         ["font-size"] = ["leading"]
     };
 
+    internal int CacheSize{ get; }
     internal string Separator { get; }
     internal ClassGroup[] ClassGroups { get; }
     // Is it worth using FrozenDictionary here?
@@ -1665,6 +1666,7 @@ internal class TwMergeConfig
 
     internal TwMergeConfig()
     {
+        CacheSize = 500;
         Separator = ":";
         ClassGroups = _classGroups;
         ConflictingClassGroups = _conflictingClassGroups.AsReadOnly();
