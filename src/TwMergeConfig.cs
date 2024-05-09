@@ -252,7 +252,7 @@ internal class TwMergeConfig
          * Flex Basis
          * See https://tailwindcss.com/docs/flex-basis
          */
-        new ClassGroup( "flex-basis", "basis", _auto, _spacings ),
+        new ClassGroup( "basis", "basis", _auto, _spacings ),
         /*
          * Flex Direction
          * See https://tailwindcss.com/docs/flex-direction
@@ -676,7 +676,7 @@ internal class TwMergeConfig
          * Text Alignment
          * See https://tailwindcss.com/docs/text-align
          */
-        new ClassGroup( "text-align", "text", ["left", "center", "right", "justify", "start", "end"] ),
+        new ClassGroup( "text-alignment", "text", ["left", "center", "right", "justify", "start", "end"] ),
         /*
          * Text Color
          * See https://tailwindcss.com/docs/text-color
@@ -1051,7 +1051,7 @@ internal class TwMergeConfig
          * Outline Width
          * See https://tailwindcss.com/docs/outline-width
          */
-        new ClassGroup( "outline-width", "outline", _lengthAndArbitrary ),
+        new ClassGroup( "outline-w", "outline", _lengthAndArbitrary ),
         /*
          * Outline Color
          * See https://tailwindcss.com/docs/outline-color
@@ -1076,7 +1076,7 @@ internal class TwMergeConfig
          * Ring Offset Width
          * See https://tailwindcss.com/docs/ring-offset-width
          */
-        new ClassGroup( "ring-offset-inset", "ring-offset", _lengthAndArbitrary ),
+        new ClassGroup( "ring-offset-w", "ring-offset", _lengthAndArbitrary ),
         /*
          * Ring Offset Color
          * See https://tailwindcss.com/docs/ring-offset-color
