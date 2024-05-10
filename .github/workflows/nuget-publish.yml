@@ -1,0 +1,30 @@
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Release to NuGet
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Build
+      run: dotnet build -c Release
+
+    - name: Test
+      run: dotnet test -c Release --no-build
+
+    - name: Pack NuGet package
+      run: dotnet pack -c Release --no-build --output nupkgs
+      working-directory: ./src
+
+    - name: Push to NuGet
+      run: dotnet nuget push nupkgs/*.nupkg" -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
+      working-directory: ./src
