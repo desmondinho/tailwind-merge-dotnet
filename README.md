@@ -12,6 +12,12 @@ A utility to efficiently merge [Tailwind CSS](https://tailwindcss.com) classes i
 - Supports Tailwind v3.4
 - Thread-safe LRU caching
 
+## Prerequisites
+
+| .NET SDK | Support
+| :---: | :---: |
+| [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) | :heavy_check_mark: | 
+
 ## Usage
 
 Register the service in the DI container:
@@ -48,6 +54,12 @@ Inject the service into component using one of the following approaches:
 TwMerge.Merge("px-2 py-1 bg-red hover:bg-dark-red", "p-3 bg-[#B91C1C]")
 // → "hover:bg-dark-red p-3 bg-[#B91C1C]"
 ```
+
+## Contributing
+
+Contributions are always welcome!
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for ways to get started. Please adhere to this project's [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md).
 
 ## Acknowledgements 🙏
 
