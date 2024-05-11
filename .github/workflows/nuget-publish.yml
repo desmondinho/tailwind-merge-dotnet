@@ -28,5 +28,5 @@ jobs:
       working-directory: ./src
 
     - name: Push to NuGet
-      run: dotnet nuget push nupkgs/*.nupkg" -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push nupkgs/*.nupkg -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
       working-directory: ./src
