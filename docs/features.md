@@ -117,3 +117,7 @@ Results get cached by default, so you don't need to worry about wasteful re-rend
 The library uses a computationally lightweight [LRU cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)) which stores up to 500 different results by default. 
 The cache is applied after all arguments are joined together to a single string. 
 This means that if you call `Merge` repeatedly with different arguments that result in the same string when joined, the cache will be hit.
+
+### Lazy initialization
+
+When you configure a service in the Dependency Injection (DI) container, the initialization is "lazy" in the sense that the service is instantiated the first time it is requested, rather than at application start.
