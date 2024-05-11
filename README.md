@@ -1,7 +1,7 @@
 <div align="center">
     <br />
     <a href="https://github.com/desmondinho/tailwind-merge-dotnet">
-        <img src="https://raw.githubusercontent.com/desmondinho/tailwind-merge-dotnet/HEAD/.github/logo.svg" alt="tailwind-merge-dotnet" height="150px" />
+        <img src="https://raw.githubusercontent.com/desmondinho/tailwind-merge-dotnet/HEAD/assets/logo.svg" alt="tailwind-merge-dotnet" height="150px" />
     </a>
 </div>
 
@@ -9,14 +9,14 @@
 
 A utility to efficiently merge [Tailwind CSS](https://tailwindcss.com) classes in C# without style conflicts.
 
-- Supports Tailwind v3.4
-- Thread-safe LRU caching
+-   Supports Tailwind v3.4
+-   Thread-safe LRU caching
 
 ## Prerequisites
 
-| .NET SDK | Support
-| :---: | :---: |
-| [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) | :heavy_check_mark: | 
+|                          .NET SDK                          |      Support       |
+| :--------------------------------------------------------: | :----------------: |
+| [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) | :heavy_check_mark: |
 
 ## Usage
 
@@ -63,4 +63,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for ways to get started. Please adhere to
 
 ## Acknowledgements 🙏
 
-This project is a C# adaptation of [tailwind-merge](https://github.com/dcastil/tailwind-merge) originally developed by [dcastil](https://github.com/dcastil). 
+This project is a C# adaptation of [tailwind-merge](https://github.com/dcastil/tailwind-merge) originally developed by [dcastil](https://github.com/dcastil).
