@@ -8,10 +8,11 @@
 
 	<PropertyGroup>
 		<Title>TailwindMerge</Title>
-		<Authors>desmondinho</Authors>
 		<Description>Merge Tailwind CSS classes without style conflicts</Description>
+		<Authors>desmondinho</Authors>
 		<PackageId>TailwindMerge.NET</PackageId>
-		<PackageTags>tailwind; css; tailwindcss; classes; merge</PackageTags>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageTags>tailwind;css;tailwindcss;classes;merge</PackageTags>
 		<PackageProjectUrl>https://github.com/desmondinho/tailwind-merge-dotnet</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -28,6 +29,7 @@
 	<ItemGroup>
 		<None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
 		<None Include="..\README.md" Pack="true" Visible="false" PackagePath="" />
+		<None Include="..\assets\logo.png" Pack="true" Visible="false" PackagePath="" />
 	</ItemGroup>
 
 	<ItemGroup>
