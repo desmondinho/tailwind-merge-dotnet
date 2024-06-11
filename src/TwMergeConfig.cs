@@ -1131,7 +1131,7 @@ internal class TwMergeConfig
          * Grayscale
          * See https://tailwindcss.com/docs/grayscale
          */
-        new ClassGroup( "grayscale", "grayscale", _zeroAndEmpty ),
+        new ClassGroup( "grayscale", "grayscale", _zeroAndEmpty, _arbitraryValue ),
         /*
          * Hue Rotate
          * See https://tailwindcss.com/docs/hue-rotate
