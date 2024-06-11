@@ -3,7 +3,10 @@ using TailwindMerge.Models;
 
 namespace TailwindMerge;
 
-internal class TwMergeConfig
+/// <summary>
+/// Represents the configuration settings for the <see cref="TwMerge"/>.
+/// </summary>
+public class TwMergeConfig
 {
     private static readonly Func<string, bool>[] _any = [Validators.IsAny];
     private static readonly Func<string, bool>[] _arbitraryValue = [Validators.IsArbitraryValue];
@@ -1657,14 +1660,37 @@ internal class TwMergeConfig
         ["font-size"] = ["leading"]
     };
 
-    internal int CacheSize{ get; }
-    internal string Separator { get; }
+    /// <summary>
+    /// Gets the maximum size of the internal LRU cache.
+    /// </summary>
+    /// <remarks>
+    /// The default is 500
+    /// </remarks>
+    public int CacheSize { get; init; }
+
+    /// <summary>
+    /// Gets the <seealso href="https://tailwindcss.com/docs/configuration#separator">separator</seealso> that is used to separate 
+    /// modifiers (e.g., screen sizes, hover, focus, etc.) from utility names.
+    /// </summary>
+    /// <remarks>
+    /// The default is <c>:</c>
+    /// </remarks>
+    public string Separator { get; init; }
+
+    /// <summary>
+    /// Gets the <seealso href="https://tailwindcss.com/docs/configuration#prefix">prefix</seealso> that allows
+    /// you to add a custom prefix to all of Tailwind’s generated utility classes.
+    /// </summary>
+    public string? Prefix { get; init; }
+
     internal ClassGroup[] ClassGroups { get; }
-    // Is it worth using FrozenDictionary here?
     internal IReadOnlyDictionary<string, string[]> ConflictingClassGroups { get; }
     internal IReadOnlyDictionary<string, string[]> ConflictingClassGroupModifiers { get; }
 
-    internal TwMergeConfig()
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TwMergeConfig"/> class.
+    /// </summary>
+    public TwMergeConfig()
     {
         CacheSize = 500;
         Separator = ":";
@@ -1673,7 +1699,11 @@ internal class TwMergeConfig
         ConflictingClassGroupModifiers = _conflictingClassGroupModifiers.AsReadOnly();
     }
 
-    internal static TwMergeConfig Default()
+    /// <summary>
+    /// Creates a new instance of the <see cref="TwMergeConfig"/> class with default settings.
+    /// </summary>
+    /// <returns>A <see cref="TwMergeConfig"/> instance.</returns>
+    public static TwMergeConfig Default()
     {
         return new();
     }
