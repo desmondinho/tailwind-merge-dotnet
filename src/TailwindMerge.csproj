@@ -9,7 +9,7 @@
 	<PropertyGroup>
 		<Title>TailwindMerge</Title>
 		<Description>Merge Tailwind CSS classes without style conflicts</Description>
-		<Version>0.1.0-rc</Version>
+		<Version>0.2.0-rc</Version>
 		<Authors>desmondinho</Authors>
 		<PackageId>TailwindMerge.NET</PackageId>
 		<PackageIcon>logo.png</PackageIcon>
