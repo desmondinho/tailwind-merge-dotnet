@@ -15,4 +15,15 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<TwMerge>();
     }
+
+    /// <summary>
+    /// Registers a singleton instance of the <see cref="TwMerge"/> service with the given configuration options.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/>.</param>
+    /// <param name="options">The delegate to configure the <see cref="TwMergeConfig"/> options.</param>
+    public static void AddTailwindMerge( this IServiceCollection services, Action<TwMergeConfig> options )
+    {
+        services.AddSingleton<TwMerge>();
+        services.Configure( options );
+    }
 }
