@@ -31,9 +31,14 @@ public partial class TwMerge
     /// </summary>
     /// <param name="classNames">The collection of CSS classes to be merged.</param>
     /// <returns>A <see langword="string"/> of merged CSS classes.</returns>
-    public string Merge( params string[] classNames )
+    public string? Merge( params string?[] classNames )
     {
         var joinedClassNames = string.Join( ' ', classNames );
+
+        if( string.IsNullOrEmpty( joinedClassNames ) )
+        {
+            return null;
+        }
 
         if( _cache.TryGetValue( joinedClassNames, out var cachedResult ) )
         {
@@ -54,7 +59,7 @@ public partial class TwMerge
 
         var filteredClassNames = FilterConflictingClasses( classes );
 
-        return string.Join( " ", filteredClassNames );
+        return string.Join( ' ', filteredClassNames );
     }
 
     private ClassInfo GetClassInfo( string className )
