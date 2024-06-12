@@ -20,9 +20,9 @@ internal class TwMergeMapFactory
     internal static void ProcessClassGroups( ClassNameNode root, ClassGroup classGroup )
     {
         // Process standalone class groups (e.g. `display`, `container`)
-        if( string.IsNullOrEmpty( classGroup.ClassName ) )
+        if( string.IsNullOrEmpty( classGroup.BaseClassName ) )
         {
-            foreach( var item in classGroup.Items! )
+            foreach( var item in classGroup.ClassNameParts! )
             {
                 var current = root.AddNextNode( item );
                 current.ClassGroupId = classGroup.Id;
@@ -31,9 +31,9 @@ internal class TwMergeMapFactory
         // Process all other class groups
         else
         {
-            var current = root.AddNextNode( classGroup.ClassName );
+            var current = root.AddNextNode( classGroup.BaseClassName );
 
-            if( classGroup.Items is not null )
+            if( classGroup.ClassNameParts is not null )
             {
                 // Prevent class groups with common class names (e.g. `border`) 
                 // from overriding each others `ClassGroupId`.
@@ -42,7 +42,7 @@ internal class TwMergeMapFactory
                     current.ClassGroupId = classGroup.Id;
                 }
 
-                foreach( var item in classGroup.Items )
+                foreach( var item in classGroup.ClassNameParts )
                 {
                     if( !string.IsNullOrEmpty( item ) )
                     {
