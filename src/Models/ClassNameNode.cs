@@ -17,7 +17,6 @@ internal record ClassNameNode
         foreach( var part in className.Split( Constants.ClassNameSeparator, StringSplitOptions.RemoveEmptyEntries ) )
         {
             current.Next ??= [];
-
             if( !current.Next.TryGetValue( part, out var next ) )
             {
                 next = new ClassNameNode();

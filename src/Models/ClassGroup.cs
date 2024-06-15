@@ -42,3 +42,12 @@ public readonly record struct ClassGroup(
     public ClassGroup( string id, string baseClassName, Func<string, bool>[] validators )
         : this( id, baseClassName, null, validators ) { }
 }
+
+public readonly record struct ClassGroup2(
+    string Id,
+    string? BaseClassName,
+    object[] Definitions )
+{
+    public ClassGroup2( string id, object[] definitions )
+        : this( id, null, definitions ) { }
+}

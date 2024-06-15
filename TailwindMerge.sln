@@ -5,7 +5,13 @@ VisualStudioVersion = 17.8.34601.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindMerge", "src\TailwindMerge.csproj", "{3D354049-940B-4DD0-9337-46FA83023346}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TailwindMerge.Tests", "tests\TailwindMerge.Tests.csproj", "{C52C19C3-676C-4C41-B380-446C813DFA56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindMerge.Tests", "tests\TailwindMerge.Tests.csproj", "{C52C19C3-676C-4C41-B380-446C813DFA56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{376D0812-335F-4E68-9AB3-130EB9FA313F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1", "BlazorApp1\BlazorApp1\BlazorApp1.csproj", "{A84A7BA3-28E1-4041-93D8-B2296CE590F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1.Client", "BlazorApp1\BlazorApp1.Client\BlazorApp1.Client.csproj", "{4994C3DC-3905-471D-9260-DC971D326EFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{C52C19C3-676C-4C41-B380-446C813DFA56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C52C19C3-676C-4C41-B380-446C813DFA56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C52C19C3-676C-4C41-B380-446C813DFA56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{376D0812-335F-4E68-9AB3-130EB9FA313F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{376D0812-335F-4E68-9AB3-130EB9FA313F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{376D0812-335F-4E68-9AB3-130EB9FA313F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{376D0812-335F-4E68-9AB3-130EB9FA313F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A84A7BA3-28E1-4041-93D8-B2296CE590F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84A7BA3-28E1-4041-93D8-B2296CE590F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A84A7BA3-28E1-4041-93D8-B2296CE590F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A84A7BA3-28E1-4041-93D8-B2296CE590F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4994C3DC-3905-471D-9260-DC971D326EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4994C3DC-3905-471D-9260-DC971D326EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4994C3DC-3905-471D-9260-DC971D326EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4994C3DC-3905-471D-9260-DC971D326EFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

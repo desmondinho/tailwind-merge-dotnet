@@ -9,7 +9,7 @@ internal class TwMergeMapFactory
         // Initialize a root node of the map
         var classMap = new ClassNameNode();
 
-        foreach( var classGroup in config.ClassGroups )
+        foreach( var classGroup in config.ClassGroups2 )
         {
             ProcessClassGroups( classMap, classGroup );
         }
@@ -17,48 +17,80 @@ internal class TwMergeMapFactory
         return classMap;
     }
 
-    internal static void ProcessClassGroups( ClassNameNode root, ClassGroup classGroup )
+    internal static void ProcessClassGroups( ClassNameNode root, ClassGroup2 classGroup )
     {
         // Process standalone class groups (e.g. `display`, `container`)
         if( string.IsNullOrEmpty( classGroup.BaseClassName ) )
         {
-            foreach( var item in classGroup.ClassNameParts! )
+            foreach( var definition in classGroup.Definitions )
             {
-                var current = root.AddNextNode( item );
-                current.ClassGroupId = classGroup.Id;
+                if( definition is string @string )
+                {
+                    var current = root.AddNextNode( @string );
+                    current.ClassGroupId = classGroup.Id;
+                }
             }
+
+            //foreach( var classNamePart in classGroup.ClassNameParts! )
+            //{
+            //    var current = root.AddNextNode( classNamePart );
+            //    current.ClassGroupId = classGroup.Id;
+            //}
         }
         // Process all other class groups
         else
         {
             var current = root.AddNextNode( classGroup.BaseClassName );
 
-            if( classGroup.ClassNameParts is not null )
+            foreach( var definition in classGroup.Definitions )
             {
-                // Prevent class groups with common class names (e.g. `border`) 
-                // from overriding each others `ClassGroupId`.
-                if( string.IsNullOrEmpty( current.ClassGroupId ) )
+                if( definition is string @string )
                 {
-                    current.ClassGroupId = classGroup.Id;
-                }
-
-                foreach( var item in classGroup.ClassNameParts )
-                {
-                    if( !string.IsNullOrEmpty( item ) )
+                    // Prevent class groups with common class names (e.g. `border`) 
+                    // from overriding each others `ClassGroupId`.
+                    if( string.IsNullOrEmpty( current.ClassGroupId ) )
                     {
-                        var next = current.AddNextNode( item );
+                        current.ClassGroupId = classGroup.Id;
+                    }
+
+                    if( !string.IsNullOrEmpty( @string ) )
+                    {
+                        var next = current.AddNextNode( @string );
                         next.ClassGroupId = classGroup.Id;
                     }
                 }
-            }
-
-            if( classGroup.Validators is not null )
-            {
-                foreach( var validator in classGroup.Validators )
+                else if( definition is Func<string, bool> validator )
                 {
                     current.AddValidator( validator, classGroup.Id );
                 }
             }
+
+            //if( classGroup.ClassNameParts is not null )
+            //{
+            //    // Prevent class groups with common class names (e.g. `border`) 
+            //    // from overriding each others `ClassGroupId`.
+            //    if( string.IsNullOrEmpty( current.ClassGroupId ) )
+            //    {
+            //        current.ClassGroupId = classGroup.Id;
+            //    }
+
+            //    foreach( var item in classGroup.ClassNameParts )
+            //    {
+            //        if( !string.IsNullOrEmpty( item ) )
+            //        {
+            //            var next = current.AddNextNode( item );
+            //            next.ClassGroupId = classGroup.Id;
+            //        }
+            //    }
+            //}
+
+            //if( classGroup.Validators is not null )
+            //{
+            //    foreach( var validator in classGroup.Validators )
+            //    {
+            //        current.AddValidator( validator, classGroup.Id );
+            //    }
+            //}
         }
     }
 }
