@@ -13,8 +13,9 @@ internal record ClassNameNode
     internal ClassNameNode AddNextNode( string className )
     {
         var current = this;
+        var parts = className.Split( Constants.ClassNameSeparator, StringSplitOptions.RemoveEmptyEntries );
 
-        foreach( var part in className.Split( Constants.ClassNameSeparator, StringSplitOptions.RemoveEmptyEntries ) )
+        foreach( var part in parts )
         {
             current.Next ??= [];
 
