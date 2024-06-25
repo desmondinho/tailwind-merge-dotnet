@@ -6,7 +6,12 @@
 public class ExtendedConfig
 {
     /// <summary>
-    /// Gets or sets the theme configuration.
+    /// Gets or sets the theme for the configuration extension.
     /// </summary>
     public Dictionary<string, object[]>? Theme { get; set; }
+
+    /// <summary>
+    /// Gets or sets the class groups for the configuration extension.
+    /// </summary>
+    public ClassGroup[]? ClassGroups { get; set; }
 }

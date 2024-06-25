@@ -1,4 +1,5 @@
-﻿using TailwindMerge.Models;
+﻿using TailwindMerge.Common;
+using TailwindMerge.Models;
 
 namespace TailwindMerge;
 
@@ -15,7 +16,8 @@ internal class TwMergeMapFactory
                 classMap,
                 classGroup.Definitions,
                 classGroup.Id,
-                classGroup.BaseClassName
+                classGroup.BaseClassName,
+                config.Theme
             );
         }
 
@@ -26,7 +28,8 @@ internal class TwMergeMapFactory
         ClassNameNode node,
         object[] definitions,
         string classGroupId,
-        string? classGroupBaseClassName )
+        string? classGroupBaseClassName,
+        Dictionary<string, object[]> theme )
     {
         var current = node;
 
@@ -51,9 +54,9 @@ internal class TwMergeMapFactory
                 current.AddValidator( validatorDefinition, classGroupId );
                 continue;
             }
-            if( definition is Func<object[]> themeGetter )
+            if( definition is ThemeGetter themeGetter )
             {
-                ProcessClassGroupsRecursively( current, themeGetter(), classGroupId, null );
+                ProcessClassGroupsRecursively( current, themeGetter( theme ), classGroupId, null, theme );
             }
         }
     }

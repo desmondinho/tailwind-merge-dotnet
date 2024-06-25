@@ -138,11 +138,15 @@ public class TwMergeConfig
     public string? Prefix { get; set; }
 
     /// <summary>
-    /// Gets or sets the theme configuration.
+    /// Gets or sets the theme of the configuration.
     /// </summary>
     public Dictionary<string, object[]> Theme { get; set; }
 
-    internal ClassGroup[] ClassGroups { get; init; }
+    /// <summary>
+    /// Gets or sets the class groups of the configuration.
+    /// </summary>
+    public ClassGroup[] ClassGroups { get; set; }
+
     internal IReadOnlyDictionary<string, string[]> ConflictingClassGroups { get; }
     internal IReadOnlyDictionary<string, string[]> ConflictingClassGroupModifiers { get; }
 
@@ -154,31 +158,31 @@ public class TwMergeConfig
         CacheSize = 500;
         Separator = ":";
 
-        var colors = () => Theme?["colors"];
-        var spacing = () => Theme?["spacing"];
-        var blur = () => Theme?["blur"];
-        var brightness = () => Theme?["brightness"];
-        var borderColor = () => Theme?["borderColor"];
-        var borderRadius = () => Theme?["borderRadius"];
-        var borderSpacing = () => Theme?["borderSpacing"];
-        var borderWidth = () => Theme?["borderWidth"];
-        var contrast = () => Theme?["contrast"];
-        var grayscale = () => Theme?["grayscale"];
-        var hueRotate = () => Theme?["hueRotate"];
-        var invert = () => Theme?["invert"];
-        var gap = () => Theme?["gap"];
-        var gradientColorStops = () => Theme?["gradientColorStops"];
-        var gradientColorStopPositions = () => Theme?["gradientColorStopPositions"];
-        var inset = () => Theme?["inset"];
-        var margin = () => Theme?["margin"];
-        var opacity = () => Theme?["opacity"];
-        var padding = () => Theme?["padding"];
-        var saturate = () => Theme?["saturate"];
-        var scale = () => Theme?["scale"];
-        var sepia = () => Theme?["sepia"];
-        var skew = () => Theme?["skew"];
-        var space = () => Theme?["space"];
-        var translate = () => Theme?["translate"];
+        var colors = ThemeUtility.FromTheme( "colors" );
+        var spacing = ThemeUtility.FromTheme( "spacing" );
+        var blur = ThemeUtility.FromTheme( "blur" );
+        var brightness = ThemeUtility.FromTheme( "brightness" );
+        var borderColor = ThemeUtility.FromTheme( "borderColor" );
+        var borderRadius = ThemeUtility.FromTheme( "borderRadius" );
+        var borderSpacing = ThemeUtility.FromTheme( "borderSpacing" );
+        var borderWidth = ThemeUtility.FromTheme( "borderWidth" );
+        var contrast = ThemeUtility.FromTheme( "contrast" );
+        var grayscale = ThemeUtility.FromTheme( "grayscale" );
+        var hueRotate = ThemeUtility.FromTheme( "hueRotate" );
+        var invert = ThemeUtility.FromTheme( "invert" );
+        var gap = ThemeUtility.FromTheme( "gap" );
+        var gradientColorStops = ThemeUtility.FromTheme( "gradientColorStops" );
+        var gradientColorStopPositions = ThemeUtility.FromTheme( "gradientColorStopPositions" );
+        var inset = ThemeUtility.FromTheme( "inset" );
+        var margin = ThemeUtility.FromTheme( "margin" );
+        var opacity = ThemeUtility.FromTheme( "opacity" );
+        var padding = ThemeUtility.FromTheme( "padding" );
+        var saturate = ThemeUtility.FromTheme( "saturate" );
+        var scale = ThemeUtility.FromTheme( "scale" );
+        var sepia = ThemeUtility.FromTheme( "sepia" );
+        var skew = ThemeUtility.FromTheme( "skew" );
+        var space = ThemeUtility.FromTheme( "space" );
+        var translate = ThemeUtility.FromTheme( "translate" );
 
         object[] any = [Validators.IsAny];
         object[] number = [Validators.IsNumber, Validators.IsArbitraryNumber];
@@ -220,6 +224,7 @@ public class TwMergeConfig
             ["spacing"] = [Validators.IsLength, Validators.IsArbitraryLength],
             ["blur"] = ["none", "", Validators.IsTshirtSize, Validators.IsArbitraryValue],
             ["brightness"] = number,
+            ["borderColor"] = [colors],
             ["borderRadius"] = ["none", "", "full", Validators.IsTshirtSize, Validators.IsArbitraryValue],
             ["borderSpacing"] = spacingWithArbitrary,
             ["borderWidth"] = lengthWithEmptyAndArbitrary,
@@ -228,6 +233,7 @@ public class TwMergeConfig
             ["hueRotate"] = numberAndArbitrary,
             ["invert"] = zeroAndEmpty,
             ["gap"] = spacingWithArbitrary,
+            ["gradientColorStops"] = [colors],
             ["gradientColorStopPositions"] = [Validators.IsPercent, Validators.IsArbitraryLength],
             ["inset"] = spacingWithAutoAndArbitrary,
             ["margin"] = spacingWithAutoAndArbitrary,
@@ -240,10 +246,6 @@ public class TwMergeConfig
             ["space"] = spacingWithArbitrary,
             ["translate"] = spacingWithArbitrary
         };
-
-        // No way to reference the same object during initialization
-        Theme["borderColor"] = colors();
-        Theme["gradientColorStops"] = colors();
 
         ClassGroups = [
             /*
@@ -1755,7 +1757,22 @@ public class TwMergeConfig
                 {
                     Theme[key] = [.. initialValues, .. values];
                 }
+                else
+                {
+                    Theme[key] = values;
+                }
             }
+        }
+        if( extendedConfig.ClassGroups is { Length: > 0 } )
+        {
+            var classGroupsLength = ClassGroups.Length;
+            var extendedClassGroupsLength = extendedConfig.ClassGroups.Length;
+            var mergedClassGroups = new ClassGroup[classGroupsLength + extendedClassGroupsLength];
+
+            Array.Copy( ClassGroups, mergedClassGroups, classGroupsLength );
+            Array.Copy( extendedConfig.ClassGroups, 0, mergedClassGroups, classGroupsLength, extendedClassGroupsLength );
+
+            ClassGroups = mergedClassGroups;
         }
     }
 }
