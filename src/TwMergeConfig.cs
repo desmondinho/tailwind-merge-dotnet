@@ -1742,11 +1742,9 @@ public class TwMergeConfig
     public static TwMergeConfig Default() => new();
 
     /// <summary>
-    /// Extends the current configuration with additional class groups.
+    /// Extends the current configuration with the values from the provided <see cref="ExtendedConfig"/>.
     /// </summary>
-    /// <param name="classGroups">An array of class groups to be added to the configuration.</param>
-    /// <returns>A <see cref="TwMergeConfig"/> instance.</returns>
-    /// <exception cref="ArgumentException">Thrown if any class group Id does not exist in the list of supported class group keys.</exception>
+    /// <param name="extendedConfig">The extended configuration.</param>
     public void Extend( ExtendedConfig extendedConfig )
     {
         if( extendedConfig.Theme is not null )
