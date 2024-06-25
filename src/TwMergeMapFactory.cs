@@ -11,53 +11,49 @@ internal class TwMergeMapFactory
 
         foreach( var classGroup in config.ClassGroups )
         {
-            ProcessClassGroups( classMap, classGroup );
+            ProcessClassGroupsRecursively(
+                classMap,
+                classGroup.Definitions,
+                classGroup.Id,
+                classGroup.BaseClassName
+            );
         }
 
         return classMap;
     }
 
-    internal static void ProcessClassGroups( ClassNameNode root, ClassGroup classGroup )
+    internal static void ProcessClassGroupsRecursively(
+        ClassNameNode node,
+        object[] definitions,
+        string classGroupId,
+        string? classGroupBaseClassName )
     {
-        // Process standalone class groups (e.g. `display`, `container`)
-        if( string.IsNullOrEmpty( classGroup.BaseClassName ) )
+        var current = node;
+
+        // In order to process all class groups but standalone
+        if( !string.IsNullOrEmpty( classGroupBaseClassName ) )
         {
-            foreach( var item in classGroup.ClassNameParts! )
-            {
-                var current = root.AddNextNode( item );
-                current.ClassGroupId = classGroup.Id;
-            }
+            current = node.AddNextNode( classGroupBaseClassName );
         }
-        // Process all other class groups
-        else
+
+        foreach( var definition in definitions )
         {
-            var current = root.AddNextNode( classGroup.BaseClassName );
-
-            if( classGroup.ClassNameParts is not null )
+            if( definition is string stringDefinition )
             {
-                // Prevent class groups with common class names (e.g. `border`) 
-                // from overriding each others `ClassGroupId`.
-                if( string.IsNullOrEmpty( current.ClassGroupId ) )
-                {
-                    current.ClassGroupId = classGroup.Id;
-                }
-
-                foreach( var item in classGroup.ClassNameParts )
-                {
-                    if( !string.IsNullOrEmpty( item ) )
-                    {
-                        var next = current.AddNextNode( item );
-                        next.ClassGroupId = classGroup.Id;
-                    }
-                }
+                var next = !string.IsNullOrEmpty( stringDefinition )
+                    ? current.AddNextNode( stringDefinition )
+                    : current;
+                next.ClassGroupId = classGroupId;
+                continue;
             }
-
-            if( classGroup.Validators is not null )
+            if( definition is Func<string, bool> validatorDefinition )
             {
-                foreach( var validator in classGroup.Validators )
-                {
-                    current.AddValidator( validator, classGroup.Id );
-                }
+                current.AddValidator( validatorDefinition, classGroupId );
+                continue;
+            }
+            if( definition is Func<object[]> themeGetter )
+            {
+                ProcessClassGroupsRecursively( current, themeGetter(), classGroupId, null );
             }
         }
     }
