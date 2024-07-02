@@ -15,7 +15,8 @@ internal class TwMergeMapFactory
             Next = new( 155 )
         };
 
-        foreach( var (classGroupId, classGroup) in config.ClassGroups )
+        var prefixedClassGroups = GetPrefixedClassGroups( config.ClassGroups, config.Prefix );
+        foreach( var (classGroupId, classGroup) in prefixedClassGroups )
         {
             ProcessClassGroupsRecursively(
                 classMap,
@@ -29,7 +30,7 @@ internal class TwMergeMapFactory
         return classMap;
     }
 
-    internal static void ProcessClassGroupsRecursively(
+    private static void ProcessClassGroupsRecursively(
         ClassNameNode node,
         string classGroupId,
         string? classGroupBaseClassName,
@@ -70,5 +71,19 @@ internal class TwMergeMapFactory
                 ProcessClassGroupsRecursively( next, classGroupId, null, nestedClassGroup.Definitions, theme );
             }
         }
+    }
+
+    private static Dictionary<string, ClassGroup> GetPrefixedClassGroups(
+        Dictionary<string, ClassGroup> classGroups,
+        string? prefix )
+    {
+        if( string.IsNullOrEmpty( prefix ) )
+        {
+            return classGroups;
+        }
+
+        return classGroups.ToDictionary(
+            kvp => kvp.Key,
+            kvp => new ClassGroup( prefix + kvp.Value.BaseClassName, kvp.Value.Definitions ) );
     }
 }
