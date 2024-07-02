@@ -7,8 +7,15 @@ namespace TailwindMerge.Tests;
 
 public class ExtendTests
 {
-    [Fact]
-    public void ShouldOverrideAndExtendConfigCorrectly()
+    [Theory]
+    [InlineData( "shadow-lg shadow-100 shadow-200", "shadow-lg shadow-200" )]
+    [InlineData( "custom-100 custom-200", "custom-200" )]
+    [InlineData( "text-lg text-foo", "text-foo" )]
+    [InlineData( "px-3 py-3 p-3", "py-3 p-3" )]
+    [InlineData( "p-3 px-3 py-3", "p-3 px-3 py-3" )]
+    [InlineData( "mx-2 my-2 h-2 m-2", "m-2" )]
+    [InlineData( "m-2 mx-2 my-2 h-2", "m-2 mx-2 my-2 h-2" )]
+    public void ShouldOverrideAndExtendConfigCorrectly( string classLists, string expected )
     {
         // Arrange
         var mockOptions = new Mock<IOptions<TwMergeConfig>>();
@@ -42,14 +49,10 @@ public class ExtendTests
         } );
         mockOptions.Setup( ap => ap.Value ).Returns( config );
 
-        var twMerge = new TwMerge( mockOptions.Object );
+        // Act
+        var actual = new TwMerge( mockOptions.Object ).Merge( classLists );
 
-        Assert.Equal( "shadow-lg shadow-200", twMerge.Merge( "shadow-lg shadow-100 shadow-200" ) );
-        Assert.Equal( "custom-200", twMerge.Merge( "custom-100 custom-200" ) );
-        Assert.Equal( "text-foo", twMerge.Merge( "text-lg text-foo" ) );
-        Assert.Equal( "py-3 p-3", twMerge.Merge( "px-3 py-3 p-3" ) );
-        Assert.Equal( "p-3 px-3 py-3", twMerge.Merge( "p-3 px-3 py-3" ) );
-        Assert.Equal( "m-2", twMerge.Merge( "mx-2 my-2 h-2 m-2" ) );
-        Assert.Equal( "m-2 mx-2 my-2 h-2", twMerge.Merge( "m-2 mx-2 my-2 h-2" ) );
+        // Assert
+        Assert.Equal( expected, actual );
     }
 }
