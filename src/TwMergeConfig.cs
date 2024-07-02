@@ -1792,16 +1792,16 @@ public class TwMergeConfig
                 return;
             }
 
-            foreach( var (key, value) in extendDict )
+            foreach( var (classGroupId, classGroup) in extendDict )
             {
-                if( ClassGroups.TryGetValue( key, out var existingGroup ) )
+                if( ClassGroups.TryGetValue( classGroupId, out var existingGroup ) )
                 {
-                    var mergedDefinitions = MergeArrays( existingGroup.Definitions, value.Definitions );
-                    ClassGroups[key] = new ClassGroup( value.BaseClassName, mergedDefinitions );
+                    var mergedDefinitions = MergeArrays( existingGroup.Definitions, classGroup.Definitions );
+                    ClassGroups[classGroupId] = new ClassGroup( classGroup.BaseClassName, mergedDefinitions );
                 }
                 else
                 {
-                    ClassGroups[key] = value;
+                    ClassGroups[classGroupId] = classGroup;
                 }
             }
         }
@@ -1834,9 +1834,9 @@ public class TwMergeConfig
                 return;
             }
 
-            foreach( var (key, values) in overrideDict )
+            foreach( var (key, value) in overrideDict )
             {
-                originalDict[key] = values;
+                originalDict[key] = value;
             }
         }
     }
