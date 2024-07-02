@@ -23,10 +23,9 @@ public class PrefixTests
         };
 
         mockOptions.Setup( ap => ap.Value ).Returns( config );
-        var twMerge = new TwMerge( mockOptions.Object );
 
         // Act
-        var actual = new TwMerge().Merge( classLists );
+        var actual = new TwMerge( mockOptions.Object ).Merge( classLists );
 
         // Assert
         Assert.Equal( expected, actual );
