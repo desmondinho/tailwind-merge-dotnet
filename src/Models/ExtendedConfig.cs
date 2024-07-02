@@ -13,5 +13,15 @@ public class ExtendedConfig
     /// <summary>
     /// Gets or sets the class groups for the configuration extension.
     /// </summary>
-    public ClassGroup[]? ClassGroups { get; set; }
+    public Dictionary<string, ClassGroup>? ClassGroups { get; set; }
+
+    /// <summary>
+    /// Gets or sets the conflicting class groups for the configuration extension.
+    /// </summary>
+    public Dictionary<string, string[]>? ConflictingClassGroups { get; set; }
+
+    /// <summary>
+    /// Gets or sets the conflicting class group modifiers for the configuration extension.
+    /// </summary>
+    public Dictionary<string, string[]>? ConflictingClassGroupModifiers { get; set; }
 }

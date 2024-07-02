@@ -8,15 +8,20 @@ internal class TwMergeMapFactory
     internal static ClassNameNode Create( TwMergeConfig config )
     {
         // Initialize a root node of the map
-        var classMap = new ClassNameNode();
+        var classMap = new ClassNameNode()
+        {
+            // Default classMap contains ~155 nodes.
+            // Setting the capacity to avoid resizing of the dictionary.
+            Next = new( 155 )
+        };
 
-        foreach( var classGroup in config.ClassGroups )
+        foreach( var (classGroupId, classGroup) in config.ClassGroups )
         {
             ProcessClassGroupsRecursively(
                 classMap,
-                classGroup.Definitions,
-                classGroup.Id,
+                classGroupId,
                 classGroup.BaseClassName,
+                classGroup.Definitions,
                 config.Theme
             );
         }
@@ -26,9 +31,9 @@ internal class TwMergeMapFactory
 
     internal static void ProcessClassGroupsRecursively(
         ClassNameNode node,
-        object[] definitions,
         string classGroupId,
         string? classGroupBaseClassName,
+        object[] definitions,
         Dictionary<string, object[]> theme )
     {
         var current = node;
@@ -56,7 +61,13 @@ internal class TwMergeMapFactory
             }
             if( definition is ThemeGetter themeGetter )
             {
-                ProcessClassGroupsRecursively( current, themeGetter( theme ), classGroupId, null, theme );
+                ProcessClassGroupsRecursively( current, classGroupId, null, themeGetter( theme ), theme );
+                continue;
+            }
+            if( definition is ClassGroup nestedClassGroup )
+            {
+                var next = current.AddNextNode( nestedClassGroup.BaseClassName! );
+                ProcessClassGroupsRecursively( next, classGroupId, null, nestedClassGroup.Definitions, theme );
             }
         }
     }
