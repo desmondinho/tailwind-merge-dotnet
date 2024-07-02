@@ -1,7 +1,5 @@
 using TailwindMerge.Models;
 
-using Xunit;
-
 namespace TailwindMerge.Tests;
 
 public class ClassMapFactoryTests
@@ -10,14 +8,13 @@ public class ClassMapFactoryTests
     public void Create_DefaultConfig_HasCorrectClassGroupsAtFirstNode()
     {
         // Arrange
-        var config = TwMergeConfig.Default();
-        var classMap = TwMergeMapFactory.Create( config );
+        var classMap = TwMergeMapFactory.Create( TwMergeConfig.Default() );
 
         // Act
         var classGroupsByFirstNode = new SortedDictionary<string, List<string>>(
             classMap.Next!.ToDictionary(
                 entry => entry.Key,
-                entry => GetClassGroups( entry.Value ).OrderBy( x => x ).ToList()
+                entry => GetClassGroupsInClassNameNode( entry.Value ).OrderBy( x => x ).ToList()
             )
         );
 
@@ -282,24 +279,16 @@ public class ClassMapFactoryTests
         Assert.Equal( expected, classGroupsByFirstNode );
     }
 
-    private HashSet<string> GetClassGroups( ClassNameNode node )
+    private HashSet<string> GetClassGroupsInClassNameNode( ClassNameNode node )
     {
         var classGroups = new HashSet<string>();
-        AddClassGroups( node, classGroups );
 
-        return classGroups;
-    }
-
-    private void AddClassGroups( ClassNameNode node, HashSet<string> classGroups )
-    {
-        // Add class group ID if not null or empty
         if( !string.IsNullOrEmpty( node.ClassGroupId ) )
         {
             classGroups.Add( node.ClassGroupId );
         }
 
-        // Add class group IDs from validators
-        if( node.Validators != null )
+        if( node.Validators is { Count: > 0 } )
         {
             foreach( var validator in node.Validators )
             {
@@ -307,13 +296,17 @@ public class ClassMapFactoryTests
             }
         }
 
-        // Recursively add class group IDs from next nodes
-        if( node.Next != null )
+        if( node.Next is { Count: > 0 } )
         {
-            foreach( var value in node.Next.Values )
+            foreach( var next in node.Next )
             {
-                AddClassGroups( value, classGroups );
+                foreach( var classGroup in GetClassGroupsInClassNameNode( next.Value ) )
+                {
+                    classGroups.Add( classGroup );
+                }
             }
         }
+
+        return classGroups;
     }
 }

@@ -44,9 +44,10 @@ public class ThemeTests
             {
                 ["my-theme"] = ["hallo", "hello"]
             },
-            ClassGroups = [
-                new ClassGroup( "px", "px", [ThemeUtility.FromTheme("my-theme")] ),
-            ]
+            ClassGroups = new()
+            {
+                ["px"] = new ClassGroup( "px", [ThemeUtility.FromTheme( "my-theme" )] ),
+            }
         } );
         mockOptions.Setup( ap => ap.Value ).Returns( config );
 
