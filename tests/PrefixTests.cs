@@ -6,8 +6,14 @@ namespace TailwindMerge.Tests;
 
 public class PrefixTests
 {
-    [Fact]
-    public void ShouldMergeCorrectlyWithPrefix()
+    [Theory]
+    [InlineData( "tw-block tw-hidden", "tw-hidden" )]
+    [InlineData( "block hidden", "block hidden" )]
+    [InlineData( "tw-p-3 tw-p-2", "tw-p-2" )]
+    [InlineData( "p-3 p-2", "p-3 p-2" )]
+    [InlineData( "!tw-right-0 !tw-inset-0", "!tw-inset-0" )]
+    [InlineData( "hover:focus:!tw-right-0 focus:hover:!tw-inset-0", "focus:hover:!tw-inset-0" )]
+    public void ShouldMergeCorrectlyWithPrefix( string classLists, string expected )
     {
         // Arrange
         var mockOptions = new Mock<IOptions<TwMergeConfig>>();
@@ -19,14 +25,10 @@ public class PrefixTests
         mockOptions.Setup( ap => ap.Value ).Returns( config );
         var twMerge = new TwMerge( mockOptions.Object );
 
-        Assert.Equal( "tw-hidden", twMerge.Merge( "tw-block tw-hidden" ) );
-        Assert.Equal( "block hidden", twMerge.Merge( "block hidden" ) );
+        // Act
+        var actual = new TwMerge().Merge( classLists );
 
-        Assert.Equal( "tw-p-2", twMerge.Merge( "tw-p-3 tw-p-2" ) );
-        Assert.Equal( "p-3 p-2", twMerge.Merge( "p-3 p-2" ) );
-
-        Assert.Equal( "!tw-inset-0", twMerge.Merge( "!tw-right-0 !tw-inset-0" ) );
-
-        Assert.Equal( "focus:hover:!tw-inset-0", twMerge.Merge( "hover:focus:!tw-right-0 focus:hover:!tw-inset-0" ) );
+        // Assert
+        Assert.Equal( expected, actual );
     }
 }
