@@ -3,73 +3,115 @@ using System.Text.RegularExpressions;
 
 namespace TailwindMerge.Common;
 
-internal static partial class Validators
+/// <summary>
+/// Provides a set of validation functions for different class name parts.
+/// </summary>
+public static partial class Validators
 {
-    private static HashSet<string> _stringLengths = ["px", "full", "screen"];
-    private static HashSet<string> _sizeLabels = ["length", "size", "percentage"];
-    private static HashSet<string> _imageLabels = ["image", "url"];
+    private static readonly HashSet<string> _stringLengths = ["px", "full", "screen"];
+    private static readonly HashSet<string> _sizeLabels = ["length", "size", "percentage"];
+    private static readonly HashSet<string> _imageLabels = ["image", "url"];
 
-    internal static Func<string, bool> IsLength = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents a length value.
+    /// </summary>
+    public static Func<string, bool> IsLength => value =>
     {
-        return IsNumber!( value ) || _stringLengths.Contains( value ) || FractionRegex().IsMatch( value );
+        return IsNumber( value ) || _stringLengths.Contains( value ) || FractionRegex().IsMatch( value );
     };
 
-    internal static Func<string, bool> IsArbitraryLength = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an arbitrary length value.
+    /// </summary>
+    public static Func<string, bool> IsArbitraryLength => value =>
     {
         return GetIsArbitraryValue( value, "length", IsLengthOnly );
     };
 
-    internal static Func<string, bool> IsNumber = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents a number.
+    /// </summary>
+    public static Func<string, bool> IsNumber => value =>
     {
         return !string.IsNullOrEmpty( value ) && double.TryParse( value, CultureInfo.InvariantCulture, out _ );
     };
 
-    internal static Func<string, bool> IsInteger = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an integer.
+    /// </summary>
+    public static Func<string, bool> IsInteger => value =>
     {
         return !string.IsNullOrEmpty( value ) && int.TryParse( value, out _ );
     };
 
-    internal static Func<string, bool> IsPercent = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents a percentage.
+    /// </summary>
+    public static Func<string, bool> IsPercent => value =>
     {
         return value.EndsWith( '%' ) && IsNumber( value[..^1] );
     };
 
-    internal static Func<string, bool> IsArbitraryNumber = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an arbitrary number.
+    /// </summary>
+    public static Func<string, bool> IsArbitraryNumber => value =>
     {
         return GetIsArbitraryValue( value, "number", IsNumber );
     };
 
-    internal static Func<string, bool> IsTshirtSize = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents a t-shirt size value.
+    /// </summary>
+    public static Func<string, bool> IsTshirtSize => value =>
     {
         return TshirtUnitRegex().IsMatch( value );
     };
 
-    internal static Func<string, bool> IsArbitraryValue = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an arbitrary value.
+    /// </summary>
+    public static Func<string, bool> IsArbitraryValue => value =>
     {
         return ArbitraryValueRegex().IsMatch( value );
     };
 
-    internal static Func<string, bool> IsArbitrarySize = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an arbitrary size.
+    /// </summary>
+    public static Func<string, bool> IsArbitrarySize => value =>
     {
         return GetIsArbitraryValue( value, _sizeLabels, IsNever );
     };
 
-    internal static Func<string, bool> IsArbitraryPosition = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an arbitrary position.
+    /// </summary>
+    public static Func<string, bool> IsArbitraryPosition => value =>
     {
         return GetIsArbitraryValue( value, "position", IsNever );
     };
 
-    internal static Func<string, bool> IsArbitraryImage = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an arbitrary image value.
+    /// </summary>
+    public static Func<string, bool> IsArbitraryImage => value =>
     {
         return GetIsArbitraryValue( value, _imageLabels, IsImage );
     };
 
-    internal static Func<string, bool> IsArbitraryShadow = ( value ) =>
+    /// <summary>
+    /// Validates whether a string represents an arbitrary shadow value.
+    /// </summary>
+    public static Func<string, bool> IsArbitraryShadow => value =>
     {
         return GetIsArbitraryValue( value, string.Empty, IsShadow );
     };
 
-    internal static Func<string, bool> IsAny = ( _ ) => true;
+    /// <summary>
+    /// Always returns true, indicating that any value is valid.
+    /// </summary>
+    public static Func<string, bool> IsAny => value => true;
 
     private static bool GetIsArbitraryValue( string value, object label, Func<string, bool> testValue )
     {

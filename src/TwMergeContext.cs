@@ -34,12 +34,12 @@ internal partial class TwMergeContext
     {
         var conflicts = _config.ConflictingClassGroups.GetValueOrDefault( classGroupId );
 
-        if( hasPostfixModifier && _config.ConflictingClassGroupModifiers.ContainsKey( classGroupId ) )
+        if( hasPostfixModifier && 
+            _config.ConflictingClassGroupModifiers.TryGetValue( classGroupId, out var conflictingModifiers ) )
         {
             return [
                 .. conflicts,
-                .. _config.ConflictingClassGroupModifiers[classGroupId]
-            ];
+                .. conflictingModifiers];
         }
 
         return conflicts;

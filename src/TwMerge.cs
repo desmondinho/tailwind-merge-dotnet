@@ -2,6 +2,8 @@
 
 using LruCacheNet;
 
+using Microsoft.Extensions.Options;
+
 using TailwindMerge.Common;
 using TailwindMerge.Models;
 
@@ -17,11 +19,12 @@ public partial class TwMerge
     private readonly LruCache<string, string> _cache;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="TwMerge" />.
+    /// Initializes a new instance of <see cref="TwMerge" /> with optional configuration options.
     /// </summary>
-    public TwMerge()
+    /// <param name="options">The configuration options.</param>
+    public TwMerge( IOptions<TwMergeConfig>? options = null )
     {
-        _config = TwMergeConfig.Default();
+        _config = options?.Value ?? TwMergeConfig.Default();
         _context = new TwMergeContext( _config );
         _cache = new LruCache<string, string>( _config.CacheSize );
     }
