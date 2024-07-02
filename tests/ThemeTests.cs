@@ -8,8 +8,10 @@ namespace TailwindMerge.Tests;
 
 public class ThemeTests
 {
-    [Fact]
-    public void Merge_WithExtendedThemeScale_ShouldMergeCorrectly()
+    [Theory]
+    [InlineData( "p-3 p-my-space p-my-margin", "p-my-space p-my-margin" )]
+    [InlineData( "m-3 m-my-space m-my-margin", "m-my-margin" )]
+    public void Merge_WithExtendedThemeScale_ShouldMergeCorrectly( string classLists, string expected )
     {
         // Arrange
         var mockOptions = new Mock<IOptions<TwMergeConfig>>();
@@ -23,16 +25,20 @@ public class ThemeTests
                 ["margin"] = ["my-margin"]
             }
         } );
+
         mockOptions.Setup( ap => ap.Value ).Returns( config );
 
-        var twMerge = new TwMerge( mockOptions.Object );
+        // Act
+        var actual = new TwMerge( mockOptions.Object ).Merge( classLists );
 
-        Assert.Equal( "p-my-space p-my-margin", twMerge.Merge( "p-3 p-my-space p-my-margin" ) );
-        Assert.Equal( "m-my-margin", twMerge.Merge( "m-3 m-my-space m-my-margin" ) );
+        // Assert
+        Assert.Equal( expected, actual );
     }
 
-    [Fact]
-    public void Merge_WithExtendedThemeObject_ShouldMergeCorrectly()
+    [Theory]
+    [InlineData( "p-3 p-hello p-hallo", "p-3 p-hello p-hallo" )]
+    [InlineData( "px-3 px-hello px-hallo", "px-hallo" )]
+    public void Merge_WithExtendedThemeObject_ShouldMergeCorrectly( string classLists, string expected )
     {
         // Arrange
         var mockOptions = new Mock<IOptions<TwMergeConfig>>();
@@ -49,11 +55,13 @@ public class ThemeTests
                 ["px"] = new ClassGroup( "px", [ThemeUtility.FromTheme( "my-theme" )] ),
             }
         } );
+
         mockOptions.Setup( ap => ap.Value ).Returns( config );
 
-        var twMerge = new TwMerge( mockOptions.Object );
+        // Act
+        var actual = new TwMerge( mockOptions.Object ).Merge( classLists );
 
-        Assert.Equal( "p-3 p-hello p-hallo", twMerge.Merge( "p-3 p-hello p-hallo" ) );
-        Assert.Equal( "px-hallo", twMerge.Merge( "px-3 px-hello px-hallo" ) );
+        // Assert
+        Assert.Equal( expected, actual );
     }
 }
