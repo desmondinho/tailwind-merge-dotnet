@@ -892,8 +892,11 @@ public class TwMergeConfig
 				"none",
 				new ClassGroup( "linear", [
 					new ClassGroup( "to", ["t", "tr", "r", "br", "b", "bl", "l", "tl"] ),
-					Validators.IsInteger
+					Validators.IsInteger,
+					Validators.IsArbitraryValue
 				] ),
+				new ClassGroup( "radial", ["", Validators.IsArbitraryValue] ),
+				new ClassGroup( "conic", [Validators.IsInteger, Validators.IsArbitraryValue] ),
 				Validators.IsArbitraryImage] ),
 			/*
              * Background Color
