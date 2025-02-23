@@ -152,9 +152,10 @@ internal partial class TwMergeContext
 
 		foreach( var modifier in modifiers )
 		{
-			if( modifier.StartsWith( '[' ) )
+			var isPositionSensitive = modifier.StartsWith( '[' ) || _config.OrderSensitiveModifiers.Contains( modifier );
+
+			if( isPositionSensitive )
 			{
-				// Sort the unsorted modifiers and append to result
 				if( unsortedModifiers.Count > 0 )
 				{
 					unsortedModifiers.Sort();
@@ -162,12 +163,10 @@ internal partial class TwMergeContext
 					unsortedModifiers.Clear();
 				}
 
-				// Append the arbitrary variant directly to maintain position
 				sortedModifiers.Add( modifier );
 			}
 			else
 			{
-				// Collect regular modifiers
 				unsortedModifiers.Add( modifier );
 			}
 		}

@@ -44,10 +44,7 @@ public class TwMergeConfig
 	/// </summary>
 	public Dictionary<string, string[]> ConflictingClassGroupModifiers { get; set; }
 
-	/// <summary>
-	/// 
-	/// </summary>
-	public string[] OrderSensitiveModifiers { get; set; }
+	internal string[] OrderSensitiveModifiers { get; set; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TwMergeConfig"/> class.
