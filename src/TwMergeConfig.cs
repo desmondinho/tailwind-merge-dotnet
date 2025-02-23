@@ -1333,6 +1333,18 @@ public class TwMergeConfig
              */
 			["animate"] = new ClassGroup( "animate", ["none", "spin", "ping", "pulse", "bounce", Validators.IsArbitraryValue] ),
 			/*
+             * Perspective
+             * See https://tailwindcss.com/docs/perspective
+             */
+			["perspective"] = new ClassGroup( "perspective", [
+				"dramatic", 
+				"near", 
+				"normal", 
+				"midrange", 
+				"distant", 
+				"none", 
+				Validators.IsArbitraryValue] ),
+			/*
              * Transform
              * See https://tailwindcss.com/docs/transform
              */

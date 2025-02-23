@@ -167,6 +167,7 @@ public class ClassMapFactoryTests
             ["p"] = ["p"],
             ["pb"] = ["pb"],
             ["pe"] = ["pe"],
+            ["perspective"] = ["perspective"],
             ["pl"] = ["pl"],
             ["place"] = ["place-content", "place-items", "place-self"],
             ["placeholder"] = ["placeholder-color"],

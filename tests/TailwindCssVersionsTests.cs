@@ -71,6 +71,7 @@ public class TailwindCssVersionsTests
 	[Theory]
 	[InlineData( "transform-3d transform-flat", "transform-flat" )]
 	[InlineData( "rotate-12 rotate-x-2 rotate-none rotate-y-3", "rotate-x-2 rotate-none rotate-y-3" )]
+	[InlineData( "perspective-dramatic perspective-none perspective-midrange", "perspective-midrange" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
