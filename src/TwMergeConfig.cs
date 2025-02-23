@@ -1532,6 +1532,11 @@ public class TwMergeConfig
              */
 			["caret-color"] = new ClassGroup( "caret", [colors] ),
 			/*
+             * Field Sizing
+             * See https://tailwindcss.com/docs/field-sizing
+             */
+			["field-sizing"] = new ClassGroup( "field-sizing", ["fixed", "content"] ),
+			/*
              * Pointer Events
              * See https://tailwindcss.com/docs/pointer-events
              */

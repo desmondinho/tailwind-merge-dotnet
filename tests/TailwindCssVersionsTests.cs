@@ -79,6 +79,7 @@ public class TailwindCssVersionsTests
 		"ring-4 ring-orange inset-ring inset-ring-3 inset-ring-blue", 
 		"ring-4 ring-orange inset-ring-3 inset-ring-blue" 
 	)]
+	[InlineData( "field-sizing-content field-sizing-fixed", "field-sizing-fixed" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

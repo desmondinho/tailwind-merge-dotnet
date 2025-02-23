@@ -107,6 +107,7 @@ public class ClassMapFactoryTests
             ["duration"] = ["duration"],
             ["ease"] = ["ease"],
             ["end"] = ["end"],
+            ["field"] = ["field-sizing"],
             ["fill"] = ["fill"],
             ["fixed"] = ["position"],
             ["flex"] = ["display", "flex", "flex-direction", "flex-wrap"],
