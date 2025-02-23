@@ -1485,6 +1485,22 @@ public class TwMergeConfig
              */
 			["appearance"] = new ClassGroup( "appearance", autoAndNone ),
 			/*
+             * Caret Color
+             * See https://tailwindcss.com/docs/caret-color
+             */
+			["caret-color"] = new ClassGroup( "caret", [colors] ),
+			/*
+             * Color Scheme
+             * See https://tailwindcss.com/docs/color-scheme
+             */
+			["color-scheme"] = new ClassGroup( "scheme", [
+				"normal", 
+				"dark", 
+				"light", 
+				"light-dark", 
+				"only-dark", 
+				"only-light"] ),
+			/*
              * Cursor
              * See https://tailwindcss.com/docs/cursor
              */
@@ -1526,11 +1542,6 @@ public class TwMergeConfig
 				"zoom-in",
 				"zoom-out",
 				Validators.IsArbitraryValue] ),
-			/*
-             * Caret Color
-             * See https://tailwindcss.com/docs/caret-color
-             */
-			["caret-color"] = new ClassGroup( "caret", [colors] ),
 			/*
              * Field Sizing
              * See https://tailwindcss.com/docs/field-sizing

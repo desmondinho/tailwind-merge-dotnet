@@ -80,6 +80,7 @@ public class TailwindCssVersionsTests
 		"ring-4 ring-orange inset-ring-3 inset-ring-blue" 
 	)]
 	[InlineData( "field-sizing-content field-sizing-fixed", "field-sizing-fixed" )]
+	[InlineData( "scheme-normal scheme-dark", "scheme-dark" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

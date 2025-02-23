@@ -212,6 +212,7 @@ public class ClassMapFactoryTests
             ["row"] = ["row-end", "row-start", "row-start-end"],
             ["saturate"] = ["saturate"],
             ["scale"] = ["scale", "scale-x", "scale-y"],
+            ["scheme"] = ["color-scheme"],
             ["scroll"] = [
                 "scroll-behavior",
                 "scroll-m",
