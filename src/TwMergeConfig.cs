@@ -90,7 +90,7 @@ public class TwMergeConfig
 		object[] numberAndArbitrary = [.. number, Validators.IsArbitraryValue];
 		object[] spacingWithArbitrary = [Validators.IsArbitraryValue, spacing];
 		object[] spacingWithAutoAndArbitrary = ["auto", Validators.IsArbitraryValue, spacing];
-		object[] lengthWithEmptyAndArbitrary = ["", Validators.IsLength, Validators.IsArbitraryLength];
+		object[] numberWithEmptyAndArbitrary = ["", Validators.IsNumber, Validators.IsArbitraryLength];
 		object[] zeroAndEmpty = ["", "0", Validators.IsArbitraryValue];
 		object[] rotate = ["none", Validators.IsInteger, Validators.IsArbitraryValue];
 
@@ -129,7 +129,7 @@ public class TwMergeConfig
 			["borderColor"] = [colors],
 			["borderRadius"] = ["none", "", "full", Validators.IsTshirtSize, Validators.IsArbitraryValue],
 			["borderSpacing"] = spacingWithArbitrary,
-			["borderWidth"] = lengthWithEmptyAndArbitrary,
+			["borderWidth"] = numberWithEmptyAndArbitrary,
 			["contrast"] = number,
 			["grayscale"] = zeroAndEmpty,
 			["hueRotate"] = numberAndArbitrary,
@@ -1144,40 +1144,69 @@ public class TwMergeConfig
              */
 			["outline-color"] = new ClassGroup( "outline", [colors] ),
 			/*
-             * Ring Width
-             * See https://tailwindcss.com/docs/ring-width
+             * Box Shadow
+             * See https://tailwindcss.com/docs/box-shadow
              */
-			["ring-w"] = new ClassGroup( "ring", lengthWithEmptyAndArbitrary ),
+			["shadow"] = new ClassGroup( "shadow", ["none", Validators.IsTshirtSize, Validators.IsArbitraryShadow] ),
+			/*
+             * Box Shadow Color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-shadow-color
+             */
+			["shadow-color"] = new ClassGroup( "shadow", any ),
+			/*
+             * Inset Box Shadow
+             * See https://tailwindcss.com/docs/box-shadow#adding-an-inset-shadow
+             */
+			["inset-shadow"] = new ClassGroup( "inset-shadow", ["none", Validators.IsTshirtSize, Validators.IsArbitraryShadow] ),
+			/*
+             * Inset Box Shadow Color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-inset-shadow-color
+             */
+			["inset-shadow-color"] = new ClassGroup( "inset-shadow", any ),
+			/*
+             * Ring Width
+             * See https://tailwindcss.com/docs/box-shadow#adding-a-ring
+             */
+			["ring-w"] = new ClassGroup( "ring", numberWithEmptyAndArbitrary ),
 			/*
              * Ring Width Inset
-             * See https://tailwindcss.com/docs/ring-width
+             * See https://v3.tailwindcss.com/docs/ring-width#inset-rings
+             * 
+             * Deprecated since Tailwind CSS v4.0.0. 
+             * See https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
              */
 			["ring-w-inset"] = new ClassGroup( ["ring-inset"] ),
 			/*
              * Ring Color
-             * See https://tailwindcss.com/docs/ring-color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-ring-color
              */
 			["ring-color"] = new ClassGroup( "ring", [colors] ),
 			/*
              * Ring Offset Width
-             * See https://tailwindcss.com/docs/ring-offset-width
+             * See https://v3.tailwindcss.com/docs/ring-offset-width
+             * 
+             * Deprecated since Tailwind CSS v4.0.0. 
+             * See https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
              */
 			["ring-offset-w"] = new ClassGroup( "ring-offset", [Validators.IsLength, Validators.IsArbitraryLength] ),
 			/*
              * Ring Offset Color
-             * See https://tailwindcss.com/docs/ring-offset-color
+             * See https://v3.tailwindcss.com/docs/ring-offset-color
+             * 
+             * Deprecated since Tailwind CSS v4.0.0. 
+             * See https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
              */
 			["ring-offset-color"] = new ClassGroup( "ring-offset", [colors] ),
 			/*
-             * Shadow
-             * See https://tailwindcss.com/docs/shadow
+             * Inset Ring Width
+             * See https://tailwindcss.com/docs/box-shadow#adding-an-inset-ring
              */
-			["shadow"] = new ClassGroup( "shadow", ["", "inner", "none", Validators.IsTshirtSize, Validators.IsArbitraryShadow] ),
+			["inset-ring-w"] = new ClassGroup( "inset-ring", numberWithEmptyAndArbitrary ),
 			/*
-             * Shadow Color
-             * See https://tailwindcss.com/docs/shadow-color
+             * Inset Ring Color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-inset-ring-color
              */
-			["shadow-color"] = new ClassGroup( "shadow", any ),
+			["inset-ring-color"] = new ClassGroup( "inset-ring", [colors] ),
 			/*
              * Opacity
              * See https://tailwindcss.com/docs/opacity

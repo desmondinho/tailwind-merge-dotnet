@@ -125,7 +125,15 @@ public class ClassMapFactoryTests
             ["hyphens"] = ["hyphens"],
             ["indent"] = ["indent"],
             ["inline"] = ["display"],
-            ["inset"] = ["inset", "inset-x", "inset-y"],
+            ["inset"] = [
+                "inset",
+                "inset-ring-color",
+                "inset-ring-w",
+                "inset-shadow",
+                "inset-shadow-color",
+                "inset-x",
+                "inset-y"
+            ],
             ["invert"] = ["invert"],
             ["invisible"] = ["visibility"],
             ["isolate"] = ["isolation"],
@@ -181,13 +189,7 @@ public class ClassMapFactoryTests
             ["relative"] = ["position"],
             ["resize"] = ["resize"],
             ["right"] = ["right"],
-            ["ring"] = [
-                "ring-color",
-                "ring-offset-color",
-                "ring-offset-w",
-                "ring-w",
-                "ring-w-inset",
-            ],
+            ["ring"] = ["ring-color", "ring-offset-color", "ring-offset-w", "ring-w", "ring-w-inset"],
             ["rotate"] = ["rotate", "rotate-x", "rotate-y", "rotate-z"],
             ["rounded"] = [
                 "rounded",

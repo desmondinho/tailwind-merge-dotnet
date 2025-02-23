@@ -75,6 +75,10 @@ public class TailwindCssVersionsTests
 	[InlineData( "perspective-origin-center perspective-origin-top-left", "perspective-origin-top-left" )]
 	[InlineData( "bg-linear-to-r bg-linear-45", "bg-linear-45" )]
 	[InlineData( "bg-linear-to-r bg-radial-[something] bg-conic-10", "bg-conic-10" )]
+	[InlineData( 
+		"ring-4 ring-orange inset-ring inset-ring-3 inset-ring-blue", 
+		"ring-4 ring-orange inset-ring-3 inset-ring-blue" 
+	)]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
