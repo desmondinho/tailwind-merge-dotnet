@@ -1345,6 +1345,21 @@ public class TwMergeConfig
 				"none", 
 				Validators.IsArbitraryValue] ),
 			/*
+             * Perspective Origin
+             * See https://tailwindcss.com/docs/perspective-origin
+             */
+			["perspective-origin"] = new ClassGroup( "perspective-origin", [
+				"center",
+				"top",
+				"top-right",
+				"right",
+				"bottom-right",
+				"bottom", 
+				"bottom-left", 
+				"left", 
+				"top-left", 
+				Validators.IsArbitraryValue] ),
+			/*
              * Transform
              * See https://tailwindcss.com/docs/transform
              */
