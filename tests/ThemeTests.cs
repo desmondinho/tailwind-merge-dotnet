@@ -10,7 +10,7 @@ public class ThemeTests
 {
     [Theory]
     [InlineData( "p-3 p-my-space p-my-margin", "p-my-space p-my-margin" )]
-    [InlineData( "m-3 m-my-space m-my-margin", "m-my-margin" )]
+    [InlineData( "leading-3 leading-my-space leading-my-leading", "leading-my-leading" )]
     public void Merge_WithExtendedThemeScale_ShouldMergeCorrectly( string classLists, string expected )
     {
         // Arrange
@@ -22,7 +22,7 @@ public class ThemeTests
             Theme = new()
             {
                 ["spacing"] = ["my-space"],
-                ["margin"] = ["my-margin"]
+                ["leading"] = ["my-leading"]
             }
         } );
 

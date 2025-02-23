@@ -51,6 +51,7 @@ internal partial class TwMergeContext
         var separator = _config.Separator;
         var modifiers = new List<string>();
         var bracketDepth = 0;
+        var parentDepth = 0;
         var modifierStart = 0;
         int? postfixModifierPosition = null;
 
@@ -58,10 +59,10 @@ internal partial class TwMergeContext
         {
             var currChar = className[i];
 
-            if( bracketDepth == 0 )
+            if( bracketDepth == 0 && parentDepth == 0 )
             {
                 if( currChar == separator[0] &&
-                    ( separator.Length == 1 || className.Substring( i, separator.Length ) == separator ) )
+                    (separator.Length == 1 || className.Substring( i, separator.Length ) == separator) )
                 {
                     modifiers.Add( className[modifierStart..i] );
                     modifierStart = i + separator.Length;
@@ -82,6 +83,14 @@ internal partial class TwMergeContext
             else if( currChar == ']' )
             {
                 bracketDepth--;
+            }
+            else if( currChar == '(' )
+            {
+                parentDepth++;
+            }
+            else if( currChar == ')' )
+            {
+                parentDepth--;
             }
         }
 

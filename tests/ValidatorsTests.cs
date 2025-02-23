@@ -1,332 +1,401 @@
-using TailwindMerge.Common;
+using V = TailwindMerge.Common.Validators;
 
 namespace TailwindMerge.Tests;
 
 public class ValidatorsTests
 {
-    [Theory]
-    [InlineData( "1" )]
-    [InlineData( "1023713" )]
-    [InlineData( "1.5" )]
-    [InlineData( "1231.503761" )]
-    [InlineData( "px" )]
-    [InlineData( "full" )]
-    [InlineData( "screen" )]
-    [InlineData( "1/2" )]
-    [InlineData( "123/345" )]
-    public void IsLength_LengthValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsLength( value );
+	[Theory]
+	[InlineData( "test", true )]
+	[InlineData( "something", true )]
+	public void IsAny( string value, bool expected )
+	{
+		var actual = V.IsAny( value );
 
-        // Assert
-        Assert.True( actual );
-    }
+		Assert.Equal( expected, actual );
+	}
 
-    [Theory]
-    [InlineData( "[3.7%]" )]
-    [InlineData( "[481px]" )]
-    [InlineData( "[19.1rem]" )]
-    [InlineData( "[50vw]" )]
-    [InlineData( "[56vh]" )]
-    [InlineData( "[length:var(--arbitrary)]" )]
-    [InlineData( "1d5" )]
-    [InlineData( "[12px" )]
-    [InlineData( "12px]" )]
-    [InlineData( "one" )]
-    public void IsLength_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsLength( value );
+	[Theory]
+	[InlineData( "test", true )]
+	[InlineData( "1234-hello-world", true )]
+	[InlineData( "[hello", true )]
+	[InlineData( "hello]", true )]
+	[InlineData( "[)", true )]
+	[InlineData( "(hello]", true )]
 
-        // Assert
-        Assert.False( actual );
-    }
+	[InlineData( "[test]", false )]
+	[InlineData( "[label:test]", false )]
+	[InlineData( "(test)", false )]
+	[InlineData( "(label:test)", false )]
+	public void IsAnyNonArbitrary( string value, bool expected )
+	{
+		var actual = V.IsAnyNonArbitrary( value );
 
-    [Theory]
-    [InlineData( "[3.7%]" )]
-    [InlineData( "[481px]" )]
-    [InlineData( "[19.1rem]" )]
-    [InlineData( "[50vw]" )]
-    [InlineData( "[56vh]" )]
-    [InlineData( "[length:var(--arbitrary)]" )]
-    public void IsArbitraryLength_ArbitraryLengthValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryLength( value );
+		Assert.Equal( expected, actual );
+	}
 
-        // Assert
-        Assert.True( actual );
-    }
+	[Theory]
+	[InlineData( "[url:var(--my-url)]", true )]
+	[InlineData( "[url(something)]", true )]
+	[InlineData( "[url:bla]", true )]
+	[InlineData( "[image:bla]", true )]
+	[InlineData( "[linear-gradient(something)]", true )]
+	[InlineData( "[repeating-conic-gradient(something)]", true )]
 
-    [Theory]
-    [InlineData( "1" )]
-    [InlineData( "3px" )]
-    [InlineData( "1d5" )]
-    [InlineData( "[1]" )]
-    [InlineData( "[12px" )]
-    [InlineData( "12px]" )]
-    [InlineData( "one" )]
-    public void IsArbitraryLength_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryLength( value );
+	[InlineData( "[var(--my-url)]", false )]
+	[InlineData( "[bla]", false )]
+	[InlineData( "url:2px", false )]
+	[InlineData( "url(2px)", false )]
+	public void IsArbitraryImage( string value, bool expected )
+	{
+		var actual = V.IsArbitraryImage( value );
 
-        // Assert
-        Assert.False( actual );
-    }
+		Assert.Equal( expected, actual );
+	}
 
-    [Theory]
-    [InlineData( "1" )]
-    [InlineData( "123" )]
-    [InlineData( "8312" )]
-    public void IsInteger_IntegerValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsInteger( value );
+	[Theory]
+	[InlineData( "[3.7%]", true )]
+	[InlineData( "[481px]", true )]
+	[InlineData( "[19.1rem]", true )]
+	[InlineData( "[50vw]", true )]
+	[InlineData( "[56vh]", true )]
+	[InlineData( "[length:var(--arbitrary)]", true )]
 
-        // Assert
-        Assert.True( actual );
-    }
+	[InlineData( "1", false )]
+	[InlineData( "3px", false )]
+	[InlineData( "1d5", false )]
+	[InlineData( "[1]", false )]
+	[InlineData( "[12px", false )]
+	[InlineData( "12px]", false )]
+	[InlineData( "one", false )]
+	public void IsArbitraryLength( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryLength( value );
 
-    [Theory]
-    [InlineData( "[8312]" )]
-    [InlineData( "[2]" )]
-    [InlineData( "[8312px]" )]
-    [InlineData( "[8312%]" )]
-    [InlineData( "[8312rem]" )]
-    [InlineData( "8312.2" )]
-    [InlineData( "1.2" )]
-    [InlineData( "one" )]
-    [InlineData( "1/2" )]
-    [InlineData( "1%" )]
-    [InlineData( "1px" )]
-    public void IsInteger_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsInteger( value );
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-        // Assert
-        Assert.False( actual );
-    }
+	[Theory]
+	[InlineData( "[number:black]", true )]
+	[InlineData( "[number:bla]", true )]
+	[InlineData( "[number:230]", true )]
+	[InlineData( "[450]", true )]
 
-    [Theory]
-    [InlineData( "[1]" )]
-    [InlineData( "[bla]" )]
-    [InlineData( "[not-an-arbitrary-value?]" )]
-    [InlineData( "[auto,auto,minmax(0,1fr),calc(100vw-50%)]" )]
-    public void IsArbitraryValue_ArbitraryValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryValue( value );
+	[InlineData( "[2px]", false )]
+	[InlineData( "[bla]", false )]
+	[InlineData( "[black]", false )]
+	[InlineData( "black", false )]
+	[InlineData( "450", false )]
+	public void IsArbitraryNumber( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryNumber( value );
 
-        // Assert
-        Assert.True( actual );
-    }
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-    [Theory]
-    [InlineData( "[]" )]
-    [InlineData( "[1" )]
-    [InlineData( "1]" )]
-    [InlineData( "1" )]
-    [InlineData( "one" )]
-    [InlineData( "o[n]e" )]
-    public void IsArbitraryValue_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryValue( value );
+	[Theory]
+	[InlineData( "[position:2px]", true )]
+	[InlineData( "[position:bla]", true )]
 
-        // Assert
-        Assert.False( actual );
-    }
+	[InlineData( "[2px]", false )]
+	[InlineData( "[bla]", false )]
+	[InlineData( "position:2px", false )]
+	public void IsArbitraryPosition( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryPosition( value );
 
-    [Theory]
-    [InlineData( "" )]
-    [InlineData( "something" )]
-    public void IsAny_AnyValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsAny( value );
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-        // Assert
-        Assert.True( actual );
-    }
+	[Theory]
+	[InlineData( "[0_35px_60px_-15px_rgba(0,0,0,0.3)]", true )]
+	[InlineData( "[inset_0_1px_0,inset_0_-1px_0]", true )]
+	[InlineData( "[0_0_#00f]", true )]
+	[InlineData( "[.5rem_0_rgba(5,5,5,5)]", true )]
+	[InlineData( "[-.5rem_0_#123456]", true )]
+	[InlineData( "[0.5rem_-0_#123456]", true )]
+	[InlineData( "[0.5rem_-0.005vh_#123456]", true )]
+	[InlineData( "[0.5rem_-0.005vh]", true )]
 
-    [Theory]
-    [InlineData( "xs" )]
-    [InlineData( "sm" )]
-    [InlineData( "md" )]
-    [InlineData( "lg" )]
-    [InlineData( "xl" )]
-    [InlineData( "2xl" )]
-    [InlineData( "2.5xl" )]
-    [InlineData( "10xl" )]
-    [InlineData( "2xs" )]
-    [InlineData( "2lg" )]
-    public void IsTshirtSize_TshirtSizeValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsTshirtSize( value );
+	[InlineData( "[rgba(5,5,5,5)]", false )]
+	[InlineData( "[#00f]", false )]
+	[InlineData( "[something-else]", false )]
+	public void IsArbitraryShadow( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryShadow( value );
 
-        // Assert
-        Assert.True( actual );
-    }
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-    [Theory]
-    [InlineData( "" )]
-    [InlineData( "hello" )]
-    [InlineData( "1" )]
-    [InlineData( "xl3" )]
-    [InlineData( "2xl3" )]
-    [InlineData( "-xl" )]
-    [InlineData( "[sm]" )]
-    public void IsTshirtSize_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsTshirtSize( value );
+	[Theory]
+	[InlineData( "[size:2px]", true )]
+	[InlineData( "[size:bla]", true )]
+	[InlineData( "[length:bla]", true )]
+	[InlineData( "[percentage:bla]", true )]
 
-        // Assert
-        Assert.False( actual );
-    }
+	[InlineData( "[2px]", false )]
+	[InlineData( "[bla]", false )]
+	[InlineData( "size:2px", false )]
+	public void IsArbitrarySize( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitrarySize( value );
 
-    [Theory]
-    [InlineData( "[position:2px]" )]
-    [InlineData( "[position:bla]" )]
-    public void IsArbitraryPosition_ArbitraryPositionValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryPosition( value );
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-        // Assert
-        Assert.True( actual );
-    }
+	[Theory]
+	[InlineData( "[1]", true )]
+	[InlineData( "[bla]", true )]
+	[InlineData( "[not-an-arbitrary-value?]", true )]
+	[InlineData( "[auto,auto,minmax(0,1fr),calc(100vw-50%)]", true )]
 
-    [Theory]
-    [InlineData( "[2px]" )]
-    [InlineData( "[bla]" )]
-    [InlineData( "position:2px" )]
-    public void IsArbitraryPosition_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryPosition( value );
+	[InlineData( "[]", false )]
+	[InlineData( "[1", false )]
+	[InlineData( "1]", false )]
+	[InlineData( "1", false )]
+	[InlineData( "one", false )]
+	[InlineData( "o[n]e", false )]
+	public void IsArbitraryValue( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryValue( value );
 
-        // Assert
-        Assert.False( actual );
-    }
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-    [Theory]
-    [InlineData( "[url:var(--my-url)]" )]
-    [InlineData( "[url(something)]" )]
-    [InlineData( "[url:bla]" )]
-    [InlineData( "[image:bla]" )]
-    [InlineData( "[linear-gradient(something)]" )]
-    [InlineData( "[repeating-conic-gradient(something)]" )]
-    public void IsArbitraryImage_ArbitraryImageValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryImage( value );
+	[Theory]
+	[InlineData( "(1)", true )]
+	[InlineData( "(bla)", true )]
+	[InlineData( "(not-an-arbitrary-value?)", true )]
+	[InlineData( "(--my-arbitrary-variable)", true )]
+	[InlineData( "(label:--my-arbitrary-variable)", true )]
 
-        // Assert
-        Assert.True( actual );
-    }
+	[InlineData( "()", false )]
+	[InlineData( "(1", false )]
+	[InlineData( "1)", false )]
+	[InlineData( "1", false )]
+	[InlineData( "one", false )]
+	[InlineData( "o(n)e", false )]
+	public void IsArbitraryVariable( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariable( value );
 
-    [Theory]
-    [InlineData( "[var(--my-url)]" )]
-    [InlineData( "[bla]" )]
-    [InlineData( "url:2px" )]
-    [InlineData( "url(2px)" )]
-    public void IsArbitraryImage_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryImage( value );
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-        // Assert
-        Assert.False( actual );
-    }
+	[Theory]
+	[InlineData( "(family-name:test)", true )]
 
-    [Theory]
-    [InlineData( "[number:black]" )]
-    [InlineData( "[number:bla]" )]
-    [InlineData( "[number:230]" )]
-    [InlineData( "[450]" )]
-    public void IsArbitraryNumber_ArbitraryNumberValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryNumber( value );
+	[InlineData( "(other:test)", false )]
+	[InlineData( "(test)", false )]
+	[InlineData( "family-name:test", false )]
+	public void IsArbitraryVariableFamilyName( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariableFamilyName( value );
 
-        // Assert
-        Assert.True( actual );
-    }
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-    [Theory]
-    [InlineData( "[2px]" )]
-    [InlineData( "[bla]" )]
-    [InlineData( "[black]" )]
-    [InlineData( "black" )]
-    [InlineData( "450" )]
-    public void IsArbitraryNumber_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryNumber( value );
+	[Theory]
+	[InlineData( "(image:test)", true )]
+	[InlineData( "(url:test)", true )]
 
-        // Assert
-        Assert.False( actual );
-    }
+	[InlineData( "(other:test)", false )]
+	[InlineData( "(test)", false )]
+	[InlineData( "image:test", false )]
+	public void IsArbitraryVariableImage( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariableImage( value );
 
-    [Theory]
-    [InlineData( "[0_35px_60px_-15px_rgba(0,0,0,0.3)]" )]
-    [InlineData( "[inset_0_1px_0,inset_0_-1px_0]" )]
-    [InlineData( "[0_0_#00f]" )]
-    [InlineData( "[.5rem_0_rgba(5,5,5,5)]" )]
-    [InlineData( "[-.5rem_0_#123456]" )]
-    [InlineData( "[0.5rem_-0_#123456]" )]
-    [InlineData( "[0.5rem_-0.005vh_#123456]" )]
-    [InlineData( "[0.5rem_-0.005vh]" )]
-    public void IsArbitraryShadow_ArbitraryShadowValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryShadow( value );
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-        // Assert
-        Assert.True( actual );
-    }
+	[Theory]
+	[InlineData( "(length:test)", true )]
 
-    [Theory]
-    [InlineData( "[rgba(5,5,5,5)]" )]
-    [InlineData( "[#00f]" )]
-    [InlineData( "[something-else]" )]
-    public void IsArbitraryShadow_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsArbitraryShadow( value );
+	[InlineData( "(other:test)", false )]
+	[InlineData( "(test)", false )]
+	[InlineData( "length:test", false )]
+	public void IsArbitraryVariableLength( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariableLength( value );
 
-        // Assert
-        Assert.False( actual );
-    }
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-    [Theory]
-    [InlineData( "1%" )]
-    [InlineData( "100.001%" )]
-    [InlineData( ".01%" )]
-    [InlineData( "0%" )]
-    public void IsPercent_PercentValue_ReturnsTrue( string value )
-    {
-        // Act
-        var actual = Validators.IsPercent( value );
+	[Theory]
+	[InlineData( "(position:test)", true )]
 
-        // Assert
-        Assert.True( actual );
-    }
+	[InlineData( "(other:test)", false )]
+	[InlineData( "(test)", false )]
+	[InlineData( "position:test", false )]
+	public void IsArbitraryVariablePosition( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariablePosition( value );
 
-    [Theory]
-    [InlineData( "0" )]
-    [InlineData( "one%" )]
-    public void IsPercent_InvalidValue_ReturnsFalse( string value )
-    {
-        // Act
-        var actual = Validators.IsPercent( value );
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
-        // Assert
-        Assert.False( actual );
-    }
+	[Theory]
+	[InlineData( "(shadow:test)", true )]
+	[InlineData( "(test)", true )]
+
+	[InlineData( "(other:test)", false )]
+	[InlineData( "shadow:test", false )]
+	public void IsArbitraryVariableShadow( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariableShadow( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "(size:test)", true )]
+	[InlineData( "(length:test)", true )]
+	[InlineData( "(percentage:test)", true )]
+
+	[InlineData( "(other:test)", false )]
+	[InlineData( "(test)", false )]
+	[InlineData( "shadow:test", false )]
+	public void IsArbitraryVariableSize( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariableSize( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "1/2", true )]
+	[InlineData( "123/209", true )]
+
+	[InlineData( "1", false )]
+	[InlineData( "1/2/3", false )]
+	[InlineData( "[1/2]", false )]
+	public void IsFraction( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsFraction( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "1", true )]
+	[InlineData( "123", true )]
+	[InlineData( "8312", true )]
+
+	[InlineData( "[8312]", false )]
+	[InlineData( "[2]", false )]
+	[InlineData( "[8312px]", false )]
+	[InlineData( "[8312%]", false )]
+	[InlineData( "[8312rem]", false )]
+	[InlineData( "8312.2", false )]
+	[InlineData( "1.2", false )]
+	[InlineData( "one", false )]
+	[InlineData( "1/2", false )]
+	[InlineData( "1%", false )]
+	[InlineData( "1px", false )]
+	public void IsInteger( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsInteger( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "1", true )]
+	[InlineData( "123", true )]
+	[InlineData( "8312", true )]
+	[InlineData( "8312.2", true )]
+	[InlineData( "1.2", true )]
+
+	[InlineData( "[8312]", false )]
+	[InlineData( "[2]", false )]
+	[InlineData( "[8312px]", false )]
+	[InlineData( "[8312%]", false )]
+	[InlineData( "[8312rem]", false )]
+	[InlineData( "one", false )]
+	[InlineData( "1/2", false )]
+	[InlineData( "1%", false )]
+	[InlineData( "1px", false )]
+	public void IsNumber( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsNumber( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "1%", true )]
+	[InlineData( "100.001%", true )]
+	[InlineData( ".01%", true )]
+	[InlineData( "0%", true )]
+
+	[InlineData( "0", false )]
+	[InlineData( "one%", false )]
+	public void IsPercent( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsPercent( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "xs", true )]
+	[InlineData( "sm", true )]
+	[InlineData( "md", true )]
+	[InlineData( "lg", true )]
+	[InlineData( "xl", true )]
+	[InlineData( "2xl", true )]
+	[InlineData( "2.5xl", true )]
+	[InlineData( "10xl", true )]
+	[InlineData( "2xs", true )]
+	[InlineData( "2lg", true )]
+
+	[InlineData( "", false )]
+	[InlineData( "hello", false )]
+	[InlineData( "1", false )]
+	[InlineData( "xl3", false )]
+	[InlineData( "2xl3", false )]
+	[InlineData( "-xl", false )]
+	[InlineData( "[sm]", false )]
+	public void IsTshirtSize( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsTshirtSize( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 }
