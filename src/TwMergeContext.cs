@@ -48,12 +48,11 @@ internal partial class TwMergeContext
 	// TODO: Refactor
 	internal ClassModifiersInfo SplitModifiers( string className )
 	{
-		var separator = _config.Separator;
 		var modifiers = new List<string>();
 		var bracketDepth = 0;
 		var parentDepth = 0;
 		var modifierStart = 0;
-		int? postfixModifierPosition = null;
+		var postfixModifierPosition = default(int?);
 
 		for( var i = 0; i < className.Length; i++ )
 		{
@@ -61,11 +60,10 @@ internal partial class TwMergeContext
 
 			if( bracketDepth == 0 && parentDepth == 0 )
 			{
-				if( currChar == separator[0] &&
-					(separator.Length == 1 || className.Substring( i, separator.Length ) == separator) )
+				if( currChar == Constants.ModifierSeparator )
 				{
 					modifiers.Add( className[modifierStart..i] );
-					modifierStart = i + separator.Length;
+					modifierStart = i + Constants.ModifierSeparatorLength;
 					continue;
 				}
 
@@ -76,30 +74,19 @@ internal partial class TwMergeContext
 				}
 			}
 
-			if( currChar == '[' )
+			switch( currChar )
 			{
-				bracketDepth++;
-			}
-			else if( currChar == ']' )
-			{
-				bracketDepth--;
-			}
-			else if( currChar == '(' )
-			{
-				parentDepth++;
-			}
-			else if( currChar == ')' )
-			{
-				parentDepth--;
+				case '[': bracketDepth++; break;
+				case ']': bracketDepth--; break;
+				case '(': parentDepth++; break;
+				case ')': parentDepth--; break;
 			}
 		}
 
-		var classNameWithImportantModifier = modifiers.Count == 0
-			? className
-			: className[modifierStart..];
-
-		var baseClassName = StripImportantModifier( classNameWithImportantModifier );
-		var hasImportantModifier = baseClassName != classNameWithImportantModifier;
+		var baseClassNameWithImportantModifier = 
+			modifiers.Count == 0 ? className : className[modifierStart..];
+		var baseClassName = StripImportantModifier( baseClassNameWithImportantModifier );
+		var hasImportantModifier = baseClassName != baseClassNameWithImportantModifier;
 
 		postfixModifierPosition = postfixModifierPosition > modifierStart
 			? postfixModifierPosition - modifierStart

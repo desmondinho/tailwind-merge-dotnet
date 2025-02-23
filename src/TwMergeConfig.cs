@@ -19,15 +19,6 @@ public class TwMergeConfig
 	public int CacheSize { get; set; }
 
 	/// <summary>
-	/// Gets or sets the <seealso href="https://tailwindcss.com/docs/configuration#separator">separator</seealso> 
-	/// that is used to separate modifiers (e.g., screen sizes, hover, focus, etc.) from utility names.
-	/// </summary>
-	/// <remarks>
-	/// The default is <c>:</c>
-	/// </remarks>
-	public string Separator { get; set; }
-
-	/// <summary>
 	/// Gets or sets the <seealso href="https://tailwindcss.com/docs/configuration#prefix">prefix</seealso> 
 	/// that allows you to add a custom prefix to all of Tailwind’s generated utility classes.
 	/// </summary>
@@ -189,7 +180,6 @@ public class TwMergeConfig
 		object[] traslateScale = ["full", V.IsFraction, .. unambiguousSpacingScale];
 
 		CacheSize = 500;
-		Separator = ":";
 		Theme = new( 18 )
 		{
 			["animate"] = ["spin", "ping", "pulse", "bounce"],
