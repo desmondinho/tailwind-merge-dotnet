@@ -48,56 +48,96 @@ internal partial class TwMergeContext
 	// TODO: Refactor
 	internal ClassModifiersInfo SplitModifiers( string className )
 	{
-		var modifiers = new List<string>();
-		var bracketDepth = 0;
-		var parentDepth = 0;
-		var modifierStart = 0;
-		var postfixModifierPosition = default(int?);
-
-		for( var i = 0; i < className.Length; i++ )
+		Func<string, ClassModifiersInfo> parseClassName = ( string className ) =>
 		{
-			var currChar = className[i];
+			var modifiers = new List<string>();
+			var bracketDepth = 0;
+			var parentDepth = 0;
+			var modifierStart = 0;
+			var postfixModifierPosition = default( int? );
 
-			if( bracketDepth == 0 && parentDepth == 0 )
+			for( var i = 0; i < className.Length; i++ )
 			{
-				if( currChar == Constants.ModifierSeparator )
+				var currChar = className[i];
+
+				if( bracketDepth == 0 && parentDepth == 0 )
 				{
-					modifiers.Add( className[modifierStart..i] );
-					modifierStart = i + Constants.ModifierSeparatorLength;
-					continue;
+					if( currChar == Constants.ModifierSeparator )
+					{
+						modifiers.Add( className[modifierStart..i] );
+						modifierStart = i + Constants.ModifierSeparatorLength;
+						continue;
+					}
+
+					if( currChar == '/' )
+					{
+						postfixModifierPosition = i;
+						continue;
+					}
 				}
 
-				if( currChar == '/' )
+				switch( currChar )
 				{
-					postfixModifierPosition = i;
-					continue;
+					case '[':
+						bracketDepth++;
+						break;
+					case ']':
+						bracketDepth--;
+						break;
+					case '(':
+						parentDepth++;
+						break;
+					case ')':
+						parentDepth--;
+						break;
 				}
 			}
 
-			switch( currChar )
+			var baseClassNameWithImportantModifier =
+				modifiers.Count == 0 ? className : className[modifierStart..];
+			var baseClassName = StripImportantModifier( baseClassNameWithImportantModifier );
+			var hasImportantModifier = baseClassName != baseClassNameWithImportantModifier;
+
+			postfixModifierPosition = postfixModifierPosition > modifierStart
+				? postfixModifierPosition - modifierStart
+				: null;
+
+			return new ClassModifiersInfo(
+				modifiers,
+				hasImportantModifier,
+				baseClassName,
+				postfixModifierPosition
+			);
+		};
+
+		if( !string.IsNullOrEmpty( _config.Prefix ) )
+		{
+			var fullPrefix = _config.Prefix + Constants.ModifierSeparator;
+			var parseClassNameOriginal = parseClassName;
+
+			parseClassName = ( className ) =>
 			{
-				case '[': bracketDepth++; break;
-				case ']': bracketDepth--; break;
-				case '(': parentDepth++; break;
-				case ')': parentDepth--; break;
-			}
+				if( className.StartsWith( fullPrefix ) )
+				{
+					return parseClassNameOriginal( className[fullPrefix.Length..] );
+				}
+				else
+				{
+					return new ClassModifiersInfo(
+						Modifiers: [],
+						HasImportantModifier: false,
+						BaseClassName: className,
+						PostfixModifierPosition: null,
+						IsExternal: true
+					);
+				}
+			};
 		}
 
-		var baseClassNameWithImportantModifier = 
-			modifiers.Count == 0 ? className : className[modifierStart..];
-		var baseClassName = StripImportantModifier( baseClassNameWithImportantModifier );
-		var hasImportantModifier = baseClassName != baseClassNameWithImportantModifier;
+		// Skipping 'experimentalParseClassName' for the time being.
+		// https://github.com/dcastil/tailwind-merge/blob/main/src/lib/parse-class-name.ts#L83
 
-		postfixModifierPosition = postfixModifierPosition > modifierStart
-			? postfixModifierPosition - modifierStart
-			: null;
-
-		return new ClassModifiersInfo(
-			baseClassName,
-			hasImportantModifier,
-			postfixModifierPosition,
-			modifiers
-		);
+		return parseClassName( className );
 	}
 
 	internal ICollection<string> SortModifiers( ICollection<string> modifiers )
