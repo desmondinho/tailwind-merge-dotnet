@@ -124,10 +124,23 @@ public class TwMergeConfig
 		{
 			["colors"] = [Validators.IsAny],
 			["spacing"] = [Validators.IsLength, Validators.IsArbitraryLength],
-			["blur"] = ["none", "", Validators.IsTshirtSize, Validators.IsArbitraryValue],
+			["blur"] = [
+				"none", 
+				// Deprecated since Tailwind CSS v4.0.0
+				"", 
+				Validators.IsTshirtSize, 
+				Validators.IsArbitraryValue
+			],
 			["brightness"] = number,
 			["borderColor"] = [colors],
-			["borderRadius"] = ["none", "", "full", Validators.IsTshirtSize, Validators.IsArbitraryValue],
+			["borderRadius"] = [
+				"none", 
+				// Deprecated since Tailwind CSS v4.0.0
+				"", 
+				"full", 
+				Validators.IsTshirtSize, 
+				Validators.IsArbitraryValue
+			],
 			["borderSpacing"] = spacingWithArbitrary,
 			["borderWidth"] = numberWithEmptyAndArbitrary,
 			["contrast"] = number,
@@ -1143,7 +1156,7 @@ public class TwMergeConfig
              * Outline Style
              * See https://tailwindcss.com/docs/outline-style
              */
-			["outline-style"] = new ClassGroup( "outline", ["", .. lineStyles] ),
+			["outline-style"] = new ClassGroup( "outline", ["", "hidden", .. lineStyles] ),
 			/*
              * Outline Offset
              * See https://tailwindcss.com/docs/outline-offset
@@ -1163,7 +1176,12 @@ public class TwMergeConfig
              * Box Shadow
              * See https://tailwindcss.com/docs/box-shadow
              */
-			["shadow"] = new ClassGroup( "shadow", ["none", Validators.IsTshirtSize, Validators.IsArbitraryShadow] ),
+			["shadow"] = new ClassGroup( "shadow", [
+				// Deprecated since Tailwind CSS v4.0.0
+				"", 
+				"none", 
+				Validators.IsTshirtSize, 
+				Validators.IsArbitraryShadow] ),
 			/*
              * Box Shadow Color
              * See https://tailwindcss.com/docs/box-shadow#setting-the-shadow-color
@@ -1257,7 +1275,12 @@ public class TwMergeConfig
              * Drop Shadow
              * See https://tailwindcss.com/docs/drop-shadow
              */
-			["drop-shadow"] = new ClassGroup( "drop-shadow", ["none", "", Validators.IsTshirtSize, Validators.IsArbitraryValue] ),
+			["drop-shadow"] = new ClassGroup( "drop-shadow", [
+				"none", 
+				// Deprecated since Tailwind CSS v4.0.0
+				"", 
+				Validators.IsTshirtSize, 
+				Validators.IsArbitraryValue] ),
 			/*
              * Grayscale
              * See https://tailwindcss.com/docs/grayscale
