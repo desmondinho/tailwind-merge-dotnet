@@ -890,7 +890,10 @@ public class TwMergeConfig
              */
 			["bg-image"] = new ClassGroup( "bg", [
 				"none",
-				new ClassGroup( "gradient-to", ["t", "tr", "r", "br", "b", "bl", "l", "tl"] ),
+				new ClassGroup( "linear", [
+					new ClassGroup( "to", ["t", "tr", "r", "br", "b", "bl", "l", "tl"] ),
+					Validators.IsInteger
+				] ),
 				Validators.IsArbitraryImage] ),
 			/*
              * Background Color
@@ -1337,12 +1340,12 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/perspective
              */
 			["perspective"] = new ClassGroup( "perspective", [
-				"dramatic", 
-				"near", 
-				"normal", 
-				"midrange", 
-				"distant", 
-				"none", 
+				"dramatic",
+				"near",
+				"normal",
+				"midrange",
+				"distant",
+				"none",
 				Validators.IsArbitraryValue] ),
 			/*
              * Perspective Origin
@@ -1354,10 +1357,10 @@ public class TwMergeConfig
 				"top-right",
 				"right",
 				"bottom-right",
-				"bottom", 
-				"bottom-left", 
-				"left", 
-				"top-left", 
+				"bottom",
+				"bottom-left",
+				"left",
+				"top-left",
 				Validators.IsArbitraryValue] ),
 			/*
              * Transform

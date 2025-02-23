@@ -98,9 +98,9 @@ public class ArbitraryValuesTests
         "bg-[length:200px_100px]"
     )]
     [InlineData(
-        "bg-none bg-[url(.)] bg-[image:.] bg-[url:.] bg-[linear-gradient(.)] bg-gradient-to-r",
-        "bg-gradient-to-r"
-    )]
+        "bg-none bg-[url(.)] bg-[image:.] bg-[url:.] bg-[linear-gradient(.)] bg-linear-to-r",
+		"bg-linear-to-r"
+	)]
     public void Merge_AmbiguousArbitraryValues_MergesCorrectly( string classLists, string expected )
     {
         // Act
