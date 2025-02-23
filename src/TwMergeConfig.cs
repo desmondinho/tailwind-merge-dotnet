@@ -92,6 +92,7 @@ public class TwMergeConfig
 		object[] spacingWithAutoAndArbitrary = ["auto", Validators.IsArbitraryValue, spacing];
 		object[] lengthWithEmptyAndArbitrary = ["", Validators.IsLength, Validators.IsArbitraryLength];
 		object[] zeroAndEmpty = ["", "0", Validators.IsArbitraryValue];
+		object[] rotate = ["none", Validators.IsInteger, Validators.IsArbitraryValue];
 
 		string[] autoAndNone = ["auto", "none"];
 		string[] align = ["start", "end", "center", "between", "around", "evenly", "stretch"];
@@ -1355,7 +1356,22 @@ public class TwMergeConfig
              * Rotate
              * See https://tailwindcss.com/docs/rotate
              */
-			["rotate"] = new ClassGroup( "rotate", [Validators.IsInteger, Validators.IsArbitraryValue] ),
+			["rotate"] = new ClassGroup( "rotate", rotate ),
+			/*
+             * Rotate X
+             * See https://tailwindcss.com/docs/rotate
+             */
+			["rotate-x"] = new ClassGroup( "rotate-x", rotate ),
+			/*
+             * Rotate Y
+             * See https://tailwindcss.com/docs/rotate
+             */
+			["rotate-y"] = new ClassGroup( "rotate-y", rotate ),
+			/*
+             * Rotate Z
+             * See https://tailwindcss.com/docs/rotate
+             */
+			["rotate-z"] = new ClassGroup( "rotate-z", rotate ),
 			/*
              * Translate X
              * See https://tailwindcss.com/docs/translate
