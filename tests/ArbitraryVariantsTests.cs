@@ -3,6 +3,7 @@ namespace TailwindMerge.Tests;
 public class ArbitraryVariantsTests
 {
     [Theory]
+    [InlineData( "[p]:underline [p]:line-through", "[p]:line-through" )]
     [InlineData( "[&>*]:underline [&>*]:line-through", "[&>*]:line-through" )]
     [InlineData(
         "[&>*]:underline [&>*]:line-through [&_div]:line-through",
