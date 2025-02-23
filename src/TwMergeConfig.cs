@@ -673,6 +673,22 @@ public class TwMergeConfig
 				"bold",
 				Validators.IsArbitraryNumber] ),
 			/*
+             * Font Stretch
+             * See https://tailwindcss.com/docs/font-stretch
+             */
+			["font-stretch"] = new ClassGroup( "font-stretch", [
+				"ultra-condensed",
+				"extra-condensed",
+				"condensed",
+				"semi-condensed",
+				"normal",
+				"semi-expanded",
+				"expanded",
+				"extra-expanded",
+				"ultra-expanded",
+				Validators.IsPercent,
+				Validators.IsArbitraryValue ] ),
+			/*
              * Font Family
              * See https://tailwindcss.com/docs/font-family
              */
@@ -1494,11 +1510,11 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/color-scheme
              */
 			["color-scheme"] = new ClassGroup( "scheme", [
-				"normal", 
-				"dark", 
-				"light", 
-				"light-dark", 
-				"only-dark", 
+				"normal",
+				"dark",
+				"light",
+				"light-dark",
+				"only-dark",
 				"only-light"] ),
 			/*
              * Cursor

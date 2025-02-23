@@ -113,7 +113,7 @@ public class ClassMapFactoryTests
             ["flex"] = ["display", "flex", "flex-direction", "flex-wrap"],
             ["float"] = ["float"],
             ["flow"] = ["display"],
-            ["font"] = ["font-family", "font-weight"],
+            ["font"] = ["font-family", "font-stretch", "font-weight"],
             ["forced"] = ["forced-color-adjust"],
             ["from"] = ["gradient-from", "gradient-from-pos"],
             ["gap"] = ["gap", "gap-x", "gap-y"],
