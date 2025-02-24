@@ -30,4 +30,18 @@ public class ModifiersTests
         // Assert
         Assert.Equal( expected, actual );
     }
+
+	[Theory]
+	[InlineData( "c:d:e:text-lg d:c:e:text-lg", "d:c:e:text-lg" )]
+	[InlineData( "before:after:text-lg before:after:text-lg", "before:after:text-lg" )]
+	[InlineData( "before:after:text-lg after:before:text-lg", "before:after:text-lg after:before:text-lg" )]
+	[InlineData( "x:y:before:z:text-lg y:x:before:z:text-lg", "y:x:before:z:text-lg" )]
+	public void Merge_ClassesWithOrderSensitiveModifiers_MergesCorrectly( string classLists, string expected )
+	{
+		// Act
+		var actual = new TwMerge().Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 }
