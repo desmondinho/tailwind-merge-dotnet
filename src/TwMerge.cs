@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 
 using LruCacheNet;
 
@@ -35,7 +36,7 @@ public partial class TwMerge
 	/// <returns>A <see langword="string"/> of merged CSS classes.</returns>
 	public string? Merge( params string?[] classNames )
 	{
-		var joinedClassNames = string.Join( ' ', classNames );
+		var joinedClassNames = string.Join( ' ', classNames.Where( x => !string.IsNullOrWhiteSpace( x ) ) );
 
 		if( string.IsNullOrEmpty( joinedClassNames ) )
 		{
@@ -58,7 +59,7 @@ public partial class TwMerge
 		var classGroupsInConflict = new HashSet<string>();
 		var classNames = ClassesSeparatorRegex().Split( classList.Trim() );
 
-		var result = "";
+		var result = new StringBuilder();
 
 		for( var i = classNames.Length - 1; i >= 0; i-- )
 		{
@@ -74,7 +75,7 @@ public partial class TwMerge
 
 			if( isExternal is true )
 			{
-				result = originalClassName + (result.Length > 0 ? ' ' + result : result);
+				ConcatenateClassNames( originalClassName );
 				continue;
 			}
 
@@ -90,7 +91,7 @@ public partial class TwMerge
 				if( !hasPostfixModifier )
 				{
 					// Not a Tailwind class
-					result = originalClassName + (result.Length > 0 ? ' ' + result : result);
+					ConcatenateClassNames( originalClassName );
 					continue;
 				}
 
@@ -99,7 +100,7 @@ public partial class TwMerge
 				if( string.IsNullOrEmpty( classGroupId ) )
 				{
 					// Not a Tailwind class
-					result = originalClassName + (result.Length > 0 ? ' ' + result : result);
+					ConcatenateClassNames( originalClassName );
 					continue;
 				}
 
@@ -114,13 +115,11 @@ public partial class TwMerge
 
 			var classId = modifierId + classGroupId;
 
-			if( classGroupsInConflict.Contains( classId ) )
+			if( !classGroupsInConflict.Add( classId ) )
 			{
 				// Tailwind class omitted due to conflict
 				continue;
 			}
-
-			classGroupsInConflict.Add( classId );
 
 			var conflictingClassGroups = _context.GetConflictingClassGroupIds( classGroupId, hasPostfixModifier );
 			if( conflictingClassGroups is { Length: > 0 } )
@@ -132,10 +131,20 @@ public partial class TwMerge
 			}
 
 			// Tailwind class not in conflict
-			result = originalClassName + (result.Length > 0 ? ' ' + result : result);
+			ConcatenateClassNames( originalClassName );
 		}
 
-		return result;
+		return result.ToString();
+
+		void ConcatenateClassNames( string originalClassName )
+		{
+			if( result.Length > 0 )
+			{
+				result.Insert( 0, ' ' );
+			}
+
+			result.Insert( 0, originalClassName );
+		}
 	}
 
 	[GeneratedRegex( @"\s+" )]
