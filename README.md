@@ -13,26 +13,13 @@ A utility service to efficiently merge [Tailwind CSS](https://tailwindcss.com) c
 - Thread-safe LRU caching
 - Compatible with .NET 8 and 9
 
-## Usage
+## Get Started
 
-```csharp
-// Program.cs
-
-using TailwindMerge.Extensions;
-
-var builder = WebApplication.CreateBuilder( args );
-
-builder.Services.AddTailwindMerge();
-```
-
-```razor
-@* Page.razor *@
-
-@inject TwMerge TwMerge
-
-@TwMerge.Merge("px-2 py-1 bg-red hover:bg-dark-red", "p-3 bg-[#B91C1C]")
-@* → "hover:bg-dark-red p-3 bg-[#B91C1C]" *@
-```
+- [What is it for](./what-is-it-for.md)
+- [Features](./features.md)
+- [Limitations](./limitations.md)
+- [Configuration](./configuration.md)
+- [API reference](./api-reference.md)
 
 ## Contributing
 
