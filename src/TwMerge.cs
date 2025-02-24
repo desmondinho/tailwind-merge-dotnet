@@ -1,11 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 
 using LruCacheNet;
 
 using Microsoft.Extensions.Options;
 
 using TailwindMerge.Common;
-using TailwindMerge.Models;
 
 namespace TailwindMerge;
 
@@ -14,138 +14,139 @@ namespace TailwindMerge;
 /// </summary>
 public partial class TwMerge
 {
-    private readonly TwMergeConfig _config;
-    private readonly TwMergeContext _context;
-    private readonly LruCache<string, string> _cache;
+	private readonly TwMergeConfig _config;
+	private readonly TwMergeContext _context;
+	private readonly LruCache<string, string> _cache;
 
-    /// <summary>
-    /// Initializes a new instance of <see cref="TwMerge" /> with optional configuration options.
-    /// </summary>
-    /// <param name="options">The configuration options.</param>
-    public TwMerge( IOptions<TwMergeConfig>? options = null )
-    {
-        _config = options?.Value ?? TwMergeConfig.Default();
-        _context = new TwMergeContext( _config );
-        _cache = new LruCache<string, string>( _config.CacheSize );
-    }
+	/// <summary>
+	/// Initializes a new instance of <see cref="TwMerge" /> with optional configuration options.
+	/// </summary>
+	/// <param name="options">The configuration options.</param>
+	public TwMerge( IOptions<TwMergeConfig>? options = null )
+	{
+		_config = options?.Value ?? TwMergeConfig.Default();
+		_context = new TwMergeContext( _config );
+		_cache = new LruCache<string, string>( _config.CacheSize );
+	}
 
-    /// <summary>
-    /// Merges the given <paramref name="classNames"/>, resolving any conflicts if present.
-    /// </summary>
-    /// <param name="classNames">The collection of CSS classes to be merged.</param>
-    /// <returns>A <see langword="string"/> of merged CSS classes.</returns>
-    public string? Merge( params string?[] classNames )
-    {
-        var joinedClassNames = string.Join( ' ', classNames );
+	/// <summary>
+	/// Merges the given <paramref name="classNames"/>, resolving any conflicts if present.
+	/// </summary>
+	/// <param name="classNames">The collection of CSS classes to be merged.</param>
+	/// <returns>A <see langword="string"/> of merged CSS classes.</returns>
+	public string? Merge( params string?[] classNames )
+	{
+		var joinedClassNames = string.Join( ' ', classNames.Where( x => !string.IsNullOrWhiteSpace( x ) ) );
 
-        if( string.IsNullOrEmpty( joinedClassNames ) )
-        {
-            return null;
-        }
+		if( string.IsNullOrEmpty( joinedClassNames ) )
+		{
+			return null;
+		}
 
-        if( _cache.TryGetValue( joinedClassNames, out var cachedResult ) )
-        {
-            return cachedResult;
-        }
+		if( _cache.TryGetValue( joinedClassNames, out var cachedResult ) )
+		{
+			return cachedResult;
+		}
 
-        var result = Merge( joinedClassNames );
-        _cache.AddOrUpdate( joinedClassNames, result );
+		var result = Merge( joinedClassNames );
+		_cache.AddOrUpdate( joinedClassNames, result );
 
-        return result;
-    }
+		return result;
+	}
 
-    private string Merge( string classList )
-    {
-        var classes = SeparatorRegex()
-            .Split( classList.Trim() )
-            .Select( GetClassInfo );
+	private string Merge( string classList )
+	{
+		var classGroupsInConflict = new HashSet<string>();
+		var classNames = ClassesSeparatorRegex().Split( classList.Trim() );
 
-        var filteredClassNames = FilterConflictingClasses( classes );
+		var result = new StringBuilder();
 
-        return string.Join( ' ', filteredClassNames );
-    }
+		for( var i = classNames.Length - 1; i >= 0; i-- )
+		{
+			var originalClassName = classNames[i];
 
-    private ClassInfo GetClassInfo( string className )
-    {
-        (var baseClassName,
-            var hasImportantModifier,
-            var postfixModifierPosition,
-            var modifiers) = _context.SplitModifiers( className );
+			(
+				var modifiers,
+				var hasImportantModifier,
+				var baseClassName,
+				var postfixModifierPosition,
+				var isExternal
+			) = _context.SplitModifiers( originalClassName );
 
-        var hasPostfixModifier = postfixModifierPosition.HasValue;
+			if( isExternal is true )
+			{
+				ConcatenateClassNames( originalClassName );
+				continue;
+			}
 
-        var classGroupId = _context.GetClassGroupId( hasPostfixModifier
-            ? baseClassName[..postfixModifierPosition!.Value]
-            : baseClassName );
+			var hasPostfixModifier = postfixModifierPosition.HasValue;
+			var classGroupId = _context.GetClassGroupId(
+				hasPostfixModifier
+					? baseClassName[..postfixModifierPosition!.Value]
+					: baseClassName
+			);
 
-        if( string.IsNullOrEmpty( classGroupId ) )
-        {
-            if( !hasPostfixModifier )
-            {
-                return new ClassInfo( className, isTailwindClass: false );
-            }
+			if( string.IsNullOrEmpty( classGroupId ) )
+			{
+				if( !hasPostfixModifier )
+				{
+					// Not a Tailwind class
+					ConcatenateClassNames( originalClassName );
+					continue;
+				}
 
-            classGroupId = _context.GetClassGroupId( baseClassName );
+				classGroupId = _context.GetClassGroupId( baseClassName );
 
-            if( string.IsNullOrEmpty( classGroupId ) )
-            {
-                return new ClassInfo( className, isTailwindClass: false );
-            }
+				if( string.IsNullOrEmpty( classGroupId ) )
+				{
+					// Not a Tailwind class
+					ConcatenateClassNames( originalClassName );
+					continue;
+				}
 
-            hasPostfixModifier = false;
-        }
+				hasPostfixModifier = false;
+			}
 
-        var variantModifier = string.Join( ':', _context.SortModifiers( modifiers ) );
-        var modifierId = hasImportantModifier
-            ? variantModifier + Constants.ImportantModifier
-            : variantModifier;
+			var variantModifier = string.Join( ':', _context.SortModifiers( modifiers ) );
 
-        return new ClassInfo(
-            className,
-            classGroupId,
-            modifierId,
-            IsTailwindClass: true,
-            hasPostfixModifier
-        );
-    }
+			var modifierId = hasImportantModifier
+				? variantModifier + Constants.ImportantModifier
+				: variantModifier;
 
-    private IEnumerable<string> FilterConflictingClasses( IEnumerable<ClassInfo> classes )
-    {
-        var conflictingClassGroups = new HashSet<string>();
+			var classId = modifierId + classGroupId;
 
-        return classes
-            .Reverse()
-            // Last class in conflict wins, so we need to filter conflicting classes in reverse order.
-            .Where( c =>
-            {
-                if( !c.IsTailwindClass )
-                {
-                    return true;
-                }
+			if( !classGroupsInConflict.Add( classId ) )
+			{
+				// Tailwind class omitted due to conflict
+				continue;
+			}
 
-                var classGroupId = c.ModifierId + c.GroupId;
-                if( conflictingClassGroups.Contains( classGroupId ) )
-                {
-                    return false;
-                }
+			var conflictingClassGroups = _context.GetConflictingClassGroupIds( classGroupId, hasPostfixModifier );
+			if( conflictingClassGroups is { Length: > 0 } )
+			{
+				foreach( var classGroup in conflictingClassGroups )
+				{
+					classGroupsInConflict.Add( modifierId + classGroup );
+				}
+			}
 
-                _ = conflictingClassGroups.Add( classGroupId );
+			// Tailwind class not in conflict
+			ConcatenateClassNames( originalClassName );
+		}
 
-                var classGroups = _context.GetConflictingClassGroupIds( c.GroupId!, c.HasPostfixModifier );
-                if( classGroups is { Length: > 0 } )
-                {
-                    foreach( var group in classGroups )
-                    {
-                        _ = conflictingClassGroups.Add( c.ModifierId + group );
-                    }
-                }
+		return result.ToString();
 
-                return true;
-            } )
-            .Reverse()
-            .Select( c => c.Name );
-    }
+		void ConcatenateClassNames( string originalClassName )
+		{
+			if( result.Length > 0 )
+			{
+				result.Insert( 0, ' ' );
+			}
 
-    [GeneratedRegex( @"\s+" )]
-    private static partial Regex SeparatorRegex();
+			result.Insert( 0, originalClassName );
+		}
+	}
+
+	[GeneratedRegex( @"\s+" )]
+	private static partial Regex ClassesSeparatorRegex();
 }

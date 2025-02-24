@@ -1,7 +1,9 @@
 ﻿namespace TailwindMerge.Models;
 
 internal readonly record struct ClassModifiersInfo( 
-    string BaseClassName,
+	ICollection<string> Modifiers,
     bool HasImportantModifier,
+	string BaseClassName,
     int? PostfixModifierPosition,
-    ICollection<string> Modifiers );
+	bool? IsExternal = null
+);

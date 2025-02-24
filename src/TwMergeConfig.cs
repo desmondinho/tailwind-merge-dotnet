@@ -1,6 +1,8 @@
 ﻿using TailwindMerge.Common;
 using TailwindMerge.Models;
 
+using V = TailwindMerge.Common.Validators;
+
 namespace TailwindMerge;
 
 /// <summary>
@@ -8,1836 +10,2317 @@ namespace TailwindMerge;
 /// </summary>
 public class TwMergeConfig
 {
-    /// <summary>
-    /// Gets or sets the maximum size of the LRU cache used for memoizing results.
-    /// </summary>
-    /// <remarks>
-    /// The default is 500
-    /// </remarks>
-    public int CacheSize { get; set; }
+	/// <summary>
+	/// Gets or sets the maximum size value of the LRU cache used for memoizing results.
+	/// </summary>
+	/// <remarks>
+	/// The default is 500
+	/// </remarks>
+	public int CacheSize { get; set; }
 
-    /// <summary>
-    /// Gets or sets the <seealso href="https://tailwindcss.com/docs/configuration#separator">separator</seealso> 
-    /// that is used to separate modifiers (e.g., screen sizes, hover, focus, etc.) from utility names.
-    /// </summary>
-    /// <remarks>
-    /// The default is <c>:</c>
-    /// </remarks>
-    public string Separator { get; set; }
+	/// <summary>
+	/// Gets or sets the value that allows to add a custom prefix to 
+	/// all of Tailwind CSS generated utility classes.
+	/// </summary>
+	public string? Prefix { get; set; }
 
-    /// <summary>
-    /// Gets or sets the <seealso href="https://tailwindcss.com/docs/configuration#prefix">prefix</seealso> 
-    /// that allows you to add a custom prefix to all of Tailwind’s generated utility classes.
-    /// </summary>
-    public string? Prefix { get; set; }
+	/// <summary>
+	/// Gets or sets the theme scales of the configuration.
+	/// </summary>
+	public Dictionary<string, object[]> Theme { get; set; }
 
-    /// <summary>
-    /// Gets or sets the class groups of the configuration.
-    /// </summary>
-    public Dictionary<string, ClassGroup> ClassGroups { get; set; }
+	/// <summary>
+	/// Gets or sets the class groups of the configuration.
+	/// </summary>
+	public Dictionary<string, ClassGroup> ClassGroups { get; set; }
 
-    /// <summary>
-    /// Gets or sets the conflicting class groups of the configuration.
-    /// </summary>
-    public Dictionary<string, string[]> ConflictingClassGroups { get; set; }
+	/// <summary>
+	/// Gets or sets the conflicting class groups of the configuration.
+	/// </summary>
+	public Dictionary<string, string[]> ConflictingClassGroups { get; set; }
 
-    /// <summary>
-    /// Gets or sets the conflicting class group modifiers of the configuration.
-    /// </summary>
-    public Dictionary<string, string[]> ConflictingClassGroupModifiers { get; set; }
+	/// <summary>
+	/// Gets or sets the conflicting class group modifiers of the configuration.
+	/// </summary>
+	public Dictionary<string, string[]> ConflictingClassGroupModifiers { get; set; }
 
-    /// <summary>
-    /// Gets or sets the theme of the configuration.
-    /// </summary>
-    public Dictionary<string, object[]> Theme { get; set; }
+	internal string[] OrderSensitiveModifiers { get; set; }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TwMergeConfig"/> class.
-    /// </summary>
-    public TwMergeConfig()
-    {
-        CacheSize = 500;
-        Separator = ":";
+	/// <summary>
+	/// Initializes a new instance of the <see cref="TwMergeConfig"/> class.
+	/// </summary>
+	public TwMergeConfig()
+	{
+		// Theme getters for theme variable namespaces
+		// See https://tailwindcss.com/docs/theme#theme-variable-namespaces
 
-        var colors = ThemeUtility.FromTheme( "colors" );
-        var spacing = ThemeUtility.FromTheme( "spacing" );
-        var blur = ThemeUtility.FromTheme( "blur" );
-        var brightness = ThemeUtility.FromTheme( "brightness" );
-        var borderColor = ThemeUtility.FromTheme( "borderColor" );
-        var borderRadius = ThemeUtility.FromTheme( "borderRadius" );
-        var borderSpacing = ThemeUtility.FromTheme( "borderSpacing" );
-        var borderWidth = ThemeUtility.FromTheme( "borderWidth" );
-        var contrast = ThemeUtility.FromTheme( "contrast" );
-        var grayscale = ThemeUtility.FromTheme( "grayscale" );
-        var hueRotate = ThemeUtility.FromTheme( "hueRotate" );
-        var invert = ThemeUtility.FromTheme( "invert" );
-        var gap = ThemeUtility.FromTheme( "gap" );
-        var gradientColorStops = ThemeUtility.FromTheme( "gradientColorStops" );
-        var gradientColorStopPositions = ThemeUtility.FromTheme( "gradientColorStopPositions" );
-        var inset = ThemeUtility.FromTheme( "inset" );
-        var margin = ThemeUtility.FromTheme( "margin" );
-        var opacity = ThemeUtility.FromTheme( "opacity" );
-        var padding = ThemeUtility.FromTheme( "padding" );
-        var saturate = ThemeUtility.FromTheme( "saturate" );
-        var scale = ThemeUtility.FromTheme( "scale" );
-        var sepia = ThemeUtility.FromTheme( "sepia" );
-        var skew = ThemeUtility.FromTheme( "skew" );
-        var space = ThemeUtility.FromTheme( "space" );
-        var translate = ThemeUtility.FromTheme( "translate" );
+		var colorTheme = ThemeUtility.FromTheme( "color" );
+		var fontTheme = ThemeUtility.FromTheme( "font" );
+		var textTheme = ThemeUtility.FromTheme( "text" );
+		var fontWeightTheme = ThemeUtility.FromTheme( "font-weight" );
+		var trackingTheme = ThemeUtility.FromTheme( "tracking" );
+		var leadingTheme = ThemeUtility.FromTheme( "leading" );
+		var breakpointTheme = ThemeUtility.FromTheme( "breakpoint" );
+		var containerTheme = ThemeUtility.FromTheme( "container" );
+		var spacingTheme = ThemeUtility.FromTheme( "spacing" );
+		var radiusTheme = ThemeUtility.FromTheme( "radius" );
+		var shadowTheme = ThemeUtility.FromTheme( "shadow" );
+		var insetShadowTheme = ThemeUtility.FromTheme( "inset-shadow" );
+		var dropShadowTheme = ThemeUtility.FromTheme( "drop-shadow" );
+		var blurTheme = ThemeUtility.FromTheme( "blur" );
+		var perspectiveTheme = ThemeUtility.FromTheme( "perspective" );
+		var aspectTheme = ThemeUtility.FromTheme( "aspect" );
+		var easeTheme = ThemeUtility.FromTheme( "ease" );
+		var animateTheme = ThemeUtility.FromTheme( "animate" );
 
-        object[] any = [Validators.IsAny];
-        object[] number = [Validators.IsNumber, Validators.IsArbitraryNumber];
-        object[] numberAndArbitrary = [.. number, Validators.IsArbitraryValue];
-        object[] spacingWithArbitrary = [Validators.IsArbitraryValue, spacing];
-        object[] spacingWithAutoAndArbitrary = ["auto", Validators.IsArbitraryValue, spacing];
-        object[] lengthWithEmptyAndArbitrary = ["", Validators.IsLength, Validators.IsArbitraryLength];
-        object[] zeroAndEmpty = ["", "0", Validators.IsArbitraryValue];
+		// Helpers to avoid repeating the same scales
 
-        string[] autoAndNone = ["auto", "none"];
-        string[] align = ["start", "end", "center", "between", "around", "evenly", "stretch"];
-        string[] breaks = ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
-        string[] blendModes = [
-            "normal",
-            "multiply",
-            "screen",
-            "overlay",
-            "darken",
-            "lighten",
-            "color-dodge",
-            "color-burn",
-            "hard-light",
-            "soft-light",
-            "difference",
-            "exclusion",
-            "hue",
-            "saturation",
-            "color",
-            "luminosity"
-        ];
-        string[] lineStyles = ["solid", "dashed", "dotted", "double", "none"];
-        string[] overscroll = ["auto", "contain", "none"];
-        string[] overflow = ["auto", "hidden", "clip", "visible", "scroll"];
-        string[] positions = ["bottom", "center", "left", "left-bottom", "left-top", "right", "right-bottom", "right-top", "top"];
+		string[] breakScale = ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
+		string[] positionScale = [
+			"bottom",
+			"center",
+			"left",
+			"left-bottom",
+			"left-top",
+			"right",
+			"right-bottom",
+			"right-top",
+			"top"
+		];
+		string[] overflowScale = ["auto", "hidden", "clip", "visible", "scroll"];
+		string[] overscrollScale = ["auto", "contain", "none"];
+		string[] alignPrimaryAxisScale = ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline"];
+		string[] alignSecondaryAxisScale = ["start", "end", "center", "stretch"];
+		string[] lineStyleScale = ["solid", "dashed", "dotted", "double"];
+		string[] blendModeScale = [
+			"normal",
+			"multiply",
+			"screen",
+			"overlay",
+			"darken",
+			"lighten",
+			"color-dodge",
+			"color-burn",
+			"hard-light",
+			"soft-light",
+			"difference",
+			"exclusion",
+			"hue",
+			"saturation",
+			"color",
+			"luminosity"
+		];
 
-        Theme = new( 25 )
-        {
-            ["colors"] = [Validators.IsAny],
-            ["spacing"] = [Validators.IsLength, Validators.IsArbitraryLength],
-            ["blur"] = ["none", "", Validators.IsTshirtSize, Validators.IsArbitraryValue],
-            ["brightness"] = number,
-            ["borderColor"] = [colors],
-            ["borderRadius"] = ["none", "", "full", Validators.IsTshirtSize, Validators.IsArbitraryValue],
-            ["borderSpacing"] = spacingWithArbitrary,
-            ["borderWidth"] = lengthWithEmptyAndArbitrary,
-            ["contrast"] = number,
-            ["grayscale"] = zeroAndEmpty,
-            ["hueRotate"] = numberAndArbitrary,
-            ["invert"] = zeroAndEmpty,
-            ["gap"] = spacingWithArbitrary,
-            ["gradientColorStops"] = [colors],
-            ["gradientColorStopPositions"] = [Validators.IsPercent, Validators.IsArbitraryLength],
-            ["inset"] = spacingWithAutoAndArbitrary,
-            ["margin"] = spacingWithAutoAndArbitrary,
-            ["opacity"] = number,
-            ["padding"] = spacingWithArbitrary,
-            ["saturate"] = number,
-            ["scale"] = number,
-            ["sepia"] = zeroAndEmpty,
-            ["skew"] = numberAndArbitrary,
-            ["space"] = spacingWithArbitrary,
-            ["translate"] = spacingWithArbitrary
-        };
+		object[] unambiguousSpacingScale = [V.IsArbitraryVariable, V.IsArbitraryValue, spacingTheme];
+		object[] insetScale = ["full", "auto", V.IsFraction, .. unambiguousSpacingScale];
+		object[] gridTemplateColsRowsScale = ["none", "subgrid", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] gridColRowStartAndEndScale = [
+			"auto",
+			new ClassGroup( "span", ["full", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			V.IsArbitraryValue,
+			V.IsArbitraryVariable
+		];
+		object[] gridColRowStartOrEndScale = ["auto", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] gridAutoColsRowsScale = ["auto", "min", "max", "fr", V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] marginScale = ["auto", .. unambiguousSpacingScale];
+		object[] sizingScale = [
+			"auto",
+			"full",
+			"dvw",
+			"dvh",
+			"lvw",
+			"lvh",
+			"svw",
+			"svh",
+			"min",
+			"max",
+			"fit",
+			V.IsFraction,
+			.. unambiguousSpacingScale
+		];
+		object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] gradientStopPositionScale = [V.IsPercent, V.IsArbitraryLength];
+		object[] radiusScale = [
+			// Deprecated since Tailwind CSS v4.0.0
+			"",
+			"none",
+			"full",
+			radiusTheme,
+			V.IsArbitraryValue,
+			V.IsArbitraryVariable
+		];
+		object[] borderWidthScale = ["", V.IsNumber, V.IsArbitraryLength, V.IsArbitraryVariableLength];
+		object[] blurScale = [
+			// Deprecated since Tailwind CSS v4.0.0
+			"",
+			"none",
+			V.IsNumber,
+			V.IsArbitraryLength,
+			V.IsArbitraryVariableLength
+		];
+		object[] originScale = [
+			"center",
+			"top",
+			"top-right",
+			"right",
+			"bottom-right",
+			"bottom",
+			"bottom-left",
+			"left",
+			"top-left",
+			V.IsArbitraryValue,
+			V.IsArbitraryVariable
+		];
+		object[] rotateScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] scaleScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] skewScale = [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] traslateScale = ["full", V.IsFraction, .. unambiguousSpacingScale];
 
-        ClassGroups = new( 270 )
-        {
-            /*
+		CacheSize = 500;
+		Theme = new( 18 )
+		{
+			["animate"] = ["spin", "ping", "pulse", "bounce"],
+			["aspect"] = ["video"],
+			["blur"] = [V.IsTshirtSize],
+			["breakpoint"] = [V.IsTshirtSize],
+			["color"] = [V.IsAny],
+			["container"] = [V.IsTshirtSize],
+			["drop-shadow"] = [V.IsTshirtSize],
+			["ease"] = ["in", "out", "in-out"],
+			["font"] = [V.IsAnyNonArbitrary],
+			["font-weight"] = [
+				"thin",
+				"extralight",
+				"light",
+				"normal",
+				"medium",
+				"semibold",
+				"bold",
+				"extrabold",
+				"black"
+			],
+			["inset-shadow"] = [V.IsTshirtSize],
+			["leading"] = ["none", "tight", "snug", "normal", "relaxed", "loose"],
+			["perspective"] = ["dramatic", "near", "normal", "midrange", "distant", "none"],
+			["radius"] = [V.IsTshirtSize],
+			["shadow"] = [V.IsTshirtSize],
+			["spacing"] = ["px", V.IsNumber],
+			["text"] = [V.IsTshirtSize],
+			["tracking"] = ["tighter", "tight", "normal", "wide", "wider", "widest"],
+		};
+
+		ClassGroups = new( 270 )
+		{
+			// --------------
+			// --- Layout ---
+			// --------------
+
+			/*
             * Aspect Ratio
             * See https://tailwindcss.com/docs/aspect-ratio
             */
-            ["aspect"] = new ClassGroup( "aspect", ["auto", "square", "video", Validators.IsArbitraryValue] ),
-            /*
+			["aspect"] = new( "aspect", [
+				"auto",
+				"square",
+				aspectTheme,
+				V.IsFraction,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Container
              * See https://tailwindcss.com/docs/container
+             * 
+             * Deprecated since Tailwind CSS v4.0.0
              */
-            ["container"] = new ClassGroup( ["container"] ),
-            /*
+			["container"] = new( ["container"] ),
+			/*
              * Columns
              * See https://tailwindcss.com/docs/columns
              */
-            ["columns"] = new ClassGroup( "columns", [Validators.IsTshirtSize] ),
-            /*
+			["columns"] = new( "columns", [
+				containerTheme,
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Break After
              * See https://tailwindcss.com/docs/break-after
              */
-            ["break-after"] = new ClassGroup( "break-after", breaks ),
-            /*
+			["break-after"] = new( "break-after", breakScale ),
+			/*
              * Break Before
              * See https://tailwindcss.com/docs/break-before
              */
-            ["break-before"] = new ClassGroup( "break-before", breaks ),
-            /*
+			["break-before"] = new( "break-before", breakScale ),
+			/*
              * Break Inside
              * See https://tailwindcss.com/docs/break-inside
              */
-            ["break-inside"] = new ClassGroup( "break-inside", ["auto", "avoid", "avoid-page", "avoid-column"] ),
-            /*
+			["break-inside"] = new( "break-inside", ["auto", "avoid", "avoid-page", "avoid-column"] ),
+			/*
              * Box Decoration Break
              * See https://tailwindcss.com/docs/box-decoration-break
              */
-            ["box-decoration"] = new ClassGroup( "box-decoration", ["slice", "clone"] ),
-            /*
+			["box-decoration"] = new( "box-decoration", ["slice", "clone"] ),
+			/*
              * Box Sizing
              * See https://tailwindcss.com/docs/box-sizing
              */
-            ["box"] = new ClassGroup( "box", ["border", "content"] ),
-            /*
+			["box"] = new( "box", ["border", "content"] ),
+			/*
              * Display
              * See https://tailwindcss.com/docs/display
              */
-            ["display"] = new ClassGroup( [
-                "block",
-                "inline-block",
-                "inline",
-                "flex",
-                "inline-flex",
-                "table",
-                "inline-table",
-                "table-caption",
-                "table-cell",
-                "table-column",
-                "table-column-group",
-                "table-footer-group",
-                "table-header-group",
-                "table-row-group",
-                "table-row",
-                "flow-root",
-                "grid",
-                "inline-grid",
-                "contents",
-                "list-item",
-                "hidden"] ),
-            /*
+			["display"] = new( [
+				"block",
+				"inline-block",
+				"inline",
+				"flex",
+				"inline-flex",
+				"table",
+				"inline-table",
+				"table-caption",
+				"table-cell",
+				"table-column",
+				"table-column-group",
+				"table-footer-group",
+				"table-header-group",
+				"table-row-group",
+				"table-row",
+				"flow-root",
+				"grid",
+				"inline-grid",
+				"contents",
+				"list-item",
+				"hidden"
+			] ),
+			/*
+             * Screen Reader Only
+             * See https://tailwindcss.com/docs/display#screen-reader-only
+             */
+			["sr"] = new( ["sr-only", "not-sr-only"] ),
+			/*
              * Floats
              * See https://tailwindcss.com/docs/float
              */
-            ["float"] = new ClassGroup( "float", ["right", "left", "none", "start", "end"] ),
-            /*
+			["float"] = new( "float", ["right", "left", "none", "start", "end"] ),
+			/*
              * Clear
              * See https://tailwindcss.com/docs/clear
              */
-            ["clear"] = new ClassGroup( "clear", ["left", "right", "both", "none", "start", "end"] ),
-            /*
+			["clear"] = new( "clear", ["left", "right", "both", "none", "start", "end"] ),
+			/*
              * Isolation
              * See https://tailwindcss.com/docs/isolation
              */
-            ["isolation"] = new ClassGroup( ["isolate", "isolation-auto"] ),
-            /*
+			["isolation"] = new( ["isolate", "isolation-auto"] ),
+			/*
              * Object Fit
              * See https://tailwindcss.com/docs/object-fit
              */
-            ["object-fit"] = new ClassGroup( "object", ["contain", "cover", "fill", "none", "scale-down"] ),
-            /*
+			["object-fit"] = new( "object", ["contain", "cover", "fill", "none", "scale-down"] ),
+			/*
              * Object Position
              * See https://tailwindcss.com/docs/object-position
              */
-            ["object-position"] = new ClassGroup( "object", [.. positions, Validators.IsArbitraryValue] ),
-            /*
+			["object-position"] = new( "object", [
+				.. positionScale,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Overflow
              * See https://tailwindcss.com/docs/overflow
              */
-            ["overflow"] = new ClassGroup( "overflow", overflow ),
-            /*
+			["overflow"] = new( "overflow", overflowScale ),
+			/*
              * Overflow X
              * See https://tailwindcss.com/docs/overflow
              */
-            ["overflow-x"] = new ClassGroup( "overflow-x", overflow ),
-            /*
+			["overflow-x"] = new( "overflow-x", overflowScale ),
+			/*
              * Overflow Y
              * See https://tailwindcss.com/docs/overflow
              */
-            ["overflow-y"] = new ClassGroup( "overflow-y", overflow ),
-            /*
+			["overflow-y"] = new( "overflow-y", overflowScale ),
+			/*
              * Overscroll Behavior
              * See https://tailwindcss.com/docs/overscroll-behavior
              */
-            ["overscroll"] = new ClassGroup( "overscroll", overscroll ),
-            /*
+			["overscroll"] = new( "overscroll", overscrollScale ),
+			/*
              * Overscroll Behavior X
              * See https://tailwindcss.com/docs/overscroll-behavior
              */
-            ["overscroll-x"] = new ClassGroup( "overscroll-x", overscroll ),
-            /*
+			["overscroll-x"] = new( "overscroll-x", overscrollScale ),
+			/*
              * Overscroll Behavior Y
              * See https://tailwindcss.com/docs/overscroll-behavior
              */
-            ["overscroll-y"] = new ClassGroup( "overscroll-y", overscroll ),
-            /*
+			["overscroll-y"] = new( "overscroll-y", overscrollScale ),
+			/*
              * Position
              * See https://tailwindcss.com/docs/position
              */
-            ["position"] = new ClassGroup( ["static", "fixed", "absolute", "relative", "sticky"] ),
-            /*
+			["position"] = new( ["static", "fixed", "absolute", "relative", "sticky"] ),
+			/*
              * Top / Right / Bottom / Left
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["inset"] = new ClassGroup( "inset", [inset] ),
-            /*
+			["inset"] = new( "inset", insetScale ),
+			/*
              * Right / Left
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["inset-x"] = new ClassGroup( "inset-x", [inset] ),
-            /*
+			["inset-x"] = new( "inset-x", insetScale ),
+			/*
              * Top / Bottom
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["inset-y"] = new ClassGroup( "inset-y", [inset] ),
-            /*
+			["inset-y"] = new( "inset-y", insetScale ),
+			/*
              * Start
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["start"] = new ClassGroup( "start", [inset] ),
-            /*
+			["start"] = new( "start", insetScale ),
+			/*
              * End
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["end"] = new ClassGroup( "end", [inset] ),
-            /*
+			["end"] = new( "end", insetScale ),
+			/*
              * Top
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["top"] = new ClassGroup( "top", [inset] ),
-            /*
+			["top"] = new( "top", insetScale ),
+			/*
              * Right
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["right"] = new ClassGroup( "right", [inset] ),
-            /*
+			["right"] = new( "right", insetScale ),
+			/*
              * Bottom
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["bottom"] = new ClassGroup( "bottom", [inset] ),
-            /*
+			["bottom"] = new( "bottom", insetScale ),
+			/*
              * Left
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
-            ["left"] = new ClassGroup( "left", [inset] ),
-            /*
+			["left"] = new( "left", insetScale ),
+			/*
              * Visibility
              * See https://tailwindcss.com/docs/visibility
              */
-            ["visibility"] = new ClassGroup( ["visible", "invisible", "collapse"] ),
-            /*
+			["visibility"] = new( ["visible", "invisible", "collapse"] ),
+			/*
              * Z-Index
              * See https://tailwindcss.com/docs/z-index
              */
-            ["z"] = new ClassGroup( "z", ["auto", Validators.IsInteger, Validators.IsArbitraryValue] ),
-            /*
+			["z"] = new( "z", ["auto", V.IsInteger, V.IsInteger, V.IsArbitraryValue] ),
+
+			// ------------------------
+			// --- Flexbox and Grid ---
+			// ------------------------
+
+			/*
              * Flex Basis
              * See https://tailwindcss.com/docs/flex-basis
              */
-            ["basis"] = new ClassGroup( "basis", spacingWithAutoAndArbitrary ),
-            /*
+			["basis"] = new( "basis", [
+				"full",
+				"auto",
+				containerTheme,
+				.. unambiguousSpacingScale,
+				V.IsFraction,
+			] ),
+			/*
              * Flex Direction
              * See https://tailwindcss.com/docs/flex-direction
              */
-            ["flex-direction"] = new ClassGroup( "flex", ["row", "row-reverse", "col", "col-reverse"] ),
-            /*
+			["flex-direction"] = new( "flex", ["row", "row-reverse", "col", "col-reverse"] ),
+			/*
              * Flex Wrap
              * See https://tailwindcss.com/docs/flex-wrap
              */
-            ["flex-wrap"] = new ClassGroup( "flex", ["wrap", "wrap-reverse", "nowrap"] ),
-            /*
+			["flex-wrap"] = new( "flex", ["nowrap", "wrap", "wrap-reverse"] ),
+			/*
              * Flex
              * See https://tailwindcss.com/docs/flex
              */
-            ["flex"] = new ClassGroup( "flex", ["1", "auto", "initial", "none", Validators.IsArbitraryValue] ),
-            /*
+			["flex"] = new( "flex", [
+				"auto",
+				"initial",
+				"none",
+				V.IsNumber,
+				V.IsFraction,
+				V.IsArbitraryValue
+			] ),
+			/*
              * Flex Grow
              * See https://tailwindcss.com/docs/flex-grow
              */
-            ["grow"] = new ClassGroup( "grow", zeroAndEmpty ),
-            /*
+			["grow"] = new( "grow", ["", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Flex Shrink
              * See https://tailwindcss.com/docs/flex-shrink
              */
-            ["shrink"] = new ClassGroup( "shrink", zeroAndEmpty ),
-            /*
+			["shrink"] = new( "shrink", ["", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Order
              * See https://tailwindcss.com/docs/order
              */
-            ["order"] = new ClassGroup( "order", ["first", "last", "none", Validators.IsInteger, Validators.IsArbitraryValue] ),
-            /*
+			["order"] = new( "order", [
+				"first",
+				"last",
+				"none",
+				V.IsInteger,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Grid Template Columns
              * See https://tailwindcss.com/docs/grid-template-columns
              */
-            ["grid-cols"] = new ClassGroup( "grid-cols", any ),
-            /*
+			["grid-cols"] = new( "grid-cols", gridTemplateColsRowsScale ),
+			/*
              * Grid Column Start / End
              * See https://tailwindcss.com/docs/grid-column
              */
-            ["col-start-end"] = new ClassGroup( "col", [
-                "auto",
-                new ClassGroup( "span", ["full", .. numberAndArbitrary] ),
-                Validators.IsArbitraryValue] ),
-            /*
+			["col-start-end"] = new( "col", gridColRowStartAndEndScale ),
+			/*
              * Grid Column Start
              * See https://tailwindcss.com/docs/grid-column
              */
-            ["col-start"] = new ClassGroup( "col-start", ["auto", .. numberAndArbitrary] ),
-            /*
+			["col-start"] = new( "col-start", gridColRowStartOrEndScale ),
+			/*
              * Grid Column End
              * See https://tailwindcss.com/docs/grid-column
              */
-            ["col-end"] = new ClassGroup( "col-end", ["auto", .. numberAndArbitrary] ),
-            /*
+			["col-end"] = new( "col-end", gridColRowStartOrEndScale ),
+			/*
              * Grid Template Rows
              * See https://tailwindcss.com/docs/grid-template-rows
              */
-            ["grid-rows"] = new ClassGroup( "grid-rows", any ),
-            /*
+			["grid-rows"] = new( "grid-rows", gridTemplateColsRowsScale ),
+			/*
              * Grid Row Start / End
              * See https://tailwindcss.com/docs/grid-row
              */
-            ["row-start-end"] = new ClassGroup( "row", [
-                "auto",
-                new ClassGroup( "span", numberAndArbitrary ),
-                Validators.IsArbitraryValue] ),
-            /*
+			["row-start-end"] = new( "row", gridColRowStartAndEndScale ),
+			/*
              * Grid Row Start
              * See https://tailwindcss.com/docs/grid-row
              */
-            ["row-start"] = new ClassGroup( "row-start", ["auto", .. numberAndArbitrary] ),
-            /*
+			["row-start"] = new( "row-start", gridColRowStartOrEndScale ),
+			/*
              * Grid Row End
              * See https://tailwindcss.com/docs/grid-row
              */
-            ["row-end"] = new ClassGroup( "row-end", ["auto", .. numberAndArbitrary] ),
-            /*
+			["row-end"] = new( "row-end", gridColRowStartOrEndScale ),
+			/*
              * Grid Auto Flow
              * See https://tailwindcss.com/docs/grid-auto-flow
              */
-            ["grid-flow"] = new ClassGroup( "grid-flow", ["row", "col", "dense", "row-dense", "col-dense"] ),
-            /*
+			["grid-flow"] = new( "grid-flow", ["row", "col", "dense", "row-dense", "col-dense"] ),
+			/*
              * Grid Auto Columns
              * See https://tailwindcss.com/docs/grid-auto-columns
              */
-            ["auto-cols"] = new ClassGroup( "auto-cols", ["auto", "min", "max", "fr", Validators.IsArbitraryValue] ),
-            /*
+			["auto-cols"] = new( "auto-cols", gridAutoColsRowsScale ),
+			/*
              * Grid Auto Rows
              * See https://tailwindcss.com/docs/grid-auto-rows
              */
-            ["auto-rows"] = new ClassGroup( "auto-rows", ["auto", "min", "max", "fr", Validators.IsArbitraryValue] ),
-            /*
+			["auto-rows"] = new( "auto-rows", gridAutoColsRowsScale ),
+			/*
              * Gap
              * See https://tailwindcss.com/docs/gap
              */
-            ["gap"] = new ClassGroup( "gap", [gap] ),
-            /*
+			["gap"] = new( "gap", unambiguousSpacingScale ),
+			/*
              * Gap X
              * See https://tailwindcss.com/docs/gap
              */
-            ["gap-x"] = new ClassGroup( "gap-x", [gap] ),
-            /*
+			["gap-x"] = new( "gap-x", unambiguousSpacingScale ),
+			/*
              * Gap Y
              * See https://tailwindcss.com/docs/gap
              */
-            ["gap-y"] = new ClassGroup( "gap-y", [gap] ),
-            /*
+			["gap-y"] = new( "gap-y", unambiguousSpacingScale ),
+			/*
              * Justify Content
              * See https://tailwindcss.com/docs/justify-content
              */
-            ["justify-content"] = new ClassGroup( "justify", ["normal", .. align] ),
-            /*
+			["justify-content"] = new( "justify", ["normal", .. alignPrimaryAxisScale] ),
+			/*
              * Justify Items
              * See https://tailwindcss.com/docs/justify-items
              */
-            ["justify-items"] = new ClassGroup( "justify-items", ["start", "end", "center", "stretch"] ),
-            /*
+			["justify-items"] = new( "justify-items", ["normal", .. alignSecondaryAxisScale] ),
+			/*
              * Justify Self
              * See https://tailwindcss.com/docs/justify-self
              */
-            ["justify-self"] = new ClassGroup( "justify-self", ["auto", "start", "end", "center", "stretch"] ),
-            /*
+			["justify-self"] = new( "justify-self", ["auto", .. alignSecondaryAxisScale] ),
+			/*
              * Align Content
              * See https://tailwindcss.com/docs/align-content
              */
-            ["align-content"] = new ClassGroup( "content", ["normal", "baseline", .. align] ),
-            /*
+			["align-content"] = new( "content", ["normal", .. alignPrimaryAxisScale] ),
+			/*
              * Align Items
              * See https://tailwindcss.com/docs/align-items
              */
-            ["align-items"] = new ClassGroup( "items", ["start", "end", "center", "baseline", "stretch"] ),
-            /*
+			["align-items"] = new( "items", ["baseline", .. alignSecondaryAxisScale] ),
+			/*
              * Align Self
              * See https://tailwindcss.com/docs/align-self
              */
-            ["align-self"] = new ClassGroup( "self", ["auto", "start", "end", "center", "baseline", "stretch"] ),
-            /*
+			["align-self"] = new( "self", ["auto", "baseline", .. alignSecondaryAxisScale] ),
+			/*
              * Place Content
              * See https://tailwindcss.com/docs/place-content
              */
-            ["place-content"] = new ClassGroup( "place-content", ["baseline", .. align] ),
-            /*
+			["place-content"] = new( "place-content", ["baseline", .. alignPrimaryAxisScale] ),
+			/*
              * Place Items
              * See https://tailwindcss.com/docs/place-items
              */
-            ["place-items"] = new ClassGroup( "place-items", ["start", "end", "center", "baseline", "stretch"] ),
-            /*
+			["place-items"] = new( "place-items", ["baseline", .. alignSecondaryAxisScale] ),
+			/*
              * Place Self
              * See https://tailwindcss.com/docs/place-self
              */
-            ["place-self"] = new ClassGroup( "place-self", ["auto", "start", "end", "center", "stretch"] ),
-            /*
+			["place-self"] = new( "place-self", ["auto", .. alignSecondaryAxisScale] ),
+			/*
              * Padding
              * See https://tailwindcss.com/docs/padding
              */
-            ["p"] = new ClassGroup( "p", [padding] ),
-            /*
+			["p"] = new( "p", unambiguousSpacingScale ),
+			/*
              * Padding X
              * See https://tailwindcss.com/docs/padding
              */
-            ["px"] = new ClassGroup( "px", [padding] ),
-            /*
+			["px"] = new( "px", unambiguousSpacingScale ),
+			/*
              * Padding Y
              * See https://tailwindcss.com/docs/padding
              */
-            ["py"] = new ClassGroup( "py", [padding] ),
-            /*
+			["py"] = new( "py", unambiguousSpacingScale ),
+			/*
              * Padding Start
              * See https://tailwindcss.com/docs/padding
              */
-            ["ps"] = new ClassGroup( "ps", [padding] ),
-            /*
+			["ps"] = new( "ps", unambiguousSpacingScale ),
+			/*
              * Padding End
              * See https://tailwindcss.com/docs/padding
              */
-            ["pe"] = new ClassGroup( "pe", [padding] ),
-            /*
+			["pe"] = new( "pe", unambiguousSpacingScale ),
+			/*
              * Padding Top
              * See https://tailwindcss.com/docs/padding
              */
-            ["pt"] = new ClassGroup( "pt", [padding] ),
-            /*
+			["pt"] = new( "pt", unambiguousSpacingScale ),
+			/*
              * Padding Right
              * See https://tailwindcss.com/docs/padding
              */
-            ["pr"] = new ClassGroup( "pr", [padding] ),
-            /*
+			["pr"] = new( "pr", unambiguousSpacingScale ),
+			/*
              * Padding Bottom
              * See https://tailwindcss.com/docs/padding
              */
-            ["pb"] = new ClassGroup( "pb", [padding] ),
-            /*
+			["pb"] = new( "pb", unambiguousSpacingScale ),
+			/*
              * Padding Left
              * See https://tailwindcss.com/docs/padding
              */
-            ["pl"] = new ClassGroup( "pl", [padding] ),
-            /*
+			["pl"] = new( "pl", unambiguousSpacingScale ),
+			/*
              * Margin
              * See https://tailwindcss.com/docs/margin
              */
-            ["m"] = new ClassGroup( "m", [margin] ),
-            /*
+			["m"] = new( "m", marginScale ),
+			/*
              * Margin X
              * See https://tailwindcss.com/docs/margin
              */
-            ["mx"] = new ClassGroup( "mx", [margin] ),
-            /*
+			["mx"] = new( "mx", marginScale ),
+			/*
              * Margin Y
              * See https://tailwindcss.com/docs/margin
              */
-            ["my"] = new ClassGroup( "my", [margin] ),
-            /*
+			["my"] = new( "my", marginScale ),
+			/*
              * Margin Start
              * See https://tailwindcss.com/docs/margin
              */
-            ["ms"] = new ClassGroup( "ms", [margin] ),
-            /*
+			["ms"] = new( "ms", marginScale ),
+			/*
              * Margin End
              * See https://tailwindcss.com/docs/margin
              */
-            ["me"] = new ClassGroup( "me", [margin] ),
-            /*
+			["me"] = new( "me", marginScale ),
+			/*
              * Margin Top
              * See https://tailwindcss.com/docs/margin
              */
-            ["mt"] = new ClassGroup( "mt", [margin] ),
-            /*
+			["mt"] = new( "mt", marginScale ),
+			/*
              * Margin Right
              * See https://tailwindcss.com/docs/margin
              */
-            ["mr"] = new ClassGroup( "mr", [margin] ),
-            /*
+			["mr"] = new( "mr", marginScale ),
+			/*
              * Margin Bottom
              * See https://tailwindcss.com/docs/margin
              */
-            ["mb"] = new ClassGroup( "mb", [margin] ),
-            /*
+			["mb"] = new( "mb", marginScale ),
+			/*
              * Margin Left
              * See https://tailwindcss.com/docs/margin
              */
-            ["ml"] = new ClassGroup( "ml", [margin] ),
-            /*
+			["ml"] = new( "ml", marginScale ),
+			/*
              * Space Between X
              * See https://tailwindcss.com/docs/space
              */
-            ["space-x"] = new ClassGroup( "space-x", [space] ),
-            /*
+			["space-x"] = new( "space-x", unambiguousSpacingScale ),
+			/*
              * Space Between X Reverse
              * See https://tailwindcss.com/docs/space
              */
-            ["space-x-reverse"] = new ClassGroup( ["space-x-reverse"] ),
-            /*
+			["space-x-reverse"] = new( ["space-x-reverse"] ),
+			/*
              * Space Between Y
              * See https://tailwindcss.com/docs/space
              */
-            ["space-y"] = new ClassGroup( "space-y", [space] ),
-            /*
+			["space-y"] = new( "space-y", unambiguousSpacingScale ),
+			/*
              * Space Between Y Reverse
              * See https://tailwindcss.com/docs/space
              */
-            ["space-y-reverse"] = new ClassGroup( ["space-y-reverse"] ),
-            /*
+			["space-y-reverse"] = new( ["space-y-reverse"] ),
+
+			// --------------
+			// --- Sizing ---
+			// --------------
+
+			/*
+             * Size
+             * See https://tailwindcss.com/docs/width#setting-both-width-and-height
+             */
+			["size"] = new( "size", sizingScale ),
+			/*
              * Width
              * See https://tailwindcss.com/docs/width
              */
-            ["w"] = new ClassGroup( "w", ["auto", "min", "max", "fit", "svw", "lvw", "dvw", spacing, Validators.IsArbitraryValue] ),
-            /*
+			["w"] = new( "w", ["screen", containerTheme, .. sizingScale] ),
+			/*
              * Min-Width
              * See https://tailwindcss.com/docs/min-width
              */
-            ["min-w"] = new ClassGroup( "min-w", ["min", "max", "fit", spacing, Validators.IsArbitraryValue] ),
-            /*
+			["min-w"] = new( "min-w", [
+				"screen",
+				containerTheme,
+				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
+				"none",
+				.. sizingScale
+			] ),
+			/*
              * Max-Width
              * See https://tailwindcss.com/docs/max-width
              */
-            ["max-w"] = new ClassGroup( "max-w", [
-                "none", 
-                "full", 
-                "min", 
-                "max", 
-                "fit", 
-                "prose", 
-                spacing, 
-                new ClassGroup( "screen", [Validators.IsTshirtSize] ), 
-                Validators.IsTshirtSize] ),
-            /*
+			["max-w"] = new( "max-w", [
+				"screen",
+				"none",
+				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
+				"prose",
+				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
+				new ClassGroup( "screen", [breakpointTheme] ),
+				.. sizingScale
+			] ),
+			/*
              * Height
              * See https://tailwindcss.com/docs/height
              */
-            ["h"] = new ClassGroup( "h", ["auto", "min", "max", "fit", "svh", "lvh", "dvh", spacing, Validators.IsArbitraryValue] ),
-            /*
+			["h"] = new( "h", ["screen", .. sizingScale] ),
+			/*
              * Min-Height
              * See https://tailwindcss.com/docs/min-height
              */
-            ["min-h"] = new ClassGroup( "min-h", ["min", "max", "fit", "svh", "lvh", "dvh", spacing, Validators.IsArbitraryValue] ),
-            /*
+			["min-h"] = new( "min-h", ["screen", "none", .. sizingScale] ),
+			/*
              * Max-Height
              * See https://tailwindcss.com/docs/max-height
              */
-            ["max-h"] = new ClassGroup( "max-h", ["min", "max", "fit", "svh", "lvh", "dvh", spacing, Validators.IsArbitraryValue] ),
-            /*
-             * Size
-             * See https://tailwindcss.com/docs/size
-             */
-            ["size"] = new ClassGroup( "size", ["auto", "min", "max", "fit", spacing, Validators.IsArbitraryValue] ),
-            /*
+			["max-h"] = new( "max-h", ["screen", .. sizingScale] ),
+
+			// ------------------
+			// --- Typography ---
+			// ------------------
+
+			/*
              * Font Size
              * See https://tailwindcss.com/docs/font-size
              */
-            ["font-size"] = new ClassGroup( "text", ["base", Validators.IsTshirtSize, Validators.IsArbitraryLength] ),
-            /*
+			["font-size"] = new( "text", [
+				"base",
+				textTheme,
+				V.IsArbitraryLength,
+				V.IsArbitraryVariableLength
+			] ),
+			/*
              * Font Smoothing
              * See https://tailwindcss.com/docs/font-smoothing
              */
-            ["font-smoothing"] = new ClassGroup( ["antialiased", "subpixel-antialiased"] ),
-            /*
+			["font-smoothing"] = new( ["antialiased", "subpixel-antialiased"] ),
+			/*
              * Font Style
              * See https://tailwindcss.com/docs/font-style
              */
-            ["font-style"] = new ClassGroup( ["italic", "not-italic"] ),
-            /*
+			["font-style"] = new( ["italic", "not-italic"] ),
+			/*
              * Font Weight
              * See https://tailwindcss.com/docs/font-weight
              */
-            ["font-weight"] = new ClassGroup( "font", [
-                "thin",
-                "extralight",
-                "light",
-                "normal",
-                "medium",
-                "semibold",
-                "bold",
-                "extrabold",
-                "bold",
-                Validators.IsArbitraryNumber] ),
-            /*
+			["font-weight"] = new( "font", [fontWeightTheme, V.IsArbitraryNumber, V.IsArbitraryVariable] ),
+			/*
+             * Font Stretch
+             * See https://tailwindcss.com/docs/font-stretch
+             */
+			["font-stretch"] = new( "font-stretch", [
+				"ultra-condensed",
+				"extra-condensed",
+				"condensed",
+				"semi-condensed",
+				"normal",
+				"semi-expanded",
+				"expanded",
+				"extra-expanded",
+				"ultra-expanded",
+				V.IsPercent,
+				V.IsArbitraryValue
+			] ),
+			/*
              * Font Family
              * See https://tailwindcss.com/docs/font-family
              */
-            ["font-family"] = new ClassGroup( "font", any ),
-            /*
+			["font-family"] = new( "font", [
+				fontTheme,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariableFamilyName
+			] ),
+			/*
              * Font Variant Numeric
              * See https://tailwindcss.com/docs/font-variant-numeric
              */
-            ["fvn-normal"] = new ClassGroup( ["normal-nums"] ),
-            /*
+			["fvn-normal"] = new( ["normal-nums"] ),
+			/*
              * Font Variant Numeric
              * See https://tailwindcss.com/docs/font-variant-numeric
              */
-            ["fvn-ordinal"] = new ClassGroup( ["ordinal"] ),
-            /*
+			["fvn-ordinal"] = new( ["ordinal"] ),
+			/*
              * Font Variant Numeric
              * See https://tailwindcss.com/docs/font-variant-numeric
              */
-            ["fvn-slashed-zero"] = new ClassGroup( ["slashed-zero"] ),
-            /*
+			["fvn-slashed-zero"] = new( ["slashed-zero"] ),
+			/*
              * Font Variant Numeric
              * See https://tailwindcss.com/docs/font-variant-numeric
              */
-            ["fvn-figure"] = new ClassGroup( ["lining-nums", "oldstyle-nums"] ),
-            /*
+			["fvn-figure"] = new( ["lining-nums", "oldstyle-nums"] ),
+			/*
              * Font Variant Numeric
              * See https://tailwindcss.com/docs/font-variant-numeric
              */
-            ["fvn-spacing"] = new ClassGroup( ["proportional-nums", "tabular-nums"] ),
-            /*
+			["fvn-spacing"] = new( ["proportional-nums", "tabular-nums"] ),
+			/*
              * Font Variant Numeric
              * See https://tailwindcss.com/docs/font-variant-numeric
              */
-            ["fvn-fraction"] = new ClassGroup( ["diagonal-fractions", "stacked-fractions"] ),
-            /*
+			["fvn-fraction"] = new( ["diagonal-fractions", "stacked-fractions"] ),
+			/*
              * Letter Spacing
              * See https://tailwindcss.com/docs/letter-spacing
              */
-            ["tracking"] = new ClassGroup( "tracking", [
-                "tighter",
-                "tight",
-                "normal",
-                "wide",
-                "wider",
-                "widest",
-                Validators.IsArbitraryValue] ),
-            /*
+			["tracking"] = new( "tracking", [trackingTheme, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Line Clamp
              * See https://tailwindcss.com/docs/line-clamp
              */
-            ["line-clamp"] = new ClassGroup( "line-clamp", ["none", .. number] ),
-            /*
+			["line-clamp"] = new( "line-clamp", [
+				"none",
+				V.IsNumber,
+				V.IsArbitraryNumber,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Line Height
              * See https://tailwindcss.com/docs/line-height
              */
-            ["leading"] = new ClassGroup( "leading", [
-                "none",
-                "tight",
-                "snug",
-                "normal",
-                "relaxed",
-                "loose",
-                Validators.IsLength,
-                Validators.IsArbitraryValue] ),
-            /*
+			["leading"] = new( "leading", [
+				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
+				leadingTheme,
+				.. unambiguousSpacingScale
+			] ),
+			/*
              * List Style Image
              * See https://tailwindcss.com/docs/list-style-image
              */
-            ["list-image"] = new ClassGroup( "list-image", ["none", Validators.IsArbitraryValue] ),
-            /*
-             * List Style Type
-             * See https://tailwindcss.com/docs/list-style-type
-             */
-            ["list-style-type"] = new ClassGroup( "list", ["none", "disc", "decimal", Validators.IsArbitraryValue] ),
-            /*
+			["list-image"] = new( "list-image", ["none", V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * List Style Position
              * See https://tailwindcss.com/docs/list-style-position
              */
-            ["list-style-position"] = new ClassGroup( "list", ["inside", "outside"] ),
-            /*
-             * Placeholder Color
-             * See https://tailwindcss.com/docs/placeholder-color
+			["list-style-position"] = new( "list", ["inside", "outside"] ),
+			/*
+             * List Style Type
+             * See https://tailwindcss.com/docs/list-style-type
              */
-            ["placeholder-color"] = new ClassGroup( "placeholder", [colors] ),
-            /*
+			["list-style-type"] = new( "list", [
+				"disc",
+				"decimal",
+				"none",
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Text Alignment
              * See https://tailwindcss.com/docs/text-align
              */
-            ["text-alignment"] = new ClassGroup( "text", ["left", "center", "right", "justify", "start", "end"] ),
-            /*
+			["text-alignment"] = new( "text", ["left", "center", "right", "justify", "start", "end"] ),
+			/*
              * Text Color
              * See https://tailwindcss.com/docs/text-color
              */
-            ["text-color"] = new ClassGroup( "text", [colors] ),
-            /*
+			["text-color"] = new( "text", colorScale ),
+			/*
              * Text Decoration
              * See https://tailwindcss.com/docs/text-decoration
              */
-            ["text-decoration"] = new ClassGroup( ["underline", "overline", "line-through", "no-underline"] ),
-            /*
+			["text-decoration"] = new( ["underline", "overline", "line-through", "no-underline"] ),
+			/*
              * Text Decoration Style
              * See https://tailwindcss.com/docs/text-decoration-style
              */
-            ["text-decoration-style"] = new ClassGroup( "decoration", ["wavy", .. lineStyles] ),
-            /*
-             * Text Decoration Color
-             * See https://tailwindcss.com/docs/text-decoration-color
-             */
-            ["text-decoration-color"] = new ClassGroup( "decoration", [colors] ),
-            /*
+			["text-decoration-style"] = new( "decoration", ["wavy", .. lineStyleScale] ),
+			/*
              * Text Decoration Thickness
              * See https://tailwindcss.com/docs/text-decoration-thickness
              */
-            ["text-decoration-thickness"] = new ClassGroup( "decoration", ["auto", "from-font", Validators.IsLength, Validators.IsArbitraryLength] ),
-            /*
+			["text-decoration-thickness"] = new( "decoration", [
+				"from-font",
+				"auto",
+				V.IsNumber,
+				V.IsArbitraryLength,
+				V.IsArbitraryVariable
+			] ),
+			/*
+             * Text Decoration Color
+             * See https://tailwindcss.com/docs/text-decoration-color
+             */
+			["text-decoration-color"] = new( "decoration", colorScale ),
+			/*
              * Text Underline Offset
              * See https://tailwindcss.com/docs/text-underline-offset
              */
-            ["underline-offset"] = new ClassGroup( "underline-offset", ["auto", Validators.IsLength, Validators.IsArbitraryValue] ),
-            /*
+			["underline-offset"] = new( "underline-offset", [
+				"auto",
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Text Transform
              * See https://tailwindcss.com/docs/text-transform
              */
-            ["text-transform"] = new ClassGroup( ["uppercase", "lowercase", "capitalize", "normal-case"] ),
-            /*
+			["text-transform"] = new( ["uppercase", "lowercase", "capitalize", "normal-case"] ),
+			/*
              * Text Overflow
              * See https://tailwindcss.com/docs/text-overflow
              */
-            ["text-overflow"] = new ClassGroup( ["truncate", "text-ellipsis", "text-clip"] ),
-            /*
+			["text-overflow"] = new( ["truncate", "text-ellipsis", "text-clip"] ),
+			/*
              * Text Wrap
              * See https://tailwindcss.com/docs/text-wrap
              */
-            ["text-wrap"] = new ClassGroup( "text", ["wrap", "nowrap", "balance", "pretty"] ),
-            /*
+			["text-wrap"] = new( "text", ["wrap", "nowrap", "balance", "pretty"] ),
+			/*
              * Text Indent
              * See https://tailwindcss.com/docs/text-indent
              */
-            ["indent"] = new ClassGroup( "indent", spacingWithArbitrary ),
-            /*
+			["indent"] = new( "indent", unambiguousSpacingScale ),
+			/*
              * Vertical Alignment
              * See https://tailwindcss.com/docs/vertical-align
              */
-            ["vertical-align"] = new ClassGroup( "align", [
-                "baseline",
-                "top",
-                "middle",
-                "bottom",
-                "text-top",
-                "text-bottom",
-                "sub",
-                "super",
-                Validators.IsArbitraryValue] ),
-            /*
+			["vertical-align"] = new( "align", [
+				"baseline",
+				"top",
+				"middle",
+				"bottom",
+				"text-top",
+				"text-bottom",
+				"sub",
+				"super",
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Whitespace
              * See https://tailwindcss.com/docs/whitespace
              */
-            ["whitespace"] = new ClassGroup( "whitespace", [
-                "normal",
-                "nowrap",
-                "pre",
-                "pre-line",
-                "pre-wrap",
-                "break-spaces"] ),
-            /*
+			["whitespace"] = new( "whitespace", [
+				"normal",
+				"nowrap",
+				"pre",
+				"pre-line",
+				"pre-wrap",
+				"break-spaces"
+			] ),
+			/*
              * Work Break
              * See https://tailwindcss.com/docs/word-break
              */
-            ["break"] = new ClassGroup( "break", ["normal", "words", "all", "keep"] ),
-            /*
+			["break"] = new( "break", ["normal", "words", "all", "keep"] ),
+			/*
              * Hyphens
              * See https://tailwindcss.com/docs/hyphens
              */
-            ["hyphens"] = new ClassGroup( "hyphens", ["none", "manual", "auto"] ),
-            /*
+			["hyphens"] = new( "hyphens", ["none", "manual", "auto"] ),
+			/*
              * Content
              * See https://tailwindcss.com/docs/content
              */
-            ["content"] = new ClassGroup( "content", ["none", Validators.IsArbitraryValue] ),
-            /*
+			["content"] = new( "content", ["none", V.IsArbitraryValue, V.IsArbitraryVariable] ),
+
+			// -------------------
+			// --- Backgrounds ---
+			// -------------------
+
+			/*
              * Background Attachment
              * See https://tailwindcss.com/docs/background-attachment
              */
-            ["bg-attachment"] = new ClassGroup( "bg", ["fixed", "local", "scroll"] ),
-            /*
+			["bg-attachment"] = new( "bg", ["fixed", "local", "scroll"] ),
+			/*
              * Background Clip
              * See https://tailwindcss.com/docs/background-clip
              */
-            ["bg-clip"] = new ClassGroup( "bg-clip", ["border", "padding", "content", "text"] ),
-            /*
+			["bg-clip"] = new( "bg-clip", ["border", "padding", "content", "text"] ),
+			/*
              * Background Origin
              * See https://tailwindcss.com/docs/background-origin
              */
-            ["bg-origin"] = new ClassGroup( "bg-origin", ["border", "padding", "content"] ),
-            /*
+			["bg-origin"] = new( "bg-origin", ["border", "padding", "content"] ),
+			/*
              * Background Position
              * See https://tailwindcss.com/docs/background-position
              */
-            ["bg-position"] = new ClassGroup( "bg", [.. positions, Validators.IsArbitraryPosition] ),
-            /*
+			["bg-position"] = new( "bg", [
+				.. positionScale,
+				V.IsArbitraryPosition,
+				V.IsArbitraryVariablePosition
+			] ),
+			/*
              * Background Repeat
              * See https://tailwindcss.com/docs/background-repeat
              */
-            ["bg-repeat"] = new ClassGroup( "bg", [
-                "no-repeat",
-                new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )] ),
-            /*
+			["bg-repeat"] = new( "bg", [
+				"no-repeat",
+				new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )
+			] ),
+			/*
              * Background Size
              * See https://tailwindcss.com/docs/background-size
              */
-            ["bg-size"] = new ClassGroup( "bg", ["auto", "cover", "contain", Validators.IsArbitrarySize] ),
-            /*
+			["bg-size"] = new( "bg", [
+				"auto",
+				"cover",
+				"contain",
+				V.IsArbitrarySize,
+				V.IsArbitraryVariableSize
+			] ),
+			/*
              * Background Image
              * See https://tailwindcss.com/docs/background-image
              */
-            ["bg-image"] = new ClassGroup( "bg", [
-                "none",
-                new ClassGroup( "gradient-to", ["t", "tr", "r", "br", "b", "bl", "l", "tl"] ),
-                Validators.IsArbitraryImage] ),
-            /*
+			["bg-image"] = new( "bg", [
+				"none",
+				new ClassGroup( "linear", [
+					new ClassGroup( "to", [
+						"t",
+						"tr",
+						"r",
+						"br",
+						"b",
+						"bl",
+						"l",
+						"tl"
+					] ),
+					V.IsInteger,
+					V.IsArbitraryValue
+				] ),
+				new ClassGroup( "radial", ["", V.IsArbitraryValue] ),
+				new ClassGroup( "conic", [V.IsInteger, V.IsArbitraryValue] ),
+				V.IsArbitraryImage
+			] ),
+			/*
              * Background Color
              * See https://tailwindcss.com/docs/background-color
              */
-            ["bg-color"] = new ClassGroup( "bg", [colors] ),
-            /*
+			["bg-color"] = new( "bg", colorScale ),
+			/*
              * Gradient Color Stops From Position
              * See https://tailwindcss.com/docs/gradient-color-stops
              */
-            ["gradient-from-pos"] = new ClassGroup( "from", [gradientColorStopPositions] ),
-            /*
+			["gradient-from-pos"] = new( "from", gradientStopPositionScale ),
+			/*
              * Gradient Color Stops Via Position
              * See https://tailwindcss.com/docs/gradient-color-stops
              */
-            ["gradient-via-pos"] = new ClassGroup( "via", [gradientColorStopPositions] ),
-            /*
+			["gradient-via-pos"] = new( "via", gradientStopPositionScale ),
+			/*
              * Gradient Color Stops To Position
              * See https://tailwindcss.com/docs/gradient-color-stops
              */
-            ["gradient-to-pos"] = new ClassGroup( "to", [gradientColorStopPositions] ),
-            /*
+			["gradient-to-pos"] = new( "to", gradientStopPositionScale ),
+			/*
              * Gradient Color Stops From
              * See https://tailwindcss.com/docs/gradient-color-stops
              */
-            ["gradient-from"] = new ClassGroup( "from", [gradientColorStops] ),
-            /*
+			["gradient-from"] = new( "from", colorScale ),
+			/*
              * Gradient Color Stops Via
              * See https://tailwindcss.com/docs/gradient-color-stops
              */
-            ["gradient-via"] = new ClassGroup( "via", [gradientColorStops] ),
-            /*
+			["gradient-via"] = new( "via", colorScale ),
+			/*
              * Gradient Color Stops To
              * See https://tailwindcss.com/docs/gradient-color-stops
              */
-            ["gradient-to"] = new ClassGroup( "to", [gradientColorStops] ),
-            /*
+			["gradient-to"] = new( "to", colorScale ),
+
+			// ---------------
+			// --- Borders ---
+			// ---------------
+
+			/*
              * Border Radius
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded"] = new ClassGroup( "rounded", [borderRadius] ),
-            /*
+			["rounded"] = new( "rounded", radiusScale ),
+			/*
              * Border Radius Start
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-s"] = new ClassGroup( "rounded-s", [borderRadius] ),
-            /*
+			["rounded-s"] = new( "rounded-s", radiusScale ),
+			/*
              * Border Radius End
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-e"] = new ClassGroup( "rounded-e", [borderRadius] ),
-            /*
+			["rounded-e"] = new( "rounded-e", radiusScale ),
+			/*
              * Border Radius Top
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-t"] = new ClassGroup( "rounded-t", [borderRadius] ),
-            /*
+			["rounded-t"] = new( "rounded-t", radiusScale ),
+			/*
              * Border Radius Right
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-r"] = new ClassGroup( "rounded-r", [borderRadius] ),
-            /*
+			["rounded-r"] = new( "rounded-r", radiusScale ),
+			/*
              * Border Radius Bottom
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-b"] = new ClassGroup( "rounded-b", [borderRadius] ),
-            /*
+			["rounded-b"] = new( "rounded-b", radiusScale ),
+			/*
              * Border Radius Left
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-l"] = new ClassGroup( "rounded-l", [borderRadius] ),
-            /*
+			["rounded-l"] = new( "rounded-l", radiusScale ),
+			/*
              * Border Radius Start Start
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-ss"] = new ClassGroup( "rounded-ss", [borderRadius] ),
-            /*
+			["rounded-ss"] = new( "rounded-ss", radiusScale ),
+			/*
              * Border Radius Start End
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-se"] = new ClassGroup( "rounded-se", [borderRadius] ),
-            /*
+			["rounded-se"] = new( "rounded-se", radiusScale ),
+			/*
              * Border Radius End End
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-ee"] = new ClassGroup( "rounded-ee", [borderRadius] ),
-            /*
+			["rounded-ee"] = new( "rounded-ee", radiusScale ),
+			/*
              * Border Radius End Start
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-es"] = new ClassGroup( "rounded-es", [borderRadius] ),
-            /*
+			["rounded-es"] = new( "rounded-es", radiusScale ),
+			/*
              * Border Radius Top Left
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-tl"] = new ClassGroup( "rounded-tl", [borderRadius] ),
-            /*
+			["rounded-tl"] = new( "rounded-tl", radiusScale ),
+			/*
              * Border Radius Top Right
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-tr"] = new ClassGroup( "rounded-tr", [borderRadius] ),
-            /*
+			["rounded-tr"] = new( "rounded-tr", radiusScale ),
+			/*
              * Border Radius Bottom Right
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-br"] = new ClassGroup( "rounded-br", [borderRadius] ),
-            /*
+			["rounded-br"] = new( "rounded-br", radiusScale ),
+			/*
              * Border Radius Bottom Left
              * See https://tailwindcss.com/docs/border-radius
              */
-            ["rounded-bl"] = new ClassGroup( "rounded-bl", [borderRadius] ),
-            /*
+			["rounded-bl"] = new( "rounded-bl", radiusScale ),
+			/*
              * Border Width
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w"] = new ClassGroup( "border", [borderWidth] ),
-            /*
+			["border-w"] = new( "border", borderWidthScale ),
+			/*
              * Border Width X
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-x"] = new ClassGroup( "border-x", [borderWidth] ),
-            /*
+			["border-w-x"] = new( "border-x", borderWidthScale ),
+			/*
              * Border Width Y
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-y"] = new ClassGroup( "border-y", [borderWidth] ),
-            /*
+			["border-w-y"] = new( "border-y", borderWidthScale ),
+			/*
              * Border Width Start
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-s"] = new ClassGroup( "border-s", [borderWidth] ),
-            /*
+			["border-w-s"] = new( "border-s", borderWidthScale ),
+			/*
              * Border Width End
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-e"] = new ClassGroup( "border-e", [borderWidth] ),
-            /*
+			["border-w-e"] = new( "border-e", borderWidthScale ),
+			/*
              * Border Width Top
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-t"] = new ClassGroup( "border-t", [borderWidth] ),
-            /*
+			["border-w-t"] = new( "border-t", borderWidthScale ),
+			/*
              * Border Width Right
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-r"] = new ClassGroup( "border-r", [borderWidth] ),
-            /*
+			["border-w-r"] = new( "border-r", borderWidthScale ),
+			/*
              * Border Width Bottom
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-b"] = new ClassGroup( "border-b", [borderWidth] ),
-            /*
+			["border-w-b"] = new( "border-b", borderWidthScale ),
+			/*
              * Border Width Left
              * See https://tailwindcss.com/docs/border-width
              */
-            ["border-w-l"] = new ClassGroup( "border-l", [borderWidth] ),
-            /*
-             * Border Style
-             * See https://tailwindcss.com/docs/border-style
-             */
-            ["border-style"] = new ClassGroup( "border", ["hidden", .. lineStyles] ),
-            /*
+			["border-w-l"] = new( "border-l", borderWidthScale ),
+			/*
              * Divide Width X
              * See https://tailwindcss.com/docs/divide-width
              */
-            ["divide-x"] = new ClassGroup( "divide-x", [borderWidth] ),
-            /*
+			["divide-x"] = new( "divide-x", borderWidthScale ),
+			/*
              * Divide Width X Reverse
              * See https://tailwindcss.com/docs/divide-width
              */
-            ["divide-x-reverse"] = new ClassGroup( ["divide-x-reverse"] ),
-            /*
+			["divide-x-reverse"] = new( ["divide-x-reverse"] ),
+			/*
              * Divide Width Y
              * See https://tailwindcss.com/docs/divide-width
              */
-            ["divide-y"] = new ClassGroup( "divide-y", [borderWidth] ),
-            /*
+			["divide-y"] = new( "divide-y", borderWidthScale ),
+			/*
              * Divide Width Y Reverse
              * See https://tailwindcss.com/docs/divide-width
              */
-            ["divide-y-reverse"] = new ClassGroup( ["divide-y-reverse"] ),
-            /*
+			["divide-y-reverse"] = new( ["divide-y-reverse"] ),
+			/*
+             * Border Style
+             * See https://tailwindcss.com/docs/border-style
+             */
+			["border-style"] = new( "border", ["hidden", "none", .. lineStyleScale] ),
+			/*
              * Divide Style
              * See https://tailwindcss.com/docs/divide-style
              */
-            ["divide-style"] = new ClassGroup( "divide", lineStyles ),
-            /*
+			["divide-style"] = new( "divide", ["hidden", "none", .. lineStyleScale] ),
+			/*
              * Border Color
              * See https://tailwindcss.com/docs/border-color
              */
-            ["border-color"] = new ClassGroup( "border", [borderColor] ),
-            /*
+			["border-color"] = new( "border", colorScale ),
+			/*
              * Border Color X
              * See https://tailwindcss.com/docs/border-color
              */
-            ["border-color-x"] = new ClassGroup( "border-x", [borderColor] ),
-            /*
+			["border-color-x"] = new( "border-x", colorScale ),
+			/*
              * Border Color Y
              * See https://tailwindcss.com/docs/border-color
              */
-            ["border-color-y"] = new ClassGroup( "border-y", [borderColor] ),
-            /*
+			["border-color-y"] = new( "border-y", colorScale ),
+			/*
+             * Border Color Start
+             * See https://tailwindcss.com/docs/border-color
+             */
+			["border-color-s"] = new( "border-s", colorScale ),
+			/*
+             * Border Color End
+             * See https://tailwindcss.com/docs/border-color
+             */
+			["border-color-e"] = new( "border-e", colorScale ),
+			/*
              * Border Color Top
              * See https://tailwindcss.com/docs/border-color
              */
-            ["border-color-t"] = new ClassGroup( "border-t", [borderColor] ),
-            /*
+			["border-color-t"] = new( "border-t", colorScale ),
+			/*
              * Border Color Right
              * See https://tailwindcss.com/docs/border-color
              */
-            ["border-color-r"] = new ClassGroup( "border-r", [borderColor] ),
-            /*
+			["border-color-r"] = new( "border-r", colorScale ),
+			/*
              * Border Color Bottom
              * See https://tailwindcss.com/docs/border-color
              */
-            ["border-color-b"] = new ClassGroup( "border-b", [borderColor] ),
-            /*
+			["border-color-b"] = new( "border-b", colorScale ),
+			/*
              * Border Color Left
              * See https://tailwindcss.com/docs/border-color
              */
-            ["border-color-l"] = new ClassGroup( "border-l", [borderColor] ),
-            /*
+			["border-color-l"] = new( "border-l", colorScale ),
+			/*
              * Divide Color
              * See https://tailwindcss.com/docs/divide-color
              */
-            ["divide-color"] = new ClassGroup( "divide", [borderColor] ),
-            /*
+			["divide-color"] = new( "divide", colorScale ),
+			/*
              * Outline Style
              * See https://tailwindcss.com/docs/outline-style
              */
-            ["outline-style"] = new ClassGroup( "outline", ["", .. lineStyles] ),
-            /*
+			["outline-style"] = new( "outline", ["none", "hidden", .. lineStyleScale] ),
+			/*
              * Outline Offset
              * See https://tailwindcss.com/docs/outline-offset
              */
-            ["outline-offset"] = new ClassGroup( "outline-offset", [Validators.IsLength, Validators.IsArbitraryLength] ),
-            /*
+			["outline-offset"] = new( "outline-offset", [
+				V.IsNumber,
+				V.IsArbitraryLength,
+				V.IsArbitraryVariableLength
+			] ),
+			/*
              * Outline Width
              * See https://tailwindcss.com/docs/outline-width
              */
-            ["outline-w"] = new ClassGroup( "outline", [Validators.IsLength, Validators.IsArbitraryLength] ),
-            /*
+			["outline-w"] = new( "outline", [
+				"",
+				V.IsNumber,
+				V.IsArbitraryLength,
+				V.IsArbitraryVariableLength
+			] ),
+			/*
              * Outline Color
              * See https://tailwindcss.com/docs/outline-color
              */
-            ["outline-color"] = new ClassGroup( "outline", [colors] ),
-            /*
+			["outline-color"] = new( "outline", [colorTheme] ),
+
+			// ---------------
+			// --- Effects ---
+			// ---------------
+
+			/*
+             * Box Shadow
+             * See https://tailwindcss.com/docs/box-shadow
+             */
+			["shadow"] = new( "shadow", [
+				// Deprecated since Tailwind CSS v4.0.0
+				"",
+				"none",
+				shadowTheme,
+				V.IsArbitraryShadow,
+				V.IsArbitraryVariableShadow
+			] ),
+			/*
+             * Box Shadow Color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-shadow-color
+             */
+			["shadow-color"] = new( "shadow", colorScale ),
+			/*
+             * Inset Box Shadow
+             * See https://tailwindcss.com/docs/box-shadow#adding-an-inset-shadow
+             */
+			["inset-shadow"] = new( "inset-shadow", [
+				"none",
+				insetShadowTheme,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
+             * Inset Box Shadow Color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-inset-shadow-color
+             */
+			["inset-shadow-color"] = new( "inset-shadow", colorScale ),
+			/*
              * Ring Width
-             * See https://tailwindcss.com/docs/ring-width
+             * See https://tailwindcss.com/docs/box-shadow#adding-a-ring
              */
-            ["ring-w"] = new ClassGroup( "ring", lengthWithEmptyAndArbitrary ),
-            /*
+			["ring-w"] = new( "ring", borderWidthScale ),
+			/*
              * Ring Width Inset
-             * See https://tailwindcss.com/docs/ring-width
+             * See https://v3.tailwindcss.com/docs/ring-width#inset-rings
+             * 
+             * Deprecated since Tailwind CSS v4.0.0. 
+             * See https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
              */
-            ["ring-w-inset"] = new ClassGroup( ["ring-inset"] ),
-            /*
+			["ring-w-inset"] = new( ["ring-inset"] ),
+			/*
              * Ring Color
-             * See https://tailwindcss.com/docs/ring-color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-ring-color
              */
-            ["ring-color"] = new ClassGroup( "ring", [colors] ),
-            /*
+			["ring-color"] = new( "ring", colorScale ),
+			/*
              * Ring Offset Width
-             * See https://tailwindcss.com/docs/ring-offset-width
+             * See https://v3.tailwindcss.com/docs/ring-offset-width
+             * 
+             * Deprecated since Tailwind CSS v4.0.0. 
+             * See https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
              */
-            ["ring-offset-w"] = new ClassGroup( "ring-offset", [Validators.IsLength, Validators.IsArbitraryLength] ),
-            /*
+			["ring-offset-w"] = new( "ring-offset", [V.IsNumber, V.IsArbitraryLength] ),
+			/*
              * Ring Offset Color
-             * See https://tailwindcss.com/docs/ring-offset-color
+             * See https://v3.tailwindcss.com/docs/ring-offset-color
+             * 
+             * Deprecated since Tailwind CSS v4.0.0. 
+             * See https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
              */
-            ["ring-offset-color"] = new ClassGroup( "ring-offset", [colors] ),
-            /*
-             * Shadow
-             * See https://tailwindcss.com/docs/shadow
+			["ring-offset-color"] = new( "ring-offset", colorScale ),
+			/*
+             * Inset Ring Width
+             * See https://tailwindcss.com/docs/box-shadow#adding-an-inset-ring
              */
-            ["shadow"] = new ClassGroup( "shadow", ["", "inner", "none", Validators.IsTshirtSize, Validators.IsArbitraryShadow] ),
-            /*
-             * Shadow Color
-             * See https://tailwindcss.com/docs/shadow-color
+			["inset-ring-w"] = new( "inset-ring", borderWidthScale ),
+			/*
+             * Inset Ring Color
+             * See https://tailwindcss.com/docs/box-shadow#setting-the-inset-ring-color
              */
-            ["shadow-color"] = new ClassGroup( "shadow", any ),
-            /*
+			["inset-ring-color"] = new( "inset-ring", colorScale ),
+			/*
              * Opacity
              * See https://tailwindcss.com/docs/opacity
              */
-            ["opacity"] = new ClassGroup( "opacity", [opacity] ),
-            /*
+			["opacity"] = new( "opacity", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Mix Blend Mode
              * See https://tailwindcss.com/docs/mix-blend-mode
              */
-            ["mix-blend"] = new ClassGroup( "mix-blend", ["plus-lighter", "plus-darker", .. blendModes] ),
-            /*
+			["mix-blend"] = new( "mix-blend", ["plus-darker", "plus-lighter", .. blendModeScale] ),
+			/*
              * Background Blend Mode
              * See https://tailwindcss.com/docs/mix-blend-mode
              */
-            ["bg-blend"] = new ClassGroup( "bg-blend", blendModes ),
-            /*
+			["bg-blend"] = new( "bg-blend", blendModeScale ),
+
+			// ---------------
+			// --- Filters ---
+			// ---------------
+
+			/*
+             * Filter
+             * See https://tailwindcss.com/docs/filter
+             */
+			["filter"] = new( "filter", ["none", V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Blur
              * See https://tailwindcss.com/docs/blur
              */
-            ["blur"] = new ClassGroup( "blur", [blur] ),
-            /*
+			["blur"] = new( "blur", blurScale ),
+			/*
              * Brightness
              * See https://tailwindcss.com/docs/brightness
              */
-            ["brightness"] = new ClassGroup( "brightness", [brightness] ),
-            /*
+			["brightness"] = new( "brightness", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Contrast
              * See https://tailwindcss.com/docs/contrast
              */
-            ["contrast"] = new ClassGroup( "contrast", [contrast] ),
-            /*
+			["contrast"] = new( "contrast", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Drop Shadow
              * See https://tailwindcss.com/docs/drop-shadow
              */
-            ["drop-shadow"] = new ClassGroup( "drop-shadow", ["none", "", Validators.IsTshirtSize, Validators.IsArbitraryValue] ),
-            /*
+			["drop-shadow"] = new( "drop-shadow", [
+				// Deprecated since Tailwind CSS v4.0.0
+				"",
+				"none",
+				dropShadowTheme,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Grayscale
              * See https://tailwindcss.com/docs/grayscale
              */
-            ["grayscale"] = new ClassGroup( "grayscale", [grayscale] ),
-            /*
+			["grayscale"] = new( "grayscale", ["", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Hue Rotate
              * See https://tailwindcss.com/docs/hue-rotate
              */
-            ["hue-rotate"] = new ClassGroup( "hue-rotate", [hueRotate] ),
-            /*
+			["hue-rotate"] = new( "hue-rotate", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Invert
              * See https://tailwindcss.com/docs/invert
              */
-            ["invert"] = new ClassGroup( "invert", [invert] ),
-            /*
+			["invert"] = new( "invert", ["", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Saturate
              * See https://tailwindcss.com/docs/saturate
              */
-            ["saturate"] = new ClassGroup( "saturate", [saturate] ),
-            /*
+			["saturate"] = new( "saturate", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Sepia
              * See https://tailwindcss.com/docs/sepia
              */
-            ["sepia"] = new ClassGroup( "sepia", [sepia] ),
-            /*
+			["sepia"] = new( "sepia", ["", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
+             * Backdrop Filter
+             * See https://tailwindcss.com/docs/backdrop-blur
+             */
+			["backdrop-filter"] = new( "backdrop-filter", [
+				"none",
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Blur
              * See https://tailwindcss.com/docs/backdrop-blur
              */
-            ["backdrop-blur"] = new ClassGroup( "backdrop-blur", [blur] ),
-            /*
+			["backdrop-blur"] = new( "backdrop-blur", blurScale ),
+			/*
              * Backdrop Brightness
              * See https://tailwindcss.com/docs/backdrop-brightness
              */
-            ["backdrop-brightness"] = new ClassGroup( "backdrop-brightness", [brightness] ),
-            /*
+			["backdrop-brightness"] = new( "backdrop-brightness", [
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Contrast
              * See https://tailwindcss.com/docs/backdrop-contrast
              */
-            ["backdrop-contrast"] = new ClassGroup( "backdrop-contrast", [contrast] ),
-            /*
+			["backdrop-contrast"] = new( "backdrop-contrast", [
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Grayscale
              * See https://tailwindcss.com/docs/backdrop-grayscale
              */
-            ["backdrop-grayscale"] = new ClassGroup( "backdrop-grayscale", [grayscale] ),
-            /*
+			["backdrop-grayscale"] = new( "backdrop-grayscale", [
+				"",
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Hue Rotate
              * See https://tailwindcss.com/docs/backdrop-hue-rotate
              */
-            ["backdrop-hue-rotate"] = new ClassGroup( "backdrop-hue-rotate", [hueRotate] ),
-            /*
+			["backdrop-hue-rotate"] = new( "backdrop-hue-rotate", [
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Invert
              * See https://tailwindcss.com/docs/backdrop-invert
              */
-            ["backdrop-invert"] = new ClassGroup( "backdrop-invert", [invert] ),
-            /*
+			["backdrop-invert"] = new( "backdrop-invert", [
+				"",
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Opacity
              * See https://tailwindcss.com/docs/backdrop-opacity
              */
-            ["backdrop-opacity"] = new ClassGroup( "backdrop-opacity", [opacity] ),
-            /*
+			["backdrop-opacity"] = new( "backdrop-opacity", [
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Saturate
              * See https://tailwindcss.com/docs/backdrop-saturate
              */
-            ["backdrop-saturate"] = new ClassGroup( "backdrop-saturate", [saturate] ),
-            /*
+			["backdrop-saturate"] = new( "backdrop-saturate", [
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Backdrop Sepia
              * See https://tailwindcss.com/docs/backdrop-sepia
              */
-            ["backdrop-sepia"] = new ClassGroup( "backdrop-sepia", [sepia] ),
-            /*
+			["backdrop-sepia"] = new( "backdrop-sepia", [
+				"",
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+
+			// --------------
+			// --- Tables ---
+			// --------------
+
+			/*
              * Border Collapse
              * See https://tailwindcss.com/docs/border-collapse
              */
-            ["border-collapse"] = new ClassGroup( "border", ["collapse", "separate"] ),
-            /*
+			["border-collapse"] = new( "border", ["collapse", "separate"] ),
+			/*
              * Border Spacing
              * See https://tailwindcss.com/docs/border-spacing
              */
-            ["border-spacing"] = new ClassGroup( "border-spacing", [borderSpacing] ),
-            /*
+			["border-spacing"] = new( "border-spacing", unambiguousSpacingScale ),
+			/*
              * Border Spacing X
              * See https://tailwindcss.com/docs/border-spacing
              */
-            ["border-spacing-x"] = new ClassGroup( "border-spacing-x", [borderSpacing] ),
-            /*
+			["border-spacing-x"] = new( "border-spacing-x", unambiguousSpacingScale ),
+			/*
              * Border Spacing Y
              * See https://tailwindcss.com/docs/border-spacing
              */
-            ["border-spacing-y"] = new ClassGroup( "border-spacing-y", [borderSpacing] ),
-            /*
+			["border-spacing-y"] = new( "border-spacing-y", unambiguousSpacingScale ),
+			/*
              * Table Layout
              * See https://tailwindcss.com/docs/table-layout
              */
-            ["table-layout"] = new ClassGroup( "table", ["auto", "fixed"] ),
-            /*
+			["table-layout"] = new( "table", ["auto", "fixed"] ),
+			/*
              * Caption Side
              * See https://tailwindcss.com/docs/caption-side
              */
-            ["caption"] = new ClassGroup( "caption", ["top", "bottom"] ),
-            /*
+			["caption"] = new( "caption", ["top", "bottom"] ),
+
+			// ---------------------------------
+			// --- Transitions and Animation ---
+			// ---------------------------------
+
+			/*
              * Transition Property
              * See https://tailwindcss.com/docs/transition-property
              */
-            ["transition"] = new ClassGroup( "transition", ["none", "all", "", "colors", "opacity", "shadow", "transform", Validators.IsArbitraryValue] ),
-            /*
+			["transition"] = new( "transition", [
+				"",
+				"all",
+				"colors",
+				"opacity",
+				"shadow",
+				"transform",
+				"none",
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
+             * Transition Behavior
+             * See https://tailwindcss.com/docs/transition-behavior
+             */
+			["transition-behavior"] = new( "transition", ["normal", "discrete"] ),
+			/*
              * Transition Duration
              * See https://tailwindcss.com/docs/transition-duration
              */
-            ["duration"] = new ClassGroup( "duration", numberAndArbitrary ),
-            /*
+			["duration"] = new( "duration", [
+				"initial",
+				V.IsNumber,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Transition Timing Function
              * See https://tailwindcss.com/docs/transition-timing-function
              */
-            ["ease"] = new ClassGroup( "ease", ["linear", "in", "out", "in-out", Validators.IsArbitraryValue] ),
-            /*
+			["ease"] = new( "ease", [
+				"linear",
+				"initial",
+				easeTheme,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Transition Delay
              * See https://tailwindcss.com/docs/transition-delay
              */
-            ["delay"] = new ClassGroup( "delay", numberAndArbitrary ),
-            /*
+			["delay"] = new( "delay", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			/*
              * Animation
              * See https://tailwindcss.com/docs/animation
              */
-            ["animate"] = new ClassGroup( "animate", ["none", "spin", "ping", "pulse", "bounce", Validators.IsArbitraryValue] ),
-            /*
-             * Transform
-             * See https://tailwindcss.com/docs/transform
+			["animate"] = new( "animate", [
+				"none",
+				animateTheme,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+
+			// ------------------
+			// --- Transforms ---
+			// ------------------
+
+			/*
+             * Backface Visibility
+             * See https://tailwindcss.com/docs/backface-visibility
              */
-            ["transform"] = new ClassGroup( "transform", ["", "gpu", "none"] ),
-            /*
-             * Scale
-             * See https://tailwindcss.com/docs/scale
+			["backface"] = new( "backface", ["hidden", "visible"] ),
+			/*
+             * Perspective
+             * See https://tailwindcss.com/docs/perspective
              */
-            ["scale"] = new ClassGroup( "scale", [scale] ),
-            /*
-             * Scale X
-             * See https://tailwindcss.com/docs/scale
+			["perspective"] = new( "perspective", [
+				perspectiveTheme,
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
+             * Perspective Origin
+             * See https://tailwindcss.com/docs/perspective-origin
              */
-            ["scale-x"] = new ClassGroup( "scale-x", [scale] ),
-            /*
-             * Scale Y
-             * See https://tailwindcss.com/docs/scale
-             */
-            ["scale-y"] = new ClassGroup( "scale-y", [scale] ),
-            /*
+			["perspective-origin"] = new( "perspective-origin", originScale ),
+			/*
              * Rotate
              * See https://tailwindcss.com/docs/rotate
              */
-            ["rotate"] = new ClassGroup( "rotate", [Validators.IsInteger, Validators.IsArbitraryValue] ),
-            /*
-             * Translate X
-             * See https://tailwindcss.com/docs/translate
+			["rotate"] = new( "rotate", rotateScale ),
+			/*
+             * Rotate X
+             * See https://tailwindcss.com/docs/rotate
              */
-            ["translate-x"] = new ClassGroup( "translate-x", [translate] ),
-            /*
-             * Translate Y
-             * See https://tailwindcss.com/docs/translate
+			["rotate-x"] = new( "rotate-x", rotateScale ),
+			/*
+             * Rotate Y
+             * See https://tailwindcss.com/docs/rotate
              */
-            ["translate-y"] = new ClassGroup( "translate-y", [translate] ),
-            /*
+			["rotate-y"] = new( "rotate-y", rotateScale ),
+			/*
+             * Rotate Z
+             * See https://tailwindcss.com/docs/rotate
+             */
+			["rotate-z"] = new( "rotate-z", rotateScale ),
+			/*
+             * Scale
+             * See https://tailwindcss.com/docs/scale
+             */
+			["scale"] = new( "scale", scaleScale ),
+			/*
+             * Scale X
+             * See https://tailwindcss.com/docs/scale
+             */
+			["scale-x"] = new( "scale-x", scaleScale ),
+			/*
+             * Scale Y
+             * See https://tailwindcss.com/docs/scale
+             */
+			["scale-y"] = new( "scale-y", scaleScale ),
+			/*
+             * Scale Z
+             * See https://tailwindcss.com/docs/scale
+             */
+			["scale-z"] = new( "scale-z", scaleScale ),
+			/*
+             * Scale 3D
+             * See https://tailwindcss.com/docs/scale
+             */
+			["scale-3d"] = new( ["scale-3d"] ),
+			/*
+             * Skew
+             * See https://tailwindcss.com/docs/skew
+             */
+			["skew"] = new( "skew", skewScale ),
+			/*
              * Skew X
              * See https://tailwindcss.com/docs/skew
              */
-            ["skew-x"] = new ClassGroup( "skew-x", [skew] ),
-            /*
+			["skew-x"] = new( "skew-x", skewScale ),
+			/*
              * Skew Y
              * See https://tailwindcss.com/docs/skew
              */
-            ["skew-y"] = new ClassGroup( "skew-y", [skew] ),
-            /*
+			["skew-y"] = new( "skew-y", skewScale ),
+			/*
+             * Transform
+             * See https://tailwindcss.com/docs/transform
+             */
+			["transform"] = new( "transform", [
+				"",
+				"none",
+				"gpu",
+				"cpu",
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
              * Transform Origin
              * See https://tailwindcss.com/docs/transform-origin
              */
-            ["transform-origin"] = new ClassGroup( "origin", [
-                "center",
-                "top",
-                "top-right",
-                "right",
-                "bottom-right",
-                "bottom",
-                "bottom-left",
-                "left",
-                "top-left",
-                Validators.IsArbitraryValue] ),
-            /*
-             * Accent
-             * See https://tailwindcss.com/docs/accent
+			["transform-origin"] = new( "origin", originScale ),
+			/*
+             * Transform Style
+             * See https://tailwindcss.com/docs/transform-style
              */
-            ["accent"] = new ClassGroup( "accent", ["auto", colors] ),
-            /*
+			["transform-style"] = new( "transform", ["3d", "flat"] ),
+			/*
+             * Translate X
+             * See https://tailwindcss.com/docs/translate
+             */
+			["translate"] = new( "translate", traslateScale ),
+			/*
+             * Translate X
+             * See https://tailwindcss.com/docs/translate
+             */
+			["translate-x"] = new( "translate-x", traslateScale ),
+			/*
+             * Translate Y
+             * See https://tailwindcss.com/docs/translate
+             */
+			["translate-y"] = new( "translate-y", traslateScale ),
+			/*
+             * Translate Z
+             * See https://tailwindcss.com/docs/translate
+             */
+			["translate-z"] = new( "translate-z", traslateScale ),
+			/*
+             * Translate None
+             * See https://tailwindcss.com/docs/translate
+             */
+			["translate-none"] = new( ["translate-none"] ),
+
+			// ---------------------
+			// --- Interactivity ---
+			// ---------------------
+
+			/*
+             * Accent Color
+             * See https://tailwindcss.com/docs/accent-color
+             */
+			["accent"] = new( "accent", colorScale ),
+			/*
              * Appearance
              * See https://tailwindcss.com/docs/appearance
              */
-            ["appearance"] = new ClassGroup( "appearance", autoAndNone ),
-            /*
-             * Cursor
-             * See https://tailwindcss.com/docs/cursor
-             */
-            ["cursor"] = new ClassGroup( "cursor", [
-                "auto",
-                "default",
-                "pointer",
-                "wait",
-                "text",
-                "move",
-                "help",
-                "not-allowed",
-                "none",
-                "context-menu",
-                "progress",
-                "cell",
-                "crosshair",
-                "vertical-text",
-                "alias",
-                "copy",
-                "no-drop",
-                "grab",
-                "grabbing",
-                "all-scroll",
-                "col-resize",
-                "row-resize",
-                "n-resize",
-                "e-resize",
-                "s-resize",
-                "w-resize",
-                "ne-resize",
-                "nw-resize",
-                "se-resize",
-                "sw-resize",
-                "ew-resize",
-                "ns-resize",
-                "nesw-resize",
-                "nwse-resize",
-                "zoom-in",
-                "zoom-out",
-                Validators.IsArbitraryValue] ),
-            /*
+			["appearance"] = new( "appearance", ["none", "auto"] ),
+			/*
              * Caret Color
              * See https://tailwindcss.com/docs/caret-color
              */
-            ["caret-color"] = new ClassGroup( "caret", [colors] ),
-            /*
+			["caret-color"] = new( "caret", colorScale ),
+			/*
+             * Color Scheme
+             * See https://tailwindcss.com/docs/color-scheme
+             */
+			["color-scheme"] = new( "scheme", [
+				"normal",
+				"dark",
+				"light",
+				"light-dark",
+				"only-dark",
+				"only-light"
+			] ),
+			/*
+             * Cursor
+             * See https://tailwindcss.com/docs/cursor
+             */
+			["cursor"] = new( "cursor", [
+				"auto",
+				"default",
+				"pointer",
+				"wait",
+				"text",
+				"move",
+				"help",
+				"not-allowed",
+				"none",
+				"context-menu",
+				"progress",
+				"cell",
+				"crosshair",
+				"vertical-text",
+				"alias",
+				"copy",
+				"no-drop",
+				"grab",
+				"grabbing",
+				"all-scroll",
+				"col-resize",
+				"row-resize",
+				"n-resize",
+				"e-resize",
+				"s-resize",
+				"w-resize",
+				"ne-resize",
+				"nw-resize",
+				"se-resize",
+				"sw-resize",
+				"ew-resize",
+				"ns-resize",
+				"nesw-resize",
+				"nwse-resize",
+				"zoom-in",
+				"zoom-out",
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+			/*
+             * Field Sizing
+             * See https://tailwindcss.com/docs/field-sizing
+             */
+			["field-sizing"] = new( "field-sizing", ["fixed", "content"] ),
+			/*
              * Pointer Events
              * See https://tailwindcss.com/docs/pointer-events
              */
-            ["pointer-events"] = new ClassGroup( "pointer-events", autoAndNone ),
-            /*
+			["pointer-events"] = new( "pointer-events", ["auto", "none"] ),
+			/*
              * Resize
              * See https://tailwindcss.com/docs/resize
              */
-            ["resize"] = new ClassGroup( "resize", ["none", "y", "x", ""] ),
-            /*
+			["resize"] = new( "resize", ["none", "", "x", "y"] ),
+			/*
              * Scroll Behavior
              * See https://tailwindcss.com/docs/scroll-behavior
              */
-            ["scroll-behavior"] = new ClassGroup( "scroll", ["auto", "smooth"] ),
-            /*
+			["scroll-behavior"] = new( "scroll", ["auto", "smooth"] ),
+			/*
              * Scroll Margin
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-m"] = new ClassGroup( "scroll-m", spacingWithArbitrary ),
-            /*
+			["scroll-m"] = new( "scroll-m", unambiguousSpacingScale ),
+			/*
              * Scroll Margin X
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-mx"] = new ClassGroup( "scroll-mx", spacingWithArbitrary ),
-            /*
+			["scroll-mx"] = new( "scroll-mx", unambiguousSpacingScale ),
+			/*
              * Scroll Margin Y
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-my"] = new ClassGroup( "scroll-my", spacingWithArbitrary ),
-            /*
+			["scroll-my"] = new( "scroll-my", unambiguousSpacingScale ),
+			/*
              * Scroll Margin Start
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-ms"] = new ClassGroup( "scroll-ms", spacingWithArbitrary ),
-            /*
+			["scroll-ms"] = new( "scroll-ms", unambiguousSpacingScale ),
+			/*
              * Scroll Margin End
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-me"] = new ClassGroup( "scroll-me", spacingWithArbitrary ),
-            /*
+			["scroll-me"] = new( "scroll-me", unambiguousSpacingScale ),
+			/*
              * Scroll Margin Top
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-mt"] = new ClassGroup( "scroll-mt", spacingWithArbitrary ),
-            /*
+			["scroll-mt"] = new( "scroll-mt", unambiguousSpacingScale ),
+			/*
              * Scroll Margin Right
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-mr"] = new ClassGroup( "scroll-mr", spacingWithArbitrary ),
-            /*
+			["scroll-mr"] = new( "scroll-mr", unambiguousSpacingScale ),
+			/*
              * Scroll Margin Bottom
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-mb"] = new ClassGroup( "scroll-mb", spacingWithArbitrary ),
-            /*
+			["scroll-mb"] = new( "scroll-mb", unambiguousSpacingScale ),
+			/*
              * Scroll Margin Left
              * See https://tailwindcss.com/docs/scroll-margin
              */
-            ["scroll-ml"] = new ClassGroup( "scroll-ml", spacingWithArbitrary ),
-            /*
+			["scroll-ml"] = new( "scroll-ml", unambiguousSpacingScale ),
+			/*
              * Scroll Padding
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-p"] = new ClassGroup( "scroll-p", spacingWithArbitrary ),
-            /*
+			["scroll-p"] = new( "scroll-p", unambiguousSpacingScale ),
+			/*
              * Scroll Padding X
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-px"] = new ClassGroup( "scroll-px", spacingWithArbitrary ),
-            /*
+			["scroll-px"] = new( "scroll-px", unambiguousSpacingScale ),
+			/*
              * Scroll Padding Y
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-py"] = new ClassGroup( "scroll-py", spacingWithArbitrary ),
-            /*
+			["scroll-py"] = new( "scroll-py", unambiguousSpacingScale ),
+			/*
              * Scroll Padding Start
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-ps"] = new ClassGroup( "scroll-ps", spacingWithArbitrary ),
-            /*
+			["scroll-ps"] = new( "scroll-ps", unambiguousSpacingScale ),
+			/*
              * Scroll Padding End
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-pe"] = new ClassGroup( "scroll-pe", spacingWithArbitrary ),
-            /*
+			["scroll-pe"] = new( "scroll-pe", unambiguousSpacingScale ),
+			/*
              * Scroll Padding Top
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-pt"] = new ClassGroup( "scroll-pt", spacingWithArbitrary ),
-            /*
+			["scroll-pt"] = new( "scroll-pt", unambiguousSpacingScale ),
+			/*
              * Scroll Padding Right
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-pr"] = new ClassGroup( "scroll-pr", spacingWithArbitrary ),
-            /*
+			["scroll-pr"] = new( "scroll-pr", unambiguousSpacingScale ),
+			/*
              * Scroll Padding Bottom
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-pb"] = new ClassGroup( "scroll-pb", spacingWithArbitrary ),
-            /*
+			["scroll-pb"] = new( "scroll-pb", unambiguousSpacingScale ),
+			/*
              * Scroll Padding Left
              * See https://tailwindcss.com/docs/scroll-padding
              */
-            ["scroll-pl"] = new ClassGroup( "scroll-pl", spacingWithArbitrary ),
-            /*
+			["scroll-pl"] = new( "scroll-pl", unambiguousSpacingScale ),
+			/*
              * Scroll Snap Align
              * See https://tailwindcss.com/docs/scroll-snap-align
              */
-            ["snap-align"] = new ClassGroup( "snap", ["start", "end", "center", "align-none"] ),
-            /*
+			["snap-align"] = new( "snap", ["start", "end", "center", "align-none"] ),
+			/*
              * Scroll Snap Stop
              * See https://tailwindcss.com/docs/scroll-snap-stop
              */
-            ["snap-stop"] = new ClassGroup( "snap", ["normal", "always"] ),
-            /*
+			["snap-stop"] = new( "snap", ["normal", "always"] ),
+			/*
              * Scroll Snap Type
              * See https://tailwindcss.com/docs/scroll-snap-type
              */
-            ["snap-type"] = new ClassGroup( "snap", ["none", "x", "y", "both"] ),
-            /*
+			["snap-type"] = new( "snap", ["none", "x", "y", "both"] ),
+			/*
              * Scroll Snap Type Strictness
              * See https://tailwindcss.com/docs/scroll-snap-type
              */
-            ["snap-strictness"] = new ClassGroup( "snap", ["mandatory", "proximity"] ),
-            /*
+			["snap-strictness"] = new( "snap", ["mandatory", "proximity"] ),
+			/*
              * Touch Action
              * See https://tailwindcss.com/docs/touch-action
              */
-            ["touch"] = new ClassGroup( "touch", ["auto", "none", "manipulation"] ),
-            /*
+			["touch"] = new( "touch", ["auto", "none", "manipulation"] ),
+			/*
              * Touch Action X
              * See https://tailwindcss.com/docs/touch-action
              */
-            ["touch-x"] = new ClassGroup( "touch-pan", ["x", "left", "right"] ),
-            /*
+			["touch-x"] = new( "touch-pan", ["x", "left", "right"] ),
+			/*
              * Touch Action Y
              * See https://tailwindcss.com/docs/touch-action
              */
-            ["touch-y"] = new ClassGroup( "touch-pan", ["y", "up", "down"] ),
-            /*
+			["touch-y"] = new( "touch-pan", ["y", "up", "down"] ),
+			/*
              * Touch Action Pinch Zoom
              * See https://tailwindcss.com/docs/touch-action
              */
-            ["touch-pz"] = new ClassGroup( ["touch-pinch-zoom"] ),
-            /*
+			["touch-pz"] = new( ["touch-pinch-zoom"] ),
+			/*
              * User Select
              * See https://tailwindcss.com/docs/user-select
              */
-            ["select"] = new ClassGroup( "select", ["none", "text", "all", "auto"] ),
-            /*
+			["select"] = new( "select", ["none", "text", "all", "auto"] ),
+			/*
              * Will Change
              * See https://tailwindcss.com/docs/will-change
              */
-            ["will-change"] = new ClassGroup( "will-change", ["auto", "scroll", "contents", "transform", Validators.IsArbitraryValue] ),
-            /*
+			["will-change"] = new( "will-change", [
+				"auto",
+				"scroll",
+				"contents",
+				"transform",
+				V.IsArbitraryValue,
+				V.IsArbitraryVariable
+			] ),
+
+			// -----------
+			// --- SVG ---
+			// -----------
+
+			/*
              * Fill
              * See https://tailwindcss.com/docs/fill
              */
-            ["fill"] = new ClassGroup( "fill", ["none", colors] ),
-            /*
+			["fill"] = new( "fill", ["none", .. colorScale] ),
+			/*
              * Stroke Width
              * See https://tailwindcss.com/docs/stroke-width
              */
-            ["stroke-w"] = new ClassGroup( "stroke", [Validators.IsLength, Validators.IsArbitraryLength, Validators.IsArbitraryNumber] ),
-            /*
+			["stroke-w"] = new( "stroke", [
+				V.IsNumber,
+				V.IsArbitraryNumber,
+				V.IsArbitraryLength,
+				V.IsArbitraryVariableLength
+			] ),
+			/*
              * Stroke
              * See https://tailwindcss.com/docs/stroke
              */
-            ["stroke"] = new ClassGroup( "stroke", ["none", colors] ),
-            /*
-             * Screen Readers
-             * See https://tailwindcss.com/docs/screen-readers
-             */
-            ["sr"] = new ClassGroup( ["sr-only", "not-sr-only"] ),
-            /*
+			["stroke"] = new( "stroke", ["none", .. colorScale] ),
+
+			// ---------------------
+			// --- Accessibility ---
+			// ---------------------
+
+			/*
              * Forced Color Adjust
              * See https://tailwindcss.com/docs/forced-color-adjust
              */
-            ["forced-color-adjust"] = new ClassGroup( "forced-color-adjust", autoAndNone )
-        };
+			["forced-color-adjust"] = new( "forced-color-adjust", ["auto", "none"] )
+		};
 
-        ConflictingClassGroups = new( 46 )
-        {
-            ["overflow"] = ["overflow-x", "overflow-y"],
-            ["overscroll"] = ["overscroll-x", "overscroll-y"],
-            ["inset"] = ["inset-x", "inset-y", "start", "end", "top", "right", "bottom", "left"],
-            ["inset-x"] = ["right", "left"],
-            ["inset-y"] = ["top", "bottom"],
-            ["flex"] = ["basis", "grow", "shrink"],
-            ["gap"] = ["gap-x", "gap-y"],
-            ["p"] = ["px", "py", "ps", "pe", "pt", "pr", "pb", "pl"],
-            ["px"] = ["pr", "pl"],
-            ["py"] = ["pt", "pb"],
-            ["m"] = ["mx", "my", "ms", "me", "mt", "mr", "mb", "ml"],
-            ["mx"] = ["mr", "ml"],
-            ["my"] = ["mt", "mb"],
-            ["size"] = ["w", "h"],
-            ["font-size"] = ["leading"],
-            ["fvn-normal"] = [
-                "fvn-ordinal",
-                "fvn-slashed-zero",
-                "fvn-figure",
-                "fvn-spacing",
-                "fvn-fraction"
-            ],
-            ["fvn-ordinal"] = ["fvn-normal"],
-            ["fvn-slashed-zero"] = ["fvn-normal"],
-            ["fvn-figure"] = ["fvn-normal"],
-            ["fvn-spacing"] = ["fvn-normal"],
-            ["fvn-fraction"] = ["fvn-normal"],
-            ["line-clamp"] = ["display", "overflow"],
-            ["rounded"] = [
-                "rounded-s",
-                "rounded-e",
-                "rounded-t",
-                "rounded-r",
-                "rounded-b",
-                "rounded-l",
-                "rounded-ss",
-                "rounded-se",
-                "rounded-ee",
-                "rounded-es",
-                "rounded-tl",
-                "rounded-tr",
-                "rounded-br",
-                "rounded-bl"
-            ],
-            ["rounded-s"] = ["rounded-ss", "rounded-es"],
-            ["rounded-e"] = ["rounded-se", "rounded-ee"],
-            ["rounded-t"] = ["rounded-tl", "rounded-tr"],
-            ["rounded-r"] = ["rounded-tr", "rounded-br"],
-            ["rounded-b"] = ["rounded-br", "rounded-bl"],
-            ["rounded-l"] = ["rounded-tl", "rounded-bl"],
-            ["border-spacing"] = ["border-spacing-x", "border-spacing-y"],
-            ["border-w"] = [
-                "border-w-s",
-                "border-w-e",
-                "border-w-t",
-                "border-w-r",
-                "border-w-b",
-                "border-w-l"
-            ],
-            ["border-w-x"] = ["border-w-r", "border-w-l"],
-            ["border-w-y"] = ["border-w-t", "border-w-b"],
-            ["border-color"] = [
-                "border-color-t",
-                "border-color-r",
-                "border-color-b",
-                "border-color-l"
-            ],
-            ["border-color-x"] = ["border-color-r", "border-color-l"],
-            ["border-color-y"] = ["border-color-t", "border-color-b"],
-            ["scroll-m"] = [
-                "scroll-mx",
-                "scroll-my",
-                "scroll-ms",
-                "scroll-me",
-                "scroll-mt",
-                "scroll-mr",
-                "scroll-mb",
-                "scroll-ml"
-            ],
-            ["scroll-mx"] = ["scroll-mr", "scroll-ml"],
-            ["scroll-my"] = ["scroll-mt", "scroll-mb"],
-            ["scroll-p"] = [
-                "scroll-px",
-                "scroll-py",
-                "scroll-ps",
-                "scroll-pe",
-                "scroll-pt",
-                "scroll-pr",
-                "scroll-pb",
-                "scroll-pl"
-            ],
-            ["scroll-px"] = ["scroll-pr", "scroll-pl"],
-            ["scroll-py"] = ["scroll-pt", "scroll-pb"],
-            ["touch"] = ["touch-x", "touch-y", "touch-pz"],
-            ["touch-x"] = ["touch"],
-            ["touch-y"] = ["touch"],
-            ["touch-pz"] = ["touch"]
-        };
-        ConflictingClassGroupModifiers = new( 1 )
-        {
-            ["font-size"] = ["leading"]
-        };
-    }
+		ConflictingClassGroups = new( 46 )
+		{
+			["overflow"] = ["overflow-x", "overflow-y"],
+			["overscroll"] = ["overscroll-x", "overscroll-y"],
+			["inset"] = ["inset-x", "inset-y", "start", "end", "top", "right", "bottom", "left"],
+			["inset-x"] = ["right", "left"],
+			["inset-y"] = ["top", "bottom"],
+			["flex"] = ["basis", "grow", "shrink"],
+			["gap"] = ["gap-x", "gap-y"],
+			["p"] = ["px", "py", "ps", "pe", "pt", "pr", "pb", "pl"],
+			["px"] = ["pr", "pl"],
+			["py"] = ["pt", "pb"],
+			["m"] = ["mx", "my", "ms", "me", "mt", "mr", "mb", "ml"],
+			["mx"] = ["mr", "ml"],
+			["my"] = ["mt", "mb"],
+			["size"] = ["w", "h"],
+			["font-size"] = ["leading"],
+			["fvn-normal"] = [
+				"fvn-ordinal",
+				"fvn-slashed-zero",
+				"fvn-figure",
+				"fvn-spacing",
+				"fvn-fraction"
+			],
+			["fvn-ordinal"] = ["fvn-normal"],
+			["fvn-slashed-zero"] = ["fvn-normal"],
+			["fvn-figure"] = ["fvn-normal"],
+			["fvn-spacing"] = ["fvn-normal"],
+			["fvn-fraction"] = ["fvn-normal"],
+			["line-clamp"] = ["display", "overflow"],
+			["rounded"] = [
+				"rounded-s",
+				"rounded-e",
+				"rounded-t",
+				"rounded-r",
+				"rounded-b",
+				"rounded-l",
+				"rounded-ss",
+				"rounded-se",
+				"rounded-ee",
+				"rounded-es",
+				"rounded-tl",
+				"rounded-tr",
+				"rounded-br",
+				"rounded-bl"
+			],
+			["rounded-s"] = ["rounded-ss", "rounded-es"],
+			["rounded-e"] = ["rounded-se", "rounded-ee"],
+			["rounded-t"] = ["rounded-tl", "rounded-tr"],
+			["rounded-r"] = ["rounded-tr", "rounded-br"],
+			["rounded-b"] = ["rounded-br", "rounded-bl"],
+			["rounded-l"] = ["rounded-tl", "rounded-bl"],
+			["border-spacing"] = ["border-spacing-x", "border-spacing-y"],
+			["border-w"] = [
+				"border-w-s",
+				"border-w-e",
+				"border-w-t",
+				"border-w-r",
+				"border-w-b",
+				"border-w-l"
+			],
+			["border-w-x"] = ["border-w-r", "border-w-l"],
+			["border-w-y"] = ["border-w-t", "border-w-b"],
+			["border-color"] = [
+				"border-color-s",
+				"border-color-e",
+				"border-color-t",
+				"border-color-r",
+				"border-color-b",
+				"border-color-l"
+			],
+			["border-color-x"] = ["border-color-r", "border-color-l"],
+			["border-color-y"] = ["border-color-t", "border-color-b"],
+			["translate"] = ["translate-x", "translate-y", "translate-none"],
+			["translate-none"] = ["translate", "translate-x", "translate-y", "translate-z"],
+			["scroll-m"] = [
+				"scroll-mx",
+				"scroll-my",
+				"scroll-ms",
+				"scroll-me",
+				"scroll-mt",
+				"scroll-mr",
+				"scroll-mb",
+				"scroll-ml"
+			],
+			["scroll-mx"] = ["scroll-mr", "scroll-ml"],
+			["scroll-my"] = ["scroll-mt", "scroll-mb"],
+			["scroll-p"] = [
+				"scroll-px",
+				"scroll-py",
+				"scroll-ps",
+				"scroll-pe",
+				"scroll-pt",
+				"scroll-pr",
+				"scroll-pb",
+				"scroll-pl"
+			],
+			["scroll-px"] = ["scroll-pr", "scroll-pl"],
+			["scroll-py"] = ["scroll-pt", "scroll-pb"],
+			["touch"] = ["touch-x", "touch-y", "touch-pz"],
+			["touch-x"] = ["touch"],
+			["touch-y"] = ["touch"],
+			["touch-pz"] = ["touch"]
+		};
 
-    /// <summary>
-    /// Creates a new instance of the <see cref="TwMergeConfig"/> class with default settings.
-    /// </summary>
-    /// <returns>A <see cref="TwMergeConfig"/> instance.</returns>
-    public static TwMergeConfig Default() => new();
+		ConflictingClassGroupModifiers = new( 1 )
+		{
+			["font-size"] = ["leading"]
+		};
 
-    /// <summary>
-    /// Extends the current configuration with the values from the provided <see cref="ExtendedConfig"/>.
-    /// </summary>
-    /// <param name="extendedConfig">The extended configuration.</param>
-    public void Extend( ExtendedConfig extendedConfig )
-    {
-        // Extend the theme
-        Extend( Theme, extendedConfig.Theme );
+		OrderSensitiveModifiers = [
+			"before",
+			"after",
+			"placeholder",
+			"file",
+			"marker",
+			"selection",
+			"first-line",
+			"first-letter",
+			"backdrop",
+			"*",
+			"**"
+		];
+	}
 
-        // Extend the class groups
-        ExtendClassGroups( extendedConfig.ClassGroups );
+	/// <summary>
+	/// Creates a new instance of the <see cref="TwMergeConfig"/> class with default settings.
+	/// </summary>
+	/// <returns>A <see cref="TwMergeConfig"/> instance.</returns>
+	public static TwMergeConfig Default() => new();
 
-        // Extend the conflicting class groups
-        Extend( ConflictingClassGroups, extendedConfig.ConflictingClassGroups );
+	/// <summary>
+	/// Extends the current configuration with the values from the provided <see cref="ExtendedConfig"/>.
+	/// </summary>
+	/// <param name="extendedConfig">The extended configuration.</param>
+	public void Extend( ExtendedConfig extendedConfig )
+	{
+		// Extend the theme
+		Extend( Theme, extendedConfig.Theme );
 
-        // Extend the conflicting class group modifiers
-        Extend( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
+		// Extend the class groups
+		ExtendClassGroups( extendedConfig.ClassGroups );
 
-        static void Extend<T2>(
-            Dictionary<string, T2[]> originalDict,
-            Dictionary<string, T2[]>? extendDict )
-        {
-            if( extendDict is not { Count: > 0 } )
-            {
-                return;
-            }
+		// Extend the conflicting class groups
+		Extend( ConflictingClassGroups, extendedConfig.ConflictingClassGroups );
 
-            foreach( var (key, values) in extendDict )
-            {
-                originalDict[key] = originalDict.TryGetValue( key, out var initialValues )
-                    ? MergeArrays( initialValues, values )
-                    : values;
-            }
-        }
+		// Extend the conflicting class group modifiers
+		Extend( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
 
-        static T2[] MergeArrays<T2>( T2[] array1, T2[] array2 )
-        {
-            var mergedArray = new T2[array1.Length + array2.Length];
-            array1.CopyTo( mergedArray, 0 );
-            array2.CopyTo( mergedArray, array1.Length );
-            return mergedArray;
-        }
+		static void Extend<T2>(
+			Dictionary<string, T2[]> originalDict,
+			Dictionary<string, T2[]>? extendDict )
+		{
+			if( extendDict is not { Count: > 0 } )
+			{
+				return;
+			}
 
-        void ExtendClassGroups( Dictionary<string, ClassGroup>? extendDict )
-        {
-            if( extendDict is not { Count: > 0 } )
-            {
-                return;
-            }
+			foreach( var (key, values) in extendDict )
+			{
+				originalDict[key] = originalDict.TryGetValue( key, out var initialValues )
+					? MergeArrays( initialValues, values )
+					: values;
+			}
+		}
 
-            foreach( var (classGroupId, classGroup) in extendDict )
-            {
-                if( ClassGroups.TryGetValue( classGroupId, out var existingGroup ) )
-                {
-                    var mergedDefinitions = MergeArrays( existingGroup.Definitions, classGroup.Definitions );
-                    ClassGroups[classGroupId] = new ClassGroup( classGroup.BaseClassName, mergedDefinitions );
-                }
-                else
-                {
-                    ClassGroups[classGroupId] = classGroup;
-                }
-            }
-        }
-    }
+		static T2[] MergeArrays<T2>( T2[] array1, T2[] array2 )
+		{
+			var mergedArray = new T2[array1.Length + array2.Length];
+			array1.CopyTo( mergedArray, 0 );
+			array2.CopyTo( mergedArray, array1.Length );
+			return mergedArray;
+		}
 
-    /// <summary>
-    /// Overrides the current configuration with the values from the provided <see cref="ExtendedConfig"/>.
-    /// </summary>
-    /// <param name="extendedConfig">The extended configuration.</param>
-    public void Override( ExtendedConfig extendedConfig )
-    {
-        // Override the theme
-        Override( Theme, extendedConfig.Theme );
+		void ExtendClassGroups( Dictionary<string, ClassGroup>? extendDict )
+		{
+			if( extendDict is not { Count: > 0 } )
+			{
+				return;
+			}
 
-        // Override the class groups
-        Override( ClassGroups, extendedConfig.ClassGroups );
+			foreach( var (classGroupId, classGroup) in extendDict )
+			{
+				if( ClassGroups.TryGetValue( classGroupId, out var existingGroup ) )
+				{
+					var mergedDefinitions = MergeArrays( existingGroup.Definitions, classGroup.Definitions );
+					ClassGroups[classGroupId] = new ClassGroup( classGroup.BaseClassName, mergedDefinitions );
+				}
+				else
+				{
+					ClassGroups[classGroupId] = classGroup;
+				}
+			}
+		}
+	}
 
-        // Override the conflicting class groups
-        Override( ConflictingClassGroups, extendedConfig.ConflictingClassGroups );
+	/// <summary>
+	/// Overrides the current configuration with the values from the provided <see cref="ExtendedConfig"/>.
+	/// </summary>
+	/// <param name="extendedConfig">The extended configuration.</param>
+	public void Override( ExtendedConfig extendedConfig )
+	{
+		// Override the theme
+		Override( Theme, extendedConfig.Theme );
 
-        // Override the conflicting class group modifiers
-        Override( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
+		// Override the class groups
+		Override( ClassGroups, extendedConfig.ClassGroups );
 
-        static void Override<T2>(
-            Dictionary<string, T2> originalDict,
-            Dictionary<string, T2>? overrideDict )
-        {
-            if( overrideDict is not { Count: > 0 } )
-            {
-                return;
-            }
+		// Override the conflicting class groups
+		Override( ConflictingClassGroups, extendedConfig.ConflictingClassGroups );
 
-            foreach( var (key, value) in overrideDict )
-            {
-                originalDict[key] = value;
-            }
-        }
-    }
+		// Override the conflicting class group modifiers
+		Override( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
+
+		static void Override<T2>(
+			Dictionary<string, T2> originalDict,
+			Dictionary<string, T2>? overrideDict )
+		{
+			if( overrideDict is not { Count: > 0 } )
+			{
+				return;
+			}
+
+			foreach( var (key, value) in overrideDict )
+			{
+				originalDict[key] = value;
+			}
+		}
+	}
 }

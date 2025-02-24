@@ -7,193 +7,244 @@ namespace TailwindMerge;
 
 internal partial class TwMergeContext
 {
-    private readonly TwMergeConfig _config;
-    private readonly ClassNameNode _classMap;
+	private readonly TwMergeConfig _config;
+	private readonly ClassNameNode _classMap;
 
-    internal TwMergeContext( TwMergeConfig config )
-    {
-        _config = config;
-        _classMap = TwMergeMapFactory.Create( config );
-    }
+	internal TwMergeContext( TwMergeConfig config )
+	{
+		_config = config;
+		_classMap = TwMergeMapFactory.Create( config );
+	}
 
-    internal string? GetClassGroupId( string className )
-    {
-        var classNameParts = className.Split( Constants.ClassNameSeparator );
+	internal string? GetClassGroupId( string className )
+	{
+		var classNameParts = className.Split( Constants.ClassNameSeparator );
 
-        // Classes like "-inset-1" produce an empty string as the first classNamePart.
-        // We assume that classes for negative values are used correctly and remove it from classNameParts.
-        if( classNameParts[0] == "" && classNameParts.Length != 1 )
-        {
-            classNameParts = classNameParts.Skip( 1 ).ToArray();
-        }
+		// Classes like "-inset-1" produce an empty string as the first classNamePart.
+		// We assume that classes for negative values are used correctly and remove it from classNameParts.
+		if( classNameParts[0] == "" && classNameParts.Length != 1 )
+		{
+			classNameParts = classNameParts.Skip( 1 ).ToArray();
+		}
 
-        return GetClassGroupIdRecursive( classNameParts, _classMap ) ?? GetGroupIdForArbitraryProperty( className );
-    }
+		return GetClassGroupIdRecursive( classNameParts, _classMap ) ?? GetGroupIdForArbitraryProperty( className );
+	}
 
-    internal string[]? GetConflictingClassGroupIds( string classGroupId, bool hasPostfixModifier )
-    {
-        var conflicts = _config.ConflictingClassGroups.GetValueOrDefault( classGroupId );
+	internal string[]? GetConflictingClassGroupIds( string classGroupId, bool hasPostfixModifier )
+	{
+		var conflicts = _config.ConflictingClassGroups.GetValueOrDefault( classGroupId );
 
-        if( hasPostfixModifier && 
-            _config.ConflictingClassGroupModifiers.TryGetValue( classGroupId, out var conflictingModifiers ) )
-        {
-            return [
-                .. conflicts,
-                .. conflictingModifiers];
-        }
+		if( hasPostfixModifier &&
+			_config.ConflictingClassGroupModifiers.TryGetValue( classGroupId, out var conflictingModifiers ) )
+		{
+			return [
+				.. conflicts,
+				.. conflictingModifiers];
+		}
 
-        return conflicts;
-    }
+		return conflicts;
+	}
 
-    // TODO: Refactor
-    internal ClassModifiersInfo SplitModifiers( string className )
-    {
-        var separator = _config.Separator;
-        var modifiers = new List<string>();
-        var bracketDepth = 0;
-        var modifierStart = 0;
-        int? postfixModifierPosition = null;
+	// TODO: Refactor
+	internal ClassModifiersInfo SplitModifiers( string className )
+	{
+		Func<string, ClassModifiersInfo> parseClassName = ( string className ) =>
+		{
+			var modifiers = new List<string>();
+			var bracketDepth = 0;
+			var parentDepth = 0;
+			var modifierStart = 0;
+			var postfixModifierPosition = default( int? );
 
-        for( var i = 0; i < className.Length; i++ )
-        {
-            var currChar = className[i];
+			for( var i = 0; i < className.Length; i++ )
+			{
+				var currChar = className[i];
 
-            if( bracketDepth == 0 )
-            {
-                if( currChar == separator[0] &&
-                    ( separator.Length == 1 || className.Substring( i, separator.Length ) == separator ) )
-                {
-                    modifiers.Add( className[modifierStart..i] );
-                    modifierStart = i + separator.Length;
-                    continue;
-                }
+				if( bracketDepth == 0 && parentDepth == 0 )
+				{
+					if( currChar == Constants.ModifierSeparator )
+					{
+						modifiers.Add( className[modifierStart..i] );
+						modifierStart = i + Constants.ModifierSeparatorLength;
+						continue;
+					}
 
-                if( currChar == '/' )
-                {
-                    postfixModifierPosition = i;
-                    continue;
-                }
-            }
+					if( currChar == '/' )
+					{
+						postfixModifierPosition = i;
+						continue;
+					}
+				}
 
-            if( currChar == '[' )
-            {
-                bracketDepth++;
-            }
-            else if( currChar == ']' )
-            {
-                bracketDepth--;
-            }
-        }
+				switch( currChar )
+				{
+					case '[':
+						bracketDepth++;
+						break;
+					case ']':
+						bracketDepth--;
+						break;
+					case '(':
+						parentDepth++;
+						break;
+					case ')':
+						parentDepth--;
+						break;
+				}
+			}
 
-        var classNameWithImportantModifier = modifiers.Count == 0
-            ? className
-            : className[modifierStart..];
+			var baseClassNameWithImportantModifier =
+				modifiers.Count == 0 ? className : className[modifierStart..];
+			var baseClassName = StripImportantModifier( baseClassNameWithImportantModifier );
+			var hasImportantModifier = baseClassName != baseClassNameWithImportantModifier;
 
-        var hasImportantModifier =
-            classNameWithImportantModifier.StartsWith( Constants.ImportantModifier );
+			postfixModifierPosition = postfixModifierPosition > modifierStart
+				? postfixModifierPosition - modifierStart
+				: null;
 
-        var baseClassName = hasImportantModifier
-            ? classNameWithImportantModifier[1..]
-            : classNameWithImportantModifier;
+			return new ClassModifiersInfo(
+				modifiers,
+				hasImportantModifier,
+				baseClassName,
+				postfixModifierPosition
+			);
+		};
 
-        postfixModifierPosition = postfixModifierPosition > modifierStart
-            ? postfixModifierPosition - modifierStart
-            : null;
+		if( !string.IsNullOrEmpty( _config.Prefix ) )
+		{
+			var fullPrefix = _config.Prefix + Constants.ModifierSeparator;
+			var parseClassNameOriginal = parseClassName;
 
-        return new ClassModifiersInfo(
-            baseClassName,
-            hasImportantModifier,
-            postfixModifierPosition,
-            modifiers
-        );
-    }
+			parseClassName = ( className ) =>
+			{
+				if( className.StartsWith( fullPrefix ) )
+				{
+					return parseClassNameOriginal( className[fullPrefix.Length..] );
+				}
+				else
+				{
+					return new ClassModifiersInfo(
+						Modifiers: [],
+						HasImportantModifier: false,
+						BaseClassName: className,
+						PostfixModifierPosition: null,
+						IsExternal: true
+					);
+				}
+			};
+		}
 
-    internal ICollection<string> SortModifiers( ICollection<string> modifiers )
-    {
-        if( modifiers.Count <= 1 )
-        {
-            return modifiers;
-        }
+		// Skipping 'experimentalParseClassName' for the time being.
+		// https://github.com/dcastil/tailwind-merge/blob/main/src/lib/parse-class-name.ts#L83
 
-        var sortedModifiers = new List<string>();
-        var unsortedModifiers = new List<string>();
+		return parseClassName( className );
+	}
 
-        foreach( var modifier in modifiers )
-        {
-            if( modifier.StartsWith( '[' ) )
-            {
-                // Sort the unsorted modifiers and append to result
-                if( unsortedModifiers.Count > 0 )
-                {
-                    unsortedModifiers.Sort();
-                    sortedModifiers.AddRange( unsortedModifiers );
-                    unsortedModifiers.Clear();
-                }
+	internal ICollection<string> SortModifiers( ICollection<string> modifiers )
+	{
+		if( modifiers.Count <= 1 )
+		{
+			return modifiers;
+		}
 
-                // Append the arbitrary variant directly to maintain position
-                sortedModifiers.Add( modifier );
-            }
-            else
-            {
-                // Collect regular modifiers
-                unsortedModifiers.Add( modifier );
-            }
-        }
+		var sortedModifiers = new List<string>();
+		var unsortedModifiers = new List<string>();
 
-        if( unsortedModifiers.Count > 0 )
-        {
-            unsortedModifiers.Sort();
-            sortedModifiers.AddRange( unsortedModifiers );
-        }
+		foreach( var modifier in modifiers )
+		{
+			var isPositionSensitive = modifier.StartsWith( '[' ) || _config.OrderSensitiveModifiers.Contains( modifier );
 
-        return sortedModifiers;
-    }
+			if( isPositionSensitive )
+			{
+				if( unsortedModifiers.Count > 0 )
+				{
+					unsortedModifiers.Sort();
+					sortedModifiers.AddRange( unsortedModifiers );
+					unsortedModifiers.Clear();
+				}
 
-    private string? GetClassGroupIdRecursive( string[] classNameParts, ClassNameNode node )
-    {
-        if( classNameParts.Length == 0 )
-        {
-            return node.ClassGroupId;
-        }
+				sortedModifiers.Add( modifier );
+			}
+			else
+			{
+				unsortedModifiers.Add( modifier );
+			}
+		}
 
-        var currentClassNamePart = classNameParts[0];
+		if( unsortedModifiers.Count > 0 )
+		{
+			unsortedModifiers.Sort();
+			sortedModifiers.AddRange( unsortedModifiers );
+		}
 
-        if( node.Next is not null && node.Next.TryGetValue( currentClassNamePart, out var nextNode ) )
-        {
-            var classGroupId = GetClassGroupIdRecursive( classNameParts[1..], nextNode );
+		return sortedModifiers;
+	}
 
-            if( !string.IsNullOrEmpty( classGroupId ) )
-            {
-                return classGroupId;
-            }
-        }
+	private static string? GetClassGroupIdRecursive( string[] classNameParts, ClassNameNode node )
+	{
+		if( classNameParts.Length == 0 )
+		{
+			return node.ClassGroupId;
+		}
 
-        if( node.Validators is { Count: 0 } )
-        {
-            return null;
-        }
+		var currentClassNamePart = classNameParts[0];
 
-        var classNameRest = string.Join( Constants.ClassNameSeparator, classNameParts );
+		if( node.Next is not null && node.Next.TryGetValue( currentClassNamePart, out var nextNode ) )
+		{
+			var classGroupId = GetClassGroupIdRecursive( classNameParts[1..], nextNode );
 
-        return node.Validators?.FirstOrDefault( validator => validator.Validator( classNameRest ) ).ClassGroupId;
-    }
+			if( !string.IsNullOrEmpty( classGroupId ) )
+			{
+				return classGroupId;
+			}
+		}
 
-    private string? GetGroupIdForArbitraryProperty( string className )
-    {
-        var match = ArbitraryPropertyRegex().Match( className );
-        if( match.Success )
-        {
-            var arbitraryPropertyClassName = match.Groups[1].Value;
-            if( !string.IsNullOrEmpty( arbitraryPropertyClassName ) )
-            {
-                var property = arbitraryPropertyClassName[..arbitraryPropertyClassName.IndexOf( ':' )];
-                return "arbitrary.." + property;
-            }
-        }
+		if( node.Validators is { Count: 0 } )
+		{
+			return null;
+		}
 
-        return null;
-    }
+		var classNameRest = string.Join( Constants.ClassNameSeparator, classNameParts );
 
-    [GeneratedRegex( @"^\[(.+)\]$" )]
-    private static partial Regex ArbitraryPropertyRegex();
+		return node.Validators?.FirstOrDefault( validator => validator.Validator( classNameRest ) ).ClassGroupId;
+	}
+
+	private static string? GetGroupIdForArbitraryProperty( string className )
+	{
+		var match = ArbitraryPropertyRegex().Match( className );
+		if( match.Success )
+		{
+			var arbitraryPropertyClassName = match.Groups[1].Value;
+			if( !string.IsNullOrEmpty( arbitraryPropertyClassName ) )
+			{
+				var property = arbitraryPropertyClassName[..arbitraryPropertyClassName.IndexOf( ':' )];
+				return "arbitrary.." + property;
+			}
+		}
+
+		return null;
+	}
+
+	private static string StripImportantModifier( string className )
+	{
+		if( className.EndsWith( Constants.ImportantModifier ) )
+		{
+			return className[..^1];
+		}
+
+		/*
+         * In Tailwind CSS v3 the important modifier was at the start of the base class name. 
+         * This is still supported for legacy reasons.
+         * See https://github.com/dcastil/tailwind-merge/issues/513#issuecomment-2614029864
+         */
+		if( className.StartsWith( Constants.ImportantModifier ) )
+		{
+			return className[1..];
+		}
+
+		return className;
+	}
+
+	[GeneratedRegex( @"^\[(.+)\]$" )]
+	private static partial Regex ArbitraryPropertyRegex();
 }

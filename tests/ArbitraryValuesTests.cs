@@ -22,7 +22,7 @@ public class ArbitraryValuesTests
     [InlineData( "brightness-90 brightness-[1.75]", "brightness-[1.75]" )]
     [InlineData( "min-h-[0.5px] min-h-[0]", "min-h-[0]" )]
     [InlineData( "text-[0.5px] text-[color:0]", "text-[0.5px] text-[color:0]" )]
-    [InlineData( "text-[0.5px] text-[--my-0]", "text-[0.5px] text-[--my-0]" )]
+    [InlineData( "text-[0.5px] text-(--my-0)", "text-[0.5px] text-(--my-0)" )]
     public void Merge_ArbitraryValues_MergesCorrectly( string classLists, string expected )
     {
         // Act
@@ -98,9 +98,9 @@ public class ArbitraryValuesTests
         "bg-[length:200px_100px]"
     )]
     [InlineData(
-        "bg-none bg-[url(.)] bg-[image:.] bg-[url:.] bg-[linear-gradient(.)] bg-gradient-to-r",
-        "bg-gradient-to-r"
-    )]
+        "bg-none bg-[url(.)] bg-[image:.] bg-[url:.] bg-[linear-gradient(.)] bg-linear-to-r",
+		"bg-linear-to-r"
+	)]
     public void Merge_AmbiguousArbitraryValues_MergesCorrectly( string classLists, string expected )
     {
         // Act
@@ -109,4 +109,22 @@ public class ArbitraryValuesTests
         // Assert
         Assert.Equal( expected, actual );
     }
+
+	[Theory]
+	[InlineData( 
+        "bg-red bg-(--other-red) bg-bottom bg-(position:-my-pos)", 
+        "bg-(--other-red) bg-(position:-my-pos)" 
+    )]
+	[InlineData( 
+        "shadow-xs shadow-(shadow:--something) shadow-red shadow-(--some-other-shadow) shadow-(color:--some-color)", 
+        "shadow-(--some-other-shadow) shadow-(color:--some-color)" 
+    )]
+	public void Merge_ArbitraryCustomProperties_MergesCorrectly( string classLists, string expected )
+	{
+		// Act
+		var actual = new TwMerge().Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 }

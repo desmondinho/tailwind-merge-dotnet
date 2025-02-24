@@ -10,13 +10,10 @@ internal class TwMergeMapFactory
         // Initialize a root node of the map
         var classMap = new ClassNameNode()
         {
-            // Default classMap contains ~155 nodes.
-            // Setting the capacity to avoid resizing of the dictionary.
-            Next = new( 155 )
+            Next = new( 158 )
         };
 
-        var prefixedClassGroups = GetPrefixedClassGroups( config.ClassGroups, config.Prefix );
-        foreach( var (classGroupId, classGroup) in prefixedClassGroups )
+        foreach( var (classGroupId, classGroup) in config.ClassGroups )
         {
             ProcessClassGroupsRecursively(
                 classMap,
@@ -55,35 +52,24 @@ internal class TwMergeMapFactory
                 next.ClassGroupId = classGroupId;
                 continue;
             }
+
             if( definition is Func<string, bool> validatorDefinition )
             {
                 current.AddValidator( validatorDefinition, classGroupId );
                 continue;
             }
+
             if( definition is ThemeGetter themeGetter )
             {
                 ProcessClassGroupsRecursively( current, classGroupId, null, themeGetter( theme ), theme );
                 continue;
             }
+
             if( definition is ClassGroup nestedClassGroup )
             {
                 var next = current.AddNextNode( nestedClassGroup.BaseClassName! );
                 ProcessClassGroupsRecursively( next, classGroupId, null, nestedClassGroup.Definitions, theme );
             }
         }
-    }
-
-    private static Dictionary<string, ClassGroup> GetPrefixedClassGroups(
-        Dictionary<string, ClassGroup> classGroups,
-        string? prefix )
-    {
-        if( string.IsNullOrEmpty( prefix ) )
-        {
-            return classGroups;
-        }
-
-        return classGroups.ToDictionary(
-            kvp => kvp.Key,
-            kvp => new ClassGroup( prefix + kvp.Value.BaseClassName, kvp.Value.Definitions ) );
     }
 }
