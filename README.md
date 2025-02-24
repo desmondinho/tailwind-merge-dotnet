@@ -15,11 +15,11 @@ A utility service to efficiently merge [Tailwind CSS](https://tailwindcss.com) c
 
 ## Get Started
 
-- [What is it for](./what-is-it-for.md)
-- [Features](./features.md)
-- [Limitations](./limitations.md)
-- [Configuration](./configuration.md)
-- [API reference](./api-reference.md)
+- [What is it for](./docs/what-is-it-for.md)
+- [Features](./docs/features.md)
+- [Limitations](./docs/limitations.md)
+- [Configuration](./docs/configuration.md)
+- [API reference](./docs/api-reference.md)
 
 ## Contributing
 
