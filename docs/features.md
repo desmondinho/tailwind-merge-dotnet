@@ -38,9 +38,16 @@ The order of standard modifiers does not matter for tailwind-merge-dotnet.
 ### Supports arbitrary values
 
 ```csharp
-TwMerge.Merge( "bg-black bg-[color:var(--mystery-var)]" ); // → "bg-[color:var(--mystery-var)]"
+TwMerge.Merge( "bg-black bg-(--my-color) bg-[color:var(--mystery-var)]" ); // → "bg-[color:var(--mystery-var)]"
 TwMerge.Merge( "grid-cols-[1fr,auto] grid-cols-2" ); // → "grid-cols-2"
 ```
+
+> [!Note]
+> Labels necessary in ambiguous cases
+>
+> When using arbitrary values in ambiguous classes like `text-[calc(var(--rebecca)-1rem)]` tailwind-merge-dotnet looks at the arbitrary value for clues to determine what type of class it is. In this case, like in most ambiguous classes, it would try to figure out whether `calc(var(--rebecca)-1rem)` is a length (making it a font-size class) or a color (making it a text-color class). For lengths it takes clues into account like the presence of the `calc()` function or a digit followed by a length unit like `1rem`.
+>
+> But it isn't always possible to figure out the type by looking at the arbitrary value. E.g. in the class `text-[theme(myCustomScale.rebecca)]` tailwind-merge-dotnet can't know the type of the arbitrary value and will default to a text-color class. To make tailwind-merge-dotnet understand the correct type of the arbitrary value in those cases, you can use CSS data type labels [which are used by Tailwind CSS to disambiguate classes](https://tailwindcss.com/docs/adding-custom-styles#resolving-ambiguities): `text-[length:theme(myCustomScale.rebecca)]`.
 
 ### Supports arbitrary properties
 
@@ -53,8 +60,8 @@ TwMerge.Merge( "[--scroll-offset:56px] lg:[--scroll-offset:44px]" );
 TwMerge.Merge( "[padding:1rem] p-8" ); // → "[padding:1rem] p-8"
 ```
 
-> **Warning**
-> tailwind-merge-dotnet does not resolve conflicts between arbitrary properties and their matching Tailwind classes.
+> [!Note]
+> tailwind-merge-dotnet-dotnet does not resolve conflicts between arbitrary properties and their matching Tailwind classes.
 
 ### Supports arbitrary variants
 
@@ -67,17 +74,17 @@ TwMerge.Merge( "dark:hover:[&:nth-child(3)]:py-0 hover:dark:[&:nth-child(3)]:py-
 TwMerge.Merge( "[&:focus]:ring focus:ring-4" ); // → "[&:focus]:ring focus:ring-4"
 ```
 
-> **Warning**
-> tailwind-merge-dotnet does not resolve conflicts between arbitrary variants and their matching predefined modifiers.
+> [!Note]
+> Similarly to arbitrary properties, tailwind-merge-dotnet does not resolve conflicts between arbitrary variants and their matching predefined modifiers for bundle size reasons.
 
-The order of standard modifiers before and after an arbitrary variant in isolation (all modifiers before are one group, all modifiers after are another group) does not matter for tailwind-merge-dotnet. 
-However, it does matter whether a standard modifier is before or after an arbitrary variant both for Tailwind CSS and tailwind-merge-dotnet because the resulting CSS selectors are different.
+The order of standard modifiers before and after an arbitrary variant in isolation (all modifiers before are one group, all modifiers after are another group) does not matter for tailwind-merge-dotnet-dotnet. 
+However, it does matter whether a standard modifier is before or after an arbitrary variant both for Tailwind CSS and tailwind-merge-dotnet-dotnet because the resulting CSS selectors are different.
 
 ### Supports important modifier
 
 ```csharp
-TwMerge.Merge( "!p-3 !p-4 p-5" ); // → "!p-4 p-5"
-TwMerge.Merge( "!right-2 !-inset-x-1" ); // → "!-inset-x-1"
+TwMerge.Merge( "p-3! p-4! p-5" ); // → "p-4! p-5"
+TwMerge.Merge( "right-2! -inset-x-1!" ); // → "-inset-x-1!"
 ```
 
 ### Supports postfix modifiers
@@ -100,7 +107,7 @@ TwMerge.Merge( "text-red text-secret-sauce" ); // → "text-secret-sauce"
 
 ## Composition
 
-tailwind-merge-dotnet has some features that simplify composing class strings together.
+tailwind-merge-dotnet-dotnet has some features that simplify composing class strings together.
 
 ### Supports multiple arguments
 
