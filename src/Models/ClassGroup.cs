@@ -21,6 +21,5 @@ public readonly struct ClassGroup( string? baseClassName, object[] definitions )
     /// Initializes a new instance of the <see cref="ClassGroup"/> struct with the specified <paramref name="definitions"/>.
     /// </summary>
     /// <param name="definitions">An array of definitions associated with the class group.</param>
-    public ClassGroup( object[] definitions )
-        : this( null, definitions ) { }
+    public ClassGroup( object[] definitions ) : this( null, definitions ) { }
 }

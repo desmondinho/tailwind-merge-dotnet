@@ -11,7 +11,7 @@ namespace TailwindMerge;
 public class TwMergeConfig
 {
 	/// <summary>
-	/// Gets or sets the maximum size of the LRU cache used for memoizing results.
+	/// Gets or sets the maximum size value of the LRU cache used for memoizing results.
 	/// </summary>
 	/// <remarks>
 	/// The default is 500
@@ -19,13 +19,13 @@ public class TwMergeConfig
 	public int CacheSize { get; set; }
 
 	/// <summary>
-	/// Gets or sets the <seealso href="https://tailwindcss.com/docs/configuration#prefix">prefix</seealso> 
-	/// that allows you to add a custom prefix to all of Tailwind’s generated utility classes.
+	/// Gets or sets the value that allows to add a custom prefix to 
+	/// all of Tailwind CSS generated utility classes.
 	/// </summary>
 	public string? Prefix { get; set; }
 
 	/// <summary>
-	/// Gets or sets the theme of the configuration.
+	/// Gets or sets the theme scales of the configuration.
 	/// </summary>
 	public Dictionary<string, object[]> Theme { get; set; }
 

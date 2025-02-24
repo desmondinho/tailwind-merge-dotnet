@@ -10,9 +10,7 @@ internal class TwMergeMapFactory
         // Initialize a root node of the map
         var classMap = new ClassNameNode()
         {
-            // Default classMap contains ~155 nodes.
-            // Setting the capacity to avoid resizing of the dictionary.
-            Next = new( 155 )
+            Next = new( 158 )
         };
 
         foreach( var (classGroupId, classGroup) in config.ClassGroups )
