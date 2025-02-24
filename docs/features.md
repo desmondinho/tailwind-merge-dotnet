@@ -128,3 +128,7 @@ This means that if you call `Merge` repeatedly with different arguments that res
 ### Lazy initialization
 
 When you configure a service in the Dependency Injection (DI) container, the initialization is "lazy" in the sense that the service is instantiated the first time it is requested, rather than at application start.
+
+---
+
+[Back to overview](./README.md)
