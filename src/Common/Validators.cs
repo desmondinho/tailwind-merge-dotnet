@@ -180,9 +180,9 @@ public static partial class Validators
 	private static bool IsLabelLength( string label ) => label == "length";
 	private static bool IsLabelNumber( string label ) => label == "number";
 	private static bool IsLabelShadow( string label ) => label == "shadow";
-	private static bool IsLabelPosition( string label ) => label == "position";
+	private static bool IsLabelPosition( string label ) => label is "position" or "percentage";
 	private static bool IsLabelFamilyName( string label ) => label == "family-name";
-	private static bool IsLabelSize( string label ) => label is "length" or "size" or "percentage";
+	private static bool IsLabelSize( string label ) => label is "length" or "size" or "bg-size";
 	private static bool IsLabelImage( string label ) => label is "image" or "url";
 
 	[GeneratedRegex( @"^\[(?:(\w[\w-]*):)?(.+)\]$", RegexOptions.IgnoreCase )]

@@ -94,9 +94,9 @@ public class ArbitraryValuesTests
         "text-[calc(theme(fontSize.4xl)/1.125)]"
     )]
     [InlineData(
-        "bg-cover bg-[percentage:30%] bg-[length:200px_100px]",
-        "bg-[length:200px_100px]"
-    )]
+		"bg-cover bg-[percentage:30%] bg-[size:200px_100px] bg-[length:200px_100px]",
+		"bg-[percentage:30%] bg-[length:200px_100px]"
+	)]
     [InlineData(
         "bg-none bg-[url(.)] bg-[image:.] bg-[url:.] bg-[linear-gradient(.)] bg-linear-to-r",
 		"bg-linear-to-r"

@@ -99,6 +99,7 @@ public class ValidatorsTests
 	[Theory]
 	[InlineData( "[position:2px]", true )]
 	[InlineData( "[position:bla]", true )]
+	[InlineData( "[percentage:bla]", true )]
 
 	[InlineData( "[2px]", false )]
 	[InlineData( "[bla]", false )]
@@ -138,11 +139,11 @@ public class ValidatorsTests
 	[InlineData( "[size:2px]", true )]
 	[InlineData( "[size:bla]", true )]
 	[InlineData( "[length:bla]", true )]
-	[InlineData( "[percentage:bla]", true )]
 
 	[InlineData( "[2px]", false )]
 	[InlineData( "[bla]", false )]
 	[InlineData( "size:2px", false )]
+	[InlineData( "[percentage:bla]", false )]
 	public void IsArbitrarySize( string value, bool expected )
 	{
 		// Act
@@ -247,6 +248,7 @@ public class ValidatorsTests
 	[InlineData( "(other:test)", false )]
 	[InlineData( "(test)", false )]
 	[InlineData( "position:test", false )]
+	[InlineData( "percentage:test", false )]
 	public void IsArbitraryVariablePosition( string value, bool expected )
 	{
 		// Act
@@ -274,11 +276,11 @@ public class ValidatorsTests
 	[Theory]
 	[InlineData( "(size:test)", true )]
 	[InlineData( "(length:test)", true )]
-	[InlineData( "(percentage:test)", true )]
 
 	[InlineData( "(other:test)", false )]
 	[InlineData( "(test)", false )]
 	[InlineData( "shadow:test", false )]
+	[InlineData( "(percentage:test)", false )]
 	public void IsArbitraryVariableSize( string value, bool expected )
 	{
 		// Act
