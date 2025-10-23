@@ -164,8 +164,14 @@ public class TwMergeConfig
 			.. unambiguousSpacingScale
 		];
 		object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
-		object[] repeatScale = ["no-repeat", new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )];
-		object[] sizeScale = [
+		object[] bgPositionScale = [
+			..positionScale, 
+			V.IsArbitraryPosition, 
+			V.IsArbitraryVariablePosition, 
+			new ClassGroup( "position", [V.IsArbitraryValue, V.IsArbitraryVariable] )
+		];
+		object[] bgRepeatScale = ["no-repeat", new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )];
+		object[] bgSizeScale = [
 			"auto",
 			"cover",
 			"contain",
@@ -1054,22 +1060,17 @@ public class TwMergeConfig
              * Background Position
              * See https://tailwindcss.com/docs/background-position
              */
-			["bg-position"] = new( "bg", [
-				.. positionScale,
-				V.IsArbitraryPosition,
-				V.IsArbitraryVariablePosition,
-				new ClassGroup( "position", [V.IsArbitraryValue, V.IsArbitraryVariable] )
-			] ),
+			["bg-position"] = new( "bg", bgPositionScale),
 			/*
              * Background Repeat
              * See https://tailwindcss.com/docs/background-repeat
              */
-			["bg-repeat"] = new( "bg", repeatScale ),
+			["bg-repeat"] = new( "bg", bgRepeatScale ),
 			/*
              * Background Size
              * See https://tailwindcss.com/docs/background-size
              */
-			["bg-size"] = new( "bg", sizeScale ),
+			["bg-size"] = new( "bg", bgSizeScale ),
 			/*
              * Background Image
              * See https://tailwindcss.com/docs/background-image
@@ -1557,27 +1558,22 @@ public class TwMergeConfig
 			 * Mask Position
 			 * See https://tailwindcss.com/docs/mask-position
 			 */
-			["mask-position"] = new( "mask", [
-				.. positionScale,
-				V.IsArbitraryPosition,
-				V.IsArbitraryVariablePosition,
-				new ClassGroup( "position", [V.IsArbitraryValue, V.IsArbitraryVariable] )
-			] ),
+			["mask-position"] = new( "mask", bgPositionScale),
 			/*
 			 * Mask Repeat
 			 * See https://tailwindcss.com/docs/mask-repeat
 			 */
-			["mask-repeat"] = new( "mask", repeatScale ),
+			["mask-repeat"] = new( "mask", bgRepeatScale ),
 			/*
 			 * Mask Size
 			 * See https://tailwindcss.com/docs/mask-size
 			 */
-			["mask-size"] = new( "mask", sizeScale ),
+			["mask-size"] = new( "mask", bgSizeScale ),
 			/*
 			 * Mask Type
 			 * See https://tailwindcss.com/docs/mask-type
 			 */
-			["mask-type"] = new( "mask-type", ["luminance", "alpha"] ),
+			["mask-type"] = new( "mask-type", ["alpha", "luminance"] ),
 			/*
 			 * Mask Image
 			 * See https://tailwindcss.com/docs/mask-image
