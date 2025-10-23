@@ -1016,6 +1016,11 @@ public class TwMergeConfig
              */
 			["break"] = new( "break", ["normal", "words", "all", "keep"] ),
 			/*
+			 * Overflow Wrap
+			 * See https://tailwindcss.com/docs/overflow-wrap
+			 */
+			["wrap"] = new( "wrap", ["break-word", "anywhere", "normal"] ),
+			/*
              * Hyphens
              * See https://tailwindcss.com/docs/hyphens
              */
