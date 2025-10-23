@@ -125,7 +125,7 @@ public static partial class Validators
 	/// Validates whether a string represents an arbitrary shadow value.
 	/// </summary>
 	public static Func<string, bool> IsArbitraryShadow { get; } = value
-		=> GetIsArbitraryValue( value, IsNever, IsShadow );
+		=> GetIsArbitraryValue( value, IsLabelShadow, IsShadow );
 
 	/// <summary>
 	/// Validates whether a string is not an arbitrary value or variable.

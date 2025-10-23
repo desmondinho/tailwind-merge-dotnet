@@ -165,9 +165,9 @@ public class TwMergeConfig
 		];
 		object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
 		object[] bgPositionScale = [
-			..positionScale, 
-			V.IsArbitraryPosition, 
-			V.IsArbitraryVariablePosition, 
+			..positionScale,
+			V.IsArbitraryPosition,
+			V.IsArbitraryVariablePosition,
 			new ClassGroup( "position", [V.IsArbitraryValue, V.IsArbitraryVariable] )
 		];
 		object[] bgRepeatScale = ["no-repeat", new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )];
@@ -1060,7 +1060,7 @@ public class TwMergeConfig
              * Background Position
              * See https://tailwindcss.com/docs/background-position
              */
-			["bg-position"] = new( "bg", bgPositionScale),
+			["bg-position"] = new( "bg", bgPositionScale ),
 			/*
              * Background Repeat
              * See https://tailwindcss.com/docs/background-repeat
@@ -1393,8 +1393,8 @@ public class TwMergeConfig
 			["inset-shadow"] = new( "inset-shadow", [
 				"none",
 				insetShadowTheme,
-				V.IsArbitraryValue,
-				V.IsArbitraryVariable
+				V.IsArbitraryShadow,
+				V.IsArbitraryVariableShadow
 			] ),
 			/*
              * Inset Box Shadow Color
@@ -1558,7 +1558,7 @@ public class TwMergeConfig
 			 * Mask Position
 			 * See https://tailwindcss.com/docs/mask-position
 			 */
-			["mask-position"] = new( "mask", bgPositionScale),
+			["mask-position"] = new( "mask", bgPositionScale ),
 			/*
 			 * Mask Repeat
 			 * See https://tailwindcss.com/docs/mask-repeat
@@ -1613,9 +1613,14 @@ public class TwMergeConfig
 				"",
 				"none",
 				dropShadowTheme,
-				V.IsArbitraryValue,
-				V.IsArbitraryVariable
+				V.IsArbitraryShadow,
+				V.IsArbitraryVariableShadow
 			] ),
+			/*
+             * Drop Shadow Color
+             * See https://tailwindcss.com/docs/filter-drop-shadow#setting-the-shadow-color
+             */
+			["drop-shadow-color"] = new( "drop-shadow", colorScale ),
 			/*
              * Grayscale
              * See https://tailwindcss.com/docs/grayscale

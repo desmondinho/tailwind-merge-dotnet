@@ -105,7 +105,7 @@ public class ClassMapFactoryTests
 				"divide-y",
 				"divide-y-reverse"
 			],
-			["drop"] = ["drop-shadow"],
+			["drop"] = ["drop-shadow", "drop-shadow-color"],
 			["duration"] = ["duration"],
 			["ease"] = ["ease"],
 			["end"] = ["end"],
