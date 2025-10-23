@@ -108,6 +108,10 @@ public class TailwindCssVersionsTests
 	[InlineData( "mask-add mask-subtract", "mask-subtract" )]
 	[InlineData( "mask-type-luminance mask-type-alpha", "mask-type-alpha" )]
 	[InlineData( "mask-clip-border mask-no-clip", "mask-no-clip" )]
+	[InlineData( 
+		"mask-[something] mask-top-left mask-center mask-(position:--var) mask-[position:1px_1px] mask-position-(--var) mask-position-[1px_1px]",
+		"mask-[something] mask-position-[1px_1px]"
+	)]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

@@ -78,36 +78,40 @@ public class TwMergeConfig
 
 		string[] breakScale = ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
 		string[] positionScale = [
-			"bottom",
 			"center",
+			"top",
+			"bottom",
 			"left",
-			"left-bottom",
-			"left-top",
 			"right",
-			"right-bottom",
+			"top-left",
+			"left-top",
+			"top-right",
 			"right-top",
-			"top"
+			"bottom-right",
+			"right-bottom",
+			"bottom-left",
+			"left-bottom"
 		];
 		string[] overflowScale = ["auto", "hidden", "clip", "visible", "scroll"];
 		string[] overscrollScale = ["auto", "contain", "none"];
 		string[] alignPrimaryAxisScale = [
-			"start", 
-			"end", 
-			"center", 
-			"between", 
-			"around", 
-			"evenly", 
-			"stretch", 
+			"start",
+			"end",
+			"center",
+			"between",
+			"around",
+			"evenly",
+			"stretch",
 			"baseline",
 			"center-safe",
 			"end-safe"
 		];
 		string[] alignSecondaryAxisScale = [
-			"start", 
-			"end", 
-			"center", 
-			"stretch", 
-			"center-safe", 
+			"start",
+			"end",
+			"center",
+			"stretch",
+			"center-safe",
 			"end-safe"
 		];
 		string[] lineStyleScale = ["solid", "dashed", "dotted", "double"];
@@ -130,6 +134,7 @@ public class TwMergeConfig
 			"luminosity"
 		];
 
+		object[] positionWithArbitraryScale = [V.IsArbitraryVariable, V.IsArbitraryValue, .. positionScale];
 		object[] unambiguousSpacingScale = [V.IsArbitraryVariable, V.IsArbitraryValue, spacingTheme];
 		object[] insetScale = ["full", "auto", V.IsFraction, .. unambiguousSpacingScale];
 		object[] gridTemplateColsRowsScale = ["none", "subgrid", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable];
@@ -178,19 +183,6 @@ public class TwMergeConfig
 			V.IsNumber,
 			V.IsArbitraryLength,
 			V.IsArbitraryVariableLength
-		];
-		object[] originScale = [
-			"center",
-			"top",
-			"top-right",
-			"right",
-			"bottom-right",
-			"bottom",
-			"bottom-left",
-			"left",
-			"top-left",
-			V.IsArbitraryValue,
-			V.IsArbitraryVariable
 		];
 		object[] rotateScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
 		object[] scaleScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
@@ -347,11 +339,7 @@ public class TwMergeConfig
              * Object Position
              * See https://tailwindcss.com/docs/object-position
              */
-			["object-position"] = new( "object", [
-				.. positionScale,
-				V.IsArbitraryValue,
-				V.IsArbitraryVariable
-			] ),
+			["object-position"] = new( "object", positionWithArbitraryScale ),
 			/*
              * Overflow
              * See https://tailwindcss.com/docs/overflow
@@ -605,8 +593,8 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/align-self
              */
 			["align-self"] = new( "self", [
-				"auto", 
-				new ClassGroup( "baseline", ["", "last"] ), 
+				"auto",
+				new ClassGroup( "baseline", ["", "last"] ),
 				.. alignSecondaryAxisScale
 			] ),
 			/*
@@ -1060,7 +1048,8 @@ public class TwMergeConfig
 			["bg-position"] = new( "bg", [
 				.. positionScale,
 				V.IsArbitraryPosition,
-				V.IsArbitraryVariablePosition
+				V.IsArbitraryVariablePosition,
+				new ClassGroup( "position", [V.IsArbitraryValue, V.IsArbitraryVariable] )
 			] ),
 			/*
              * Background Repeat
@@ -1076,7 +1065,8 @@ public class TwMergeConfig
 				"cover",
 				"contain",
 				V.IsArbitrarySize,
-				V.IsArbitraryVariableSize
+				V.IsArbitraryVariableSize,
+				new ClassGroup( "size", [V.IsArbitraryValue, V.IsArbitraryVariable] ),
 			] ),
 			/*
              * Background Image
@@ -1457,9 +1447,9 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/text-shadow
              */
 			["text-shadow"] = new( "text-shadow", [
-				"none", 
-				textShadowTheme, 
-				V.IsArbitraryShadow, 
+				"none",
+				textShadowTheme,
+				V.IsArbitraryShadow,
 				V.IsArbitraryVariableShadow
 			] ),
 			/*
@@ -1487,9 +1477,9 @@ public class TwMergeConfig
 			 * See https://tailwindcss.com/docs/mask-clip
 			 */
 			["mask-clip"] = new( "mask", [
-				"no-clip", 
+				"no-clip",
 				new ClassGroup( "clip", ["border", "padding", "content", "fill", "stroke", "view"] )
-			]),
+			] ),
 			/*
 			 * Mask Composite
 			 * See https://tailwindcss.com/docs/mask-composite
@@ -1505,12 +1495,22 @@ public class TwMergeConfig
 			 * See https://tailwindcss.com/docs/mask-origin
 			 */
 			["mask-origin"] = new( "mask-origin", [
-				"border", 
-				"padding", 
-				"content", 
-				"fill", 
-				"stroke", 
+				"border",
+				"padding",
+				"content",
+				"fill",
+				"stroke",
 				"view"
+			] ),
+			/*
+			 * Mask Position
+			 * See https://tailwindcss.com/docs/mask-position
+			 */
+			["mask-position"] = new( "mask", [
+				.. positionScale,
+				V.IsArbitraryPosition,
+				V.IsArbitraryVariablePosition,
+				new ClassGroup( "position", [V.IsArbitraryValue, V.IsArbitraryVariable] )
 			] ),
 			/*
 			 * Mask Repeat
@@ -1792,7 +1792,7 @@ public class TwMergeConfig
              * Perspective Origin
              * See https://tailwindcss.com/docs/perspective-origin
              */
-			["perspective-origin"] = new( "perspective-origin", originScale ),
+			["perspective-origin"] = new( "perspective-origin", positionWithArbitraryScale ),
 			/*
              * Rotate
              * See https://tailwindcss.com/docs/rotate
@@ -1869,7 +1869,7 @@ public class TwMergeConfig
              * Transform Origin
              * See https://tailwindcss.com/docs/transform-origin
              */
-			["transform-origin"] = new( "origin", originScale ),
+			["transform-origin"] = new( "origin", positionWithArbitraryScale ),
 			/*
              * Transform Style
              * See https://tailwindcss.com/docs/transform-style
