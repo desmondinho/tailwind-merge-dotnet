@@ -133,6 +133,7 @@ public class TailwindCssVersionsTests
 
 		"mask-none mask-linear-2 mask-linear-from-3 mask-linear-to-3 mask-linear-from-color-3 mask-linear-to-color-3 mask-t-from-3 mask-t-to-3 mask-t-from-color-3 mask-radial-[test] mask-radial-from-3 mask-radial-to-3 mask-radial-from-color-3"
 	)]
+	[InlineData( "shadow-md shadow-lg/25 text-shadow-md text-shadow-lg/25", "shadow-lg/25 text-shadow-lg/25" )]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
