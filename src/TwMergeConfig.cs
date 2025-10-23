@@ -66,6 +66,7 @@ public class TwMergeConfig
 		var radiusTheme = ThemeUtility.FromTheme( "radius" );
 		var shadowTheme = ThemeUtility.FromTheme( "shadow" );
 		var insetShadowTheme = ThemeUtility.FromTheme( "inset-shadow" );
+		var textShadowTheme = ThemeUtility.FromTheme( "text-shadow" );
 		var dropShadowTheme = ThemeUtility.FromTheme( "drop-shadow" );
 		var blurTheme = ThemeUtility.FromTheme( "blur" );
 		var perspectiveTheme = ThemeUtility.FromTheme( "perspective" );
@@ -225,6 +226,7 @@ public class TwMergeConfig
 			["shadow"] = [V.IsTshirtSize],
 			["spacing"] = ["px", V.IsNumber],
 			["text"] = [V.IsTshirtSize],
+			["text-shadow"] = [V.IsTshirtSize],
 			["tracking"] = ["tighter", "tight", "normal", "wide", "wider", "widest"],
 		};
 
@@ -1453,9 +1455,24 @@ public class TwMergeConfig
              */
 			["inset-ring-color"] = new( "inset-ring", colorScale ),
 			/*
-             * Opacity
-             * See https://tailwindcss.com/docs/opacity
+             * Text Shadow
+             * See https://tailwindcss.com/docs/text-shadow
              */
+			["text-shadow"] = new( "text-shadow", [
+				"none", 
+				textShadowTheme, 
+				V.IsArbitraryShadow, 
+				V.IsArbitraryVariableShadow
+			] ),
+			/*
+             * Text Shadow Color
+             * See https://tailwindcss.com/docs/text-shadow#setting-the-shadow-color
+             */
+			["text-shadow-color"] = new( "text-shadow", colorScale ),
+			/*
+			 * Opacity
+			 * See https://tailwindcss.com/docs/opacity
+			 */
 			["opacity"] = new( "opacity", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
 			/*
              * Mix Blend Mode

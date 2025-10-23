@@ -255,7 +255,15 @@ public class ClassMapFactoryTests
 			["subpixel"] = ["font-smoothing"],
 			["table"] = ["display", "table-layout"],
 			["tabular"] = ["fvn-spacing"],
-			["text"] = ["font-size", "text-alignment", "text-color", "text-overflow", "text-wrap"],
+			["text"] = [
+				"font-size", 
+				"text-alignment", 
+				"text-color", 
+				"text-overflow", 
+				"text-shadow",
+				"text-shadow-color",
+				"text-wrap"
+			],
 			["to"] = ["gradient-to", "gradient-to-pos"],
 			["top"] = ["top"],
 			["touch"] = ["touch", "touch-pz", "touch-x", "touch-y"],

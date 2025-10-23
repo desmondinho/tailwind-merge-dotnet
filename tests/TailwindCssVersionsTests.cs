@@ -100,6 +100,11 @@ public class TailwindCssVersionsTests
 	[InlineData( "place-content-center place-content-end-safe place-content-center-safe", "place-content-center-safe" )]
 	[InlineData( "items-center-safe items-baseline items-end-safe", "items-end-safe" )]
 	[InlineData( "wrap-break-word wrap-normal wrap-anywhere", "wrap-anywhere" )]
+	[InlineData( "text-shadow-none text-shadow-2xl", "text-shadow-2xl" )]
+	[InlineData( 
+		"text-shadow-none text-shadow-md text-shadow-red text-shadow-red-500 shadow-red shadow-3xs", 
+		"text-shadow-md text-shadow-red-500 shadow-red shadow-3xs" 
+	)]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
