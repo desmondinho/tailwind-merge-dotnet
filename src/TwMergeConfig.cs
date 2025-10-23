@@ -89,8 +89,26 @@ public class TwMergeConfig
 		];
 		string[] overflowScale = ["auto", "hidden", "clip", "visible", "scroll"];
 		string[] overscrollScale = ["auto", "contain", "none"];
-		string[] alignPrimaryAxisScale = ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline"];
-		string[] alignSecondaryAxisScale = ["start", "end", "center", "stretch"];
+		string[] alignPrimaryAxisScale = [
+			"start", 
+			"end", 
+			"center", 
+			"between", 
+			"around", 
+			"evenly", 
+			"stretch", 
+			"baseline",
+			"center-safe",
+			"end-safe"
+		];
+		string[] alignSecondaryAxisScale = [
+			"start", 
+			"end", 
+			"center", 
+			"stretch", 
+			"center-safe", 
+			"end-safe"
+		];
 		string[] lineStyleScale = ["solid", "dashed", "dotted", "double"];
 		string[] blendModeScale = [
 			"normal",

@@ -97,6 +97,8 @@ public class TailwindCssVersionsTests
 	[Theory]
 	[InlineData( "items-baseline items-baseline-last", "items-baseline-last" )]
 	[InlineData( "self-baseline self-baseline-last", "self-baseline-last" )]
+	[InlineData( "place-content-center place-content-end-safe place-content-center-safe", "place-content-center-safe" )]
+	[InlineData( "items-center-safe items-baseline items-end-safe", "items-end-safe" )]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
