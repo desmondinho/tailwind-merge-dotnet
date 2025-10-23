@@ -108,13 +108,30 @@ public class TailwindCssVersionsTests
 	[InlineData( "mask-add mask-subtract", "mask-subtract" )]
 	[InlineData( "mask-type-luminance mask-type-alpha", "mask-type-alpha" )]
 	[InlineData( "mask-clip-border mask-no-clip", "mask-no-clip" )]
-	[InlineData( 
-		"mask-[something] mask-top-left mask-center mask-(position:--var) mask-[position:1px_1px] mask-position-(--var) mask-position-[1px_1px]",
+	[InlineData(
+		"mask-(--something) mask-[something] mask-top-left mask-center mask-(position:--var) mask-[position:1px_1px] mask-position-(--var) mask-position-[1px_1px]",
 		"mask-[something] mask-position-[1px_1px]"
 	)]
-	[InlineData( 
-		"mask-[something] mask-auto mask-[size:foo] mask-(size:--foo) mask-size-[foo] mask-size-(--foo) mask-cover mask-contain",
+	[InlineData(
+		"mask-(--something) mask-[something] mask-auto mask-[size:foo] mask-(size:--foo) mask-size-[foo] mask-size-(--foo) mask-cover mask-contain",
 		"mask-[something] mask-contain"
+	)]
+	[InlineData(
+		"mask-(--foo) mask-[foo] mask-none " +
+		"mask-linear-1 mask-linear-2 " +
+		"mask-linear-from-[position:test] mask-linear-from-3 " +
+		"mask-linear-to-[position:test] mask-linear-to-3 " +
+		"mask-linear-from-color-red mask-linear-from-color-3 " +
+		"mask-linear-to-color-red mask-linear-to-color-3 " +
+		"mask-t-from-[position:test] mask-t-from-3 " +
+		"mask-t-to-[position:test] mask-t-to-3 " +
+		"mask-t-from-color-red mask-t-from-color-3 " +
+		"mask-radial-(--test) mask-radial-[test] " +
+		"mask-radial-from-[position:test] mask-radial-from-3 " +
+		"mask-radial-to-[position:test] mask-radial-to-3 " +
+		"mask-radial-from-color-red mask-radial-from-color-3 ",
+
+		"mask-none mask-linear-2 mask-linear-from-3 mask-linear-to-3 mask-linear-from-color-3 mask-linear-to-color-3 mask-t-from-3 mask-t-to-3 mask-t-from-color-3 mask-radial-[test] mask-radial-from-3 mask-radial-to-3 mask-radial-from-color-3"
 	)]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{

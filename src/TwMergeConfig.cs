@@ -184,6 +184,7 @@ public class TwMergeConfig
 			V.IsArbitraryVariable
 		];
 		object[] borderWidthScale = ["", V.IsNumber, V.IsArbitraryLength, V.IsArbitraryVariableLength];
+		object[] maskImagePositionScale = [V.IsNumber, V.IsPercent, V.IsArbitraryPosition, V.IsArbitraryVariablePosition];
 		object[] blurScale = [
 			// Deprecated since Tailwind CSS v4.0.0
 			"",
@@ -1361,7 +1362,7 @@ public class TwMergeConfig
              * Outline Color
              * See https://tailwindcss.com/docs/outline-color
              */
-			["outline-color"] = new( "outline", [colorTheme] ),
+			["outline-color"] = new( "outline", colorScale ),
 
 			// ---------------
 			// --- Effects ---
@@ -1487,6 +1488,55 @@ public class TwMergeConfig
 			 */
 			["mask-composite"] = new( "mask", ["add", "subtract", "intersect", "exclude"] ),
 			/*
+			 * Mask Image
+			 * See https://tailwindcss.com/docs/mask-image
+			 */
+			["mask-image-linear-pos"] = new( "mask-linear", [V.IsNumber] ),
+			["mask-image-linear-from-pos"] = new( "mask-linear-from", maskImagePositionScale ),
+			["mask-image-linear-to-pos"] = new( "mask-linear-to", maskImagePositionScale ),
+			["mask-image-linear-from-color"] = new( "mask-linear-from", colorScale ),
+			["mask-image-linear-to-color"] = new( "mask-linear-to", colorScale ),
+			["mask-image-t-from-pos"] = new( "mask-t-from", maskImagePositionScale ),
+			["mask-image-t-to-pos"] = new( "mask-t-to", maskImagePositionScale ),
+			["mask-image-t-from-color"] = new( "mask-t-from", colorScale ),
+			["mask-image-t-to-color"] = new( "mask-t-to", colorScale ),
+			["mask-image-r-from-pos"] = new( "mask-r-from", maskImagePositionScale ),
+			["mask-image-r-to-pos"] = new( "mask-r-to", maskImagePositionScale ),
+			["mask-image-r-from-color"] = new( "mask-r-from", colorScale ),
+			["mask-image-r-to-color"] = new( "mask-r-to", colorScale ),
+			["mask-image-b-from-pos"] = new( "mask-b-from", maskImagePositionScale ),
+			["mask-image-b-to-pos"] = new( "mask-b-to", maskImagePositionScale ),
+			["mask-image-b-from-color"] = new( "mask-b-from", colorScale ),
+			["mask-image-b-to-color"] = new( "mask-b-to", colorScale ),
+			["mask-image-l-from-pos"] = new( "mask-l-from", maskImagePositionScale ),
+			["mask-image-l-to-pos"] = new( "mask-l-to", maskImagePositionScale ),
+			["mask-image-l-from-color"] = new( "mask-l-from", colorScale ),
+			["mask-image-l-to-color"] = new( "mask-l-to", colorScale ),
+			["mask-image-x-from-pos"] = new( "mask-x-from", maskImagePositionScale ),
+			["mask-image-x-to-pos"] = new( "mask-x-to", maskImagePositionScale ),
+			["mask-image-x-from-color"] = new( "mask-x-from", colorScale ),
+			["mask-image-x-to-color"] = new( "mask-x-to", colorScale ),
+			["mask-image-y-from-pos"] = new( "mask-y-from", maskImagePositionScale ),
+			["mask-image-y-to-pos"] = new( "mask-y-to", maskImagePositionScale ),
+			["mask-image-y-from-color"] = new( "mask-y-from", colorScale ),
+			["mask-image-y-to-color"] = new( "mask-y-to", colorScale ),
+			["mask-image-radial"] = new( "mask-radial", [V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			["mask-image-radial-from-pos"] = new( "mask-radial-from", maskImagePositionScale ),
+			["mask-image-radial-to-pos"] = new( "mask-radial-to", maskImagePositionScale ),
+			["mask-image-radial-from-color"] = new( "mask-radial-from", colorScale ),
+			["mask-image-radial-to-color"] = new( "mask-radial-to", colorScale ),
+			["mask-image-radial-shape"] = new( "mask-radial", ["circle", "ellipse"] ),
+			["mask-image-radial-size"] = new( "mask-radial", [
+				new ClassGroup( "closest", ["side", "corner"] ),
+				new ClassGroup( "farthest", ["side", "corner"] ),
+			] ),
+			["mask-image-radial-pos"] = new( "mask-radial-at", positionScale ),
+			["mask-image-conic-pos"] = new( "mask-conic", [V.IsNumber] ),
+			["mask-image-conic-from-pos"] = new( "mask-conic-from", maskImagePositionScale ),
+			["mask-image-conic-to-pos"] = new( "mask-conic-to", maskImagePositionScale ),
+			["mask-image-conic-from-color"] = new( "mask-conic-from", colorScale ),
+			["mask-image-conic-to-color"] = new( "mask-conic-to", colorScale ),
+			/*
 			 * Mask Mode
 			 * See https://tailwindcss.com/docs/mask-mode
 			 */
@@ -1528,6 +1578,11 @@ public class TwMergeConfig
 			 * See https://tailwindcss.com/docs/mask-type
 			 */
 			["mask-type"] = new( "mask-type", ["luminance", "alpha"] ),
+			/*
+			 * Mask Image
+			 * See https://tailwindcss.com/docs/mask-image
+			 */
+			["mask-image"] = new( "mask", ["none", V.IsArbitraryValue, V.IsArbitraryVariable] ),
 
 			// ---------------
 			// --- Filters ---
