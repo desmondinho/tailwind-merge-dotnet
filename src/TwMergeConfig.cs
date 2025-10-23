@@ -575,12 +575,19 @@ public class TwMergeConfig
              * Align Items
              * See https://tailwindcss.com/docs/align-items
              */
-			["align-items"] = new( "items", ["baseline", .. alignSecondaryAxisScale] ),
+			["align-items"] = new( "items", [
+				new ClassGroup( "baseline", ["", "last"] ),
+				.. alignSecondaryAxisScale
+			] ),
 			/*
              * Align Self
              * See https://tailwindcss.com/docs/align-self
              */
-			["align-self"] = new( "self", ["auto", "baseline", .. alignSecondaryAxisScale] ),
+			["align-self"] = new( "self", [
+				"auto", 
+				new ClassGroup( "baseline", ["", "last"] ), 
+				.. alignSecondaryAxisScale
+			] ),
 			/*
              * Place Content
              * See https://tailwindcss.com/docs/place-content

@@ -93,4 +93,16 @@ public class TailwindCssVersionsTests
 		// Assert
 		Assert.Equal( expected, actual );
 	}
+
+	[Theory]
+	[InlineData( "items-baseline items-baseline-last", "items-baseline-last" )]
+	[InlineData( "self-baseline self-baseline-last", "self-baseline-last" )]
+	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
+	{
+		// Act
+		var actual = new TwMerge().Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 }
