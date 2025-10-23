@@ -33,7 +33,7 @@ TwMerge.Merge( "hover:p-2 hover:p-4" ); // → "hover:p-4"
 TwMerge.Merge( "hover:focus:p-2 focus:hover:p-4" ); // → "focus:hover:p-4"
 ```
 
-The order of standard modifiers does not matter for tailwind-merge-dotnet.
+tailwind-merge-dotnet knows when the order of standard modifiers matters and when not and resolves conflicts accordingly.
 
 ### Supports arbitrary values
 
@@ -77,7 +77,7 @@ TwMerge.Merge( "[&:focus]:ring focus:ring-4" ); // → "[&:focus]:ring focus:rin
 > [!Note]
 > Similarly to arbitrary properties, tailwind-merge-dotnet does not resolve conflicts between arbitrary variants and their matching predefined modifiers for bundle size reasons.
 
-The order of standard modifiers before and after an arbitrary variant in isolation (all modifiers before are one group, all modifiers after are another group) does not matter for tailwind-merge-dotnet-dotnet. 
+The order of standard modifiers before and after an arbitrary variant in isolation (all modifiers before are one group, all modifiers after are another group) does not matter for tailwind-merge-dotnet-dotnet.
 However, it does matter whether a standard modifier is before or after an arbitrary variant both for Tailwind CSS and tailwind-merge-dotnet-dotnet because the resulting CSS selectors are different.
 
 ### Supports important modifier
@@ -120,9 +120,9 @@ TwMerge.Merge( "some-class", "another-class yet-another-class", "so-many-classes
 
 ### Results are cached
 
-Results get cached by default, so you don't need to worry about wasteful re-renders. 
-The library uses a computationally lightweight [LRU cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)) which stores up to 500 different results by default. 
-The cache is applied after all arguments are joined together to a single string. 
+Results get cached by default, so you don't need to worry about wasteful re-renders.
+The library uses a computationally lightweight [LRU cache](<https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)>) which stores up to 500 different results by default.
+The cache is applied after all arguments are joined together to a single string.
 This means that if you call `Merge` repeatedly with different arguments that result in the same string when joined, the cache will be hit.
 
 ### Lazy initialization
