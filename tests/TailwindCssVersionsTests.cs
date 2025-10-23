@@ -83,6 +83,8 @@ public class TailwindCssVersionsTests
 	[InlineData( "scheme-normal scheme-dark", "scheme-dark" )]
 	[InlineData( "font-stretch-expanded font-stretch-[66.66%] font-stretch-50%", "font-stretch-50%" )]
 	[InlineData( "col-span-full col-2 row-span-3 row-4", "col-2 row-4" )]
+	[InlineData( "via-red-500 via-(--mobile-header-gradient)", "via-(--mobile-header-gradient)" )]
+	[InlineData( "via-red-500 via-(length:--mobile-header-gradient)", "via-red-500 via-(length:--mobile-header-gradient)" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
