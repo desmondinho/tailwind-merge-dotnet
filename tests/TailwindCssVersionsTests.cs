@@ -75,9 +75,9 @@ public class TailwindCssVersionsTests
 	[InlineData( "perspective-origin-center perspective-origin-top-left", "perspective-origin-top-left" )]
 	[InlineData( "bg-linear-to-r bg-linear-45", "bg-linear-45" )]
 	[InlineData( "bg-linear-to-r bg-radial-[something] bg-conic-10", "bg-conic-10" )]
-	[InlineData( 
-		"ring-4 ring-orange inset-ring inset-ring-3 inset-ring-blue", 
-		"ring-4 ring-orange inset-ring-3 inset-ring-blue" 
+	[InlineData(
+		"ring-4 ring-orange inset-ring inset-ring-3 inset-ring-blue",
+		"ring-4 ring-orange inset-ring-3 inset-ring-blue"
 	)]
 	[InlineData( "field-sizing-content field-sizing-fixed", "field-sizing-fixed" )]
 	[InlineData( "scheme-normal scheme-dark", "scheme-dark" )]
@@ -86,6 +86,61 @@ public class TailwindCssVersionsTests
 	[InlineData( "via-red-500 via-(--mobile-header-gradient)", "via-(--mobile-header-gradient)" )]
 	[InlineData( "via-red-500 via-(length:--mobile-header-gradient)", "via-red-500 via-(length:--mobile-header-gradient)" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
+	{
+		// Act
+		var actual = new TwMerge().Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "items-baseline items-baseline-last", "items-baseline-last" )]
+	[InlineData( "self-baseline self-baseline-last", "self-baseline-last" )]
+	[InlineData( "place-content-center place-content-end-safe place-content-center-safe", "place-content-center-safe" )]
+	[InlineData( "items-center-safe items-baseline items-end-safe", "items-end-safe" )]
+	[InlineData( "wrap-break-word wrap-normal wrap-anywhere", "wrap-anywhere" )]
+	[InlineData( "text-shadow-none text-shadow-2xl", "text-shadow-2xl" )]
+	[InlineData(
+		"text-shadow-none text-shadow-md text-shadow-red text-shadow-red-500 shadow-red shadow-3xs",
+		"text-shadow-md text-shadow-red-500 shadow-red shadow-3xs"
+	)]
+	[InlineData( "mask-add mask-subtract", "mask-subtract" )]
+	[InlineData( "mask-type-luminance mask-type-alpha", "mask-type-alpha" )]
+	[InlineData( "mask-clip-border mask-no-clip", "mask-no-clip" )]
+	[InlineData(
+		"mask-(--something) mask-[something] mask-top-left mask-center mask-(position:--var) mask-[position:1px_1px] mask-position-(--var) mask-position-[1px_1px]",
+		"mask-[something] mask-position-[1px_1px]"
+	)]
+	[InlineData(
+		"mask-(--something) mask-[something] mask-auto mask-[size:foo] mask-(size:--foo) mask-size-[foo] mask-size-(--foo) mask-cover mask-contain",
+		"mask-[something] mask-contain"
+	)]
+	[InlineData(
+		"mask-(--foo) mask-[foo] mask-none " +
+		"mask-linear-1 mask-linear-2 " +
+		"mask-linear-from-[position:test] mask-linear-from-3 " +
+		"mask-linear-to-[position:test] mask-linear-to-3 " +
+		"mask-linear-from-color-red mask-linear-from-color-3 " +
+		"mask-linear-to-color-red mask-linear-to-color-3 " +
+		"mask-t-from-[position:test] mask-t-from-3 " +
+		"mask-t-to-[position:test] mask-t-to-3 " +
+		"mask-t-from-color-red mask-t-from-color-3 " +
+		"mask-radial-(--test) mask-radial-[test] " +
+		"mask-radial-from-[position:test] mask-radial-from-3 " +
+		"mask-radial-to-[position:test] mask-radial-to-3 " +
+		"mask-radial-from-color-red mask-radial-from-color-3 ",
+
+		"mask-none mask-linear-2 mask-linear-from-3 mask-linear-to-3 mask-linear-from-color-3 mask-linear-to-color-3 mask-t-from-3 mask-t-to-3 mask-t-from-color-3 mask-radial-[test] mask-radial-from-3 mask-radial-to-3 mask-radial-from-color-3"
+	)]
+	[InlineData( "shadow-md shadow-lg/25 text-shadow-md text-shadow-lg/25", "shadow-lg/25 text-shadow-lg/25" )]
+	[InlineData(
+		"drop-shadow-some-color drop-shadow-[#123456] drop-shadow-lg drop-shadow-[10px_0]",
+		"drop-shadow-[#123456] drop-shadow-[10px_0]"
+	)]
+	[InlineData( "drop-shadow-[#123456] drop-shadow-some-color", "drop-shadow-some-color" )]
+	[InlineData( "drop-shadow-2xl drop-shadow-[shadow:foo]", "drop-shadow-[shadow:foo]" )]
+	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
 		var actual = new TwMerge().Merge( classLists );

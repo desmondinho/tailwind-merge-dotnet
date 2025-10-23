@@ -8,9 +8,6 @@ namespace TailwindMerge.Common;
 /// </summary>
 public static partial class Validators
 {
-	private static readonly HashSet<string> _imageLabels = ["image", "url"];
-	private static readonly HashSet<string> _sizeLabels = ["length", "size", "percentage"];
-
 	/// <summary>
 	/// Always returns true, indicating that any value is valid.
 	/// </summary>
@@ -128,7 +125,7 @@ public static partial class Validators
 	/// Validates whether a string represents an arbitrary shadow value.
 	/// </summary>
 	public static Func<string, bool> IsArbitraryShadow { get; } = value
-		=> GetIsArbitraryValue( value, IsNever, IsShadow );
+		=> GetIsArbitraryValue( value, IsLabelShadow, IsShadow );
 
 	/// <summary>
 	/// Validates whether a string is not an arbitrary value or variable.
@@ -183,10 +180,10 @@ public static partial class Validators
 	private static bool IsLabelLength( string label ) => label == "length";
 	private static bool IsLabelNumber( string label ) => label == "number";
 	private static bool IsLabelShadow( string label ) => label == "shadow";
-	private static bool IsLabelPosition( string label ) => label == "position";
+	private static bool IsLabelPosition( string label ) => label is "position" or "percentage";
 	private static bool IsLabelFamilyName( string label ) => label == "family-name";
-	private static bool IsLabelSize( string label ) => _sizeLabels.Contains( label );
-	private static bool IsLabelImage( string label ) => _imageLabels.Contains( label );
+	private static bool IsLabelSize( string label ) => label is "length" or "size" or "bg-size";
+	private static bool IsLabelImage( string label ) => label is "image" or "url";
 
 	[GeneratedRegex( @"^\[(?:(\w[\w-]*):)?(.+)\]$", RegexOptions.IgnoreCase )]
 	private static partial Regex ArbitraryValueRegex();

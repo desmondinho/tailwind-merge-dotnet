@@ -66,6 +66,7 @@ public class TwMergeConfig
 		var radiusTheme = ThemeUtility.FromTheme( "radius" );
 		var shadowTheme = ThemeUtility.FromTheme( "shadow" );
 		var insetShadowTheme = ThemeUtility.FromTheme( "inset-shadow" );
+		var textShadowTheme = ThemeUtility.FromTheme( "text-shadow" );
 		var dropShadowTheme = ThemeUtility.FromTheme( "drop-shadow" );
 		var blurTheme = ThemeUtility.FromTheme( "blur" );
 		var perspectiveTheme = ThemeUtility.FromTheme( "perspective" );
@@ -77,20 +78,46 @@ public class TwMergeConfig
 
 		string[] breakScale = ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
 		string[] positionScale = [
-			"bottom",
 			"center",
+			"top",
+			"bottom",
 			"left",
-			"left-bottom",
-			"left-top",
 			"right",
-			"right-bottom",
+			"top-left",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+			"left-top",
+			"top-right",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
 			"right-top",
-			"top"
+			"bottom-right",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+			"right-bottom",
+			"bottom-left",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+			"left-bottom"
 		];
 		string[] overflowScale = ["auto", "hidden", "clip", "visible", "scroll"];
 		string[] overscrollScale = ["auto", "contain", "none"];
-		string[] alignPrimaryAxisScale = ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline"];
-		string[] alignSecondaryAxisScale = ["start", "end", "center", "stretch"];
+		string[] alignPrimaryAxisScale = [
+			"start",
+			"end",
+			"center",
+			"between",
+			"around",
+			"evenly",
+			"stretch",
+			"baseline",
+			"center-safe",
+			"end-safe"
+		];
+		string[] alignSecondaryAxisScale = [
+			"start",
+			"end",
+			"center",
+			"stretch",
+			"center-safe",
+			"end-safe"
+		];
 		string[] lineStyleScale = ["solid", "dashed", "dotted", "double"];
 		string[] blendModeScale = [
 			"normal",
@@ -111,6 +138,7 @@ public class TwMergeConfig
 			"luminosity"
 		];
 
+		object[] positionWithArbitraryScale = [V.IsArbitraryVariable, V.IsArbitraryValue, .. positionScale];
 		object[] unambiguousSpacingScale = [V.IsArbitraryVariable, V.IsArbitraryValue, spacingTheme];
 		object[] insetScale = ["full", "auto", V.IsFraction, .. unambiguousSpacingScale];
 		object[] gridTemplateColsRowsScale = ["none", "subgrid", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable];
@@ -140,6 +168,21 @@ public class TwMergeConfig
 			.. unambiguousSpacingScale
 		];
 		object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] bgPositionScale = [
+			..positionScale,
+			V.IsArbitraryPosition,
+			V.IsArbitraryVariablePosition,
+			new ClassGroup( "position", [V.IsArbitraryValue, V.IsArbitraryVariable] )
+		];
+		object[] bgRepeatScale = ["no-repeat", new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )];
+		object[] bgSizeScale = [
+			"auto",
+			"cover",
+			"contain",
+			V.IsArbitrarySize,
+			V.IsArbitraryVariableSize,
+			new ClassGroup( "size", [V.IsArbitraryValue, V.IsArbitraryVariable] )
+		];
 		object[] gradientStopPositionScale = [V.IsPercent, V.IsArbitraryLength, V.IsArbitraryVariableLength];
 		object[] radiusScale = [
 			// Deprecated since Tailwind CSS v4.0.0
@@ -151,6 +194,7 @@ public class TwMergeConfig
 			V.IsArbitraryVariable
 		];
 		object[] borderWidthScale = ["", V.IsNumber, V.IsArbitraryLength, V.IsArbitraryVariableLength];
+		object[] maskImagePositionScale = [V.IsNumber, V.IsPercent, V.IsArbitraryPosition, V.IsArbitraryVariablePosition];
 		object[] blurScale = [
 			// Deprecated since Tailwind CSS v4.0.0
 			"",
@@ -158,19 +202,6 @@ public class TwMergeConfig
 			V.IsNumber,
 			V.IsArbitraryLength,
 			V.IsArbitraryVariableLength
-		];
-		object[] originScale = [
-			"center",
-			"top",
-			"top-right",
-			"right",
-			"bottom-right",
-			"bottom",
-			"bottom-left",
-			"left",
-			"top-left",
-			V.IsArbitraryValue,
-			V.IsArbitraryVariable
 		];
 		object[] rotateScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
 		object[] scaleScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
@@ -207,6 +238,7 @@ public class TwMergeConfig
 			["shadow"] = [V.IsTshirtSize],
 			["spacing"] = ["px", V.IsNumber],
 			["text"] = [V.IsTshirtSize],
+			["text-shadow"] = [V.IsTshirtSize],
 			["tracking"] = ["tighter", "tight", "normal", "wide", "wider", "widest"],
 		};
 
@@ -326,11 +358,7 @@ public class TwMergeConfig
              * Object Position
              * See https://tailwindcss.com/docs/object-position
              */
-			["object-position"] = new( "object", [
-				.. positionScale,
-				V.IsArbitraryValue,
-				V.IsArbitraryVariable
-			] ),
+			["object-position"] = new( "object", positionWithArbitraryScale ),
 			/*
              * Overflow
              * See https://tailwindcss.com/docs/overflow
@@ -575,12 +603,19 @@ public class TwMergeConfig
              * Align Items
              * See https://tailwindcss.com/docs/align-items
              */
-			["align-items"] = new( "items", ["baseline", .. alignSecondaryAxisScale] ),
+			["align-items"] = new( "items", [
+				new ClassGroup( "baseline", ["", "last"] ),
+				.. alignSecondaryAxisScale
+			] ),
 			/*
              * Align Self
              * See https://tailwindcss.com/docs/align-self
              */
-			["align-self"] = new( "self", ["auto", "baseline", .. alignSecondaryAxisScale] ),
+			["align-self"] = new( "self", [
+				"auto",
+				new ClassGroup( "baseline", ["", "last"] ),
+				.. alignSecondaryAxisScale
+			] ),
 			/*
              * Place Content
              * See https://tailwindcss.com/docs/place-content
@@ -991,6 +1026,11 @@ public class TwMergeConfig
              */
 			["break"] = new( "break", ["normal", "words", "all", "keep"] ),
 			/*
+			 * Overflow Wrap
+			 * See https://tailwindcss.com/docs/overflow-wrap
+			 */
+			["wrap"] = new( "wrap", ["break-word", "anywhere", "normal"] ),
+			/*
              * Hyphens
              * See https://tailwindcss.com/docs/hyphens
              */
@@ -1024,30 +1064,17 @@ public class TwMergeConfig
              * Background Position
              * See https://tailwindcss.com/docs/background-position
              */
-			["bg-position"] = new( "bg", [
-				.. positionScale,
-				V.IsArbitraryPosition,
-				V.IsArbitraryVariablePosition
-			] ),
+			["bg-position"] = new( "bg", bgPositionScale ),
 			/*
              * Background Repeat
              * See https://tailwindcss.com/docs/background-repeat
              */
-			["bg-repeat"] = new( "bg", [
-				"no-repeat",
-				new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )
-			] ),
+			["bg-repeat"] = new( "bg", bgRepeatScale ),
 			/*
              * Background Size
              * See https://tailwindcss.com/docs/background-size
              */
-			["bg-size"] = new( "bg", [
-				"auto",
-				"cover",
-				"contain",
-				V.IsArbitrarySize,
-				V.IsArbitraryVariableSize
-			] ),
+			["bg-size"] = new( "bg", bgSizeScale ),
 			/*
              * Background Image
              * See https://tailwindcss.com/docs/background-image
@@ -1340,7 +1367,7 @@ public class TwMergeConfig
              * Outline Color
              * See https://tailwindcss.com/docs/outline-color
              */
-			["outline-color"] = new( "outline", [colorTheme] ),
+			["outline-color"] = new( "outline", colorScale ),
 
 			// ---------------
 			// --- Effects ---
@@ -1370,8 +1397,8 @@ public class TwMergeConfig
 			["inset-shadow"] = new( "inset-shadow", [
 				"none",
 				insetShadowTheme,
-				V.IsArbitraryValue,
-				V.IsArbitraryVariable
+				V.IsArbitraryShadow,
+				V.IsArbitraryVariableShadow
 			] ),
 			/*
              * Inset Box Shadow Color
@@ -1423,9 +1450,24 @@ public class TwMergeConfig
              */
 			["inset-ring-color"] = new( "inset-ring", colorScale ),
 			/*
-             * Opacity
-             * See https://tailwindcss.com/docs/opacity
+             * Text Shadow
+             * See https://tailwindcss.com/docs/text-shadow
              */
+			["text-shadow"] = new( "text-shadow", [
+				"none",
+				textShadowTheme,
+				V.IsArbitraryShadow,
+				V.IsArbitraryVariableShadow
+			] ),
+			/*
+             * Text Shadow Color
+             * See https://tailwindcss.com/docs/text-shadow#setting-the-shadow-color
+             */
+			["text-shadow-color"] = new( "text-shadow", colorScale ),
+			/*
+			 * Opacity
+			 * See https://tailwindcss.com/docs/opacity
+			 */
 			["opacity"] = new( "opacity", [V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable] ),
 			/*
              * Mix Blend Mode
@@ -1437,6 +1479,110 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/mix-blend-mode
              */
 			["bg-blend"] = new( "bg-blend", blendModeScale ),
+			/*
+			 * Mask Clip
+			 * See https://tailwindcss.com/docs/mask-clip
+			 */
+			["mask-clip"] = new( "mask", [
+				"no-clip",
+				new ClassGroup( "clip", ["border", "padding", "content", "fill", "stroke", "view"] )
+			] ),
+			/*
+			 * Mask Composite
+			 * See https://tailwindcss.com/docs/mask-composite
+			 */
+			["mask-composite"] = new( "mask", ["add", "subtract", "intersect", "exclude"] ),
+			/*
+			 * Mask Image
+			 * See https://tailwindcss.com/docs/mask-image
+			 */
+			["mask-image-linear-pos"] = new( "mask-linear", [V.IsNumber] ),
+			["mask-image-linear-from-pos"] = new( "mask-linear-from", maskImagePositionScale ),
+			["mask-image-linear-to-pos"] = new( "mask-linear-to", maskImagePositionScale ),
+			["mask-image-linear-from-color"] = new( "mask-linear-from", colorScale ),
+			["mask-image-linear-to-color"] = new( "mask-linear-to", colorScale ),
+			["mask-image-t-from-pos"] = new( "mask-t-from", maskImagePositionScale ),
+			["mask-image-t-to-pos"] = new( "mask-t-to", maskImagePositionScale ),
+			["mask-image-t-from-color"] = new( "mask-t-from", colorScale ),
+			["mask-image-t-to-color"] = new( "mask-t-to", colorScale ),
+			["mask-image-r-from-pos"] = new( "mask-r-from", maskImagePositionScale ),
+			["mask-image-r-to-pos"] = new( "mask-r-to", maskImagePositionScale ),
+			["mask-image-r-from-color"] = new( "mask-r-from", colorScale ),
+			["mask-image-r-to-color"] = new( "mask-r-to", colorScale ),
+			["mask-image-b-from-pos"] = new( "mask-b-from", maskImagePositionScale ),
+			["mask-image-b-to-pos"] = new( "mask-b-to", maskImagePositionScale ),
+			["mask-image-b-from-color"] = new( "mask-b-from", colorScale ),
+			["mask-image-b-to-color"] = new( "mask-b-to", colorScale ),
+			["mask-image-l-from-pos"] = new( "mask-l-from", maskImagePositionScale ),
+			["mask-image-l-to-pos"] = new( "mask-l-to", maskImagePositionScale ),
+			["mask-image-l-from-color"] = new( "mask-l-from", colorScale ),
+			["mask-image-l-to-color"] = new( "mask-l-to", colorScale ),
+			["mask-image-x-from-pos"] = new( "mask-x-from", maskImagePositionScale ),
+			["mask-image-x-to-pos"] = new( "mask-x-to", maskImagePositionScale ),
+			["mask-image-x-from-color"] = new( "mask-x-from", colorScale ),
+			["mask-image-x-to-color"] = new( "mask-x-to", colorScale ),
+			["mask-image-y-from-pos"] = new( "mask-y-from", maskImagePositionScale ),
+			["mask-image-y-to-pos"] = new( "mask-y-to", maskImagePositionScale ),
+			["mask-image-y-from-color"] = new( "mask-y-from", colorScale ),
+			["mask-image-y-to-color"] = new( "mask-y-to", colorScale ),
+			["mask-image-radial"] = new( "mask-radial", [V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			["mask-image-radial-from-pos"] = new( "mask-radial-from", maskImagePositionScale ),
+			["mask-image-radial-to-pos"] = new( "mask-radial-to", maskImagePositionScale ),
+			["mask-image-radial-from-color"] = new( "mask-radial-from", colorScale ),
+			["mask-image-radial-to-color"] = new( "mask-radial-to", colorScale ),
+			["mask-image-radial-shape"] = new( "mask-radial", ["circle", "ellipse"] ),
+			["mask-image-radial-size"] = new( "mask-radial", [
+				new ClassGroup( "closest", ["side", "corner"] ),
+				new ClassGroup( "farthest", ["side", "corner"] ),
+			] ),
+			["mask-image-radial-pos"] = new( "mask-radial-at", positionScale ),
+			["mask-image-conic-pos"] = new( "mask-conic", [V.IsNumber] ),
+			["mask-image-conic-from-pos"] = new( "mask-conic-from", maskImagePositionScale ),
+			["mask-image-conic-to-pos"] = new( "mask-conic-to", maskImagePositionScale ),
+			["mask-image-conic-from-color"] = new( "mask-conic-from", colorScale ),
+			["mask-image-conic-to-color"] = new( "mask-conic-to", colorScale ),
+			/*
+			 * Mask Mode
+			 * See https://tailwindcss.com/docs/mask-mode
+			 */
+			["mask-mode"] = new( "mask", ["alpha", "luminance", "match"] ),
+			/*
+			 * Mask Origin
+			 * See https://tailwindcss.com/docs/mask-origin
+			 */
+			["mask-origin"] = new( "mask-origin", [
+				"border",
+				"padding",
+				"content",
+				"fill",
+				"stroke",
+				"view"
+			] ),
+			/*
+			 * Mask Position
+			 * See https://tailwindcss.com/docs/mask-position
+			 */
+			["mask-position"] = new( "mask", bgPositionScale ),
+			/*
+			 * Mask Repeat
+			 * See https://tailwindcss.com/docs/mask-repeat
+			 */
+			["mask-repeat"] = new( "mask", bgRepeatScale ),
+			/*
+			 * Mask Size
+			 * See https://tailwindcss.com/docs/mask-size
+			 */
+			["mask-size"] = new( "mask", bgSizeScale ),
+			/*
+			 * Mask Type
+			 * See https://tailwindcss.com/docs/mask-type
+			 */
+			["mask-type"] = new( "mask-type", ["alpha", "luminance"] ),
+			/*
+			 * Mask Image
+			 * See https://tailwindcss.com/docs/mask-image
+			 */
+			["mask-image"] = new( "mask", ["none", V.IsArbitraryValue, V.IsArbitraryVariable] ),
 
 			// ---------------
 			// --- Filters ---
@@ -1471,9 +1617,14 @@ public class TwMergeConfig
 				"",
 				"none",
 				dropShadowTheme,
-				V.IsArbitraryValue,
-				V.IsArbitraryVariable
+				V.IsArbitraryShadow,
+				V.IsArbitraryVariableShadow
 			] ),
+			/*
+             * Drop Shadow Color
+             * See https://tailwindcss.com/docs/filter-drop-shadow#setting-the-shadow-color
+             */
+			["drop-shadow-color"] = new( "drop-shadow", colorScale ),
 			/*
              * Grayscale
              * See https://tailwindcss.com/docs/grayscale
@@ -1707,7 +1858,7 @@ public class TwMergeConfig
              * Perspective Origin
              * See https://tailwindcss.com/docs/perspective-origin
              */
-			["perspective-origin"] = new( "perspective-origin", originScale ),
+			["perspective-origin"] = new( "perspective-origin", positionWithArbitraryScale ),
 			/*
              * Rotate
              * See https://tailwindcss.com/docs/rotate
@@ -1784,7 +1935,7 @@ public class TwMergeConfig
              * Transform Origin
              * See https://tailwindcss.com/docs/transform-origin
              */
-			["transform-origin"] = new( "origin", originScale ),
+			["transform-origin"] = new( "origin", positionWithArbitraryScale ),
 			/*
              * Transform Style
              * See https://tailwindcss.com/docs/transform-style
@@ -2149,6 +2300,8 @@ public class TwMergeConfig
 			["rounded-l"] = ["rounded-tl", "rounded-bl"],
 			["border-spacing"] = ["border-spacing-x", "border-spacing-y"],
 			["border-w"] = [
+				"border-w-x",
+				"border-w-y",
 				"border-w-s",
 				"border-w-e",
 				"border-w-t",
@@ -2159,6 +2312,8 @@ public class TwMergeConfig
 			["border-w-x"] = ["border-w-r", "border-w-l"],
 			["border-w-y"] = ["border-w-t", "border-w-b"],
 			["border-color"] = [
+				"border-color-x",
+				"border-color-y",
 				"border-color-s",
 				"border-color-e",
 				"border-color-t",
@@ -2206,17 +2361,18 @@ public class TwMergeConfig
 		};
 
 		OrderSensitiveModifiers = [
-			"before",
-			"after",
-			"placeholder",
-			"file",
-			"marker",
-			"selection",
-			"first-line",
-			"first-letter",
-			"backdrop",
 			"*",
-			"**"
+			"**",
+			"after",
+			"backdrop",
+			"before",
+			"details-content",
+			"file",
+			"first-letter",
+			"first-line",
+			"marker",
+			"placeholder",
+			"selection",
 		];
 	}
 
