@@ -112,6 +112,10 @@ public class TailwindCssVersionsTests
 		"mask-[something] mask-top-left mask-center mask-(position:--var) mask-[position:1px_1px] mask-position-(--var) mask-position-[1px_1px]",
 		"mask-[something] mask-position-[1px_1px]"
 	)]
+	[InlineData( 
+		"mask-[something] mask-auto mask-[size:foo] mask-(size:--foo) mask-size-[foo] mask-size-(--foo) mask-cover mask-contain",
+		"mask-[something] mask-contain"
+	)]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

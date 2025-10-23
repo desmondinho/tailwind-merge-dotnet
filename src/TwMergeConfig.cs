@@ -165,6 +165,14 @@ public class TwMergeConfig
 		];
 		object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
 		object[] repeatScale = ["no-repeat", new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )];
+		object[] sizeScale = [
+			"auto",
+			"cover",
+			"contain",
+			V.IsArbitrarySize,
+			V.IsArbitraryVariableSize,
+			new ClassGroup( "size", [V.IsArbitraryValue, V.IsArbitraryVariable] )
+		];
 		object[] gradientStopPositionScale = [V.IsPercent, V.IsArbitraryLength, V.IsArbitraryVariableLength];
 		object[] radiusScale = [
 			// Deprecated since Tailwind CSS v4.0.0
@@ -1060,14 +1068,7 @@ public class TwMergeConfig
              * Background Size
              * See https://tailwindcss.com/docs/background-size
              */
-			["bg-size"] = new( "bg", [
-				"auto",
-				"cover",
-				"contain",
-				V.IsArbitrarySize,
-				V.IsArbitraryVariableSize,
-				new ClassGroup( "size", [V.IsArbitraryValue, V.IsArbitraryVariable] ),
-			] ),
+			["bg-size"] = new( "bg", sizeScale ),
 			/*
              * Background Image
              * See https://tailwindcss.com/docs/background-image
@@ -1517,6 +1518,11 @@ public class TwMergeConfig
 			 * See https://tailwindcss.com/docs/mask-repeat
 			 */
 			["mask-repeat"] = new( "mask", repeatScale ),
+			/*
+			 * Mask Size
+			 * See https://tailwindcss.com/docs/mask-size
+			 */
+			["mask-size"] = new( "mask", sizeScale ),
 			/*
 			 * Mask Type
 			 * See https://tailwindcss.com/docs/mask-type
