@@ -8,9 +8,6 @@ namespace TailwindMerge.Common;
 /// </summary>
 public static partial class Validators
 {
-	private static readonly HashSet<string> _imageLabels = ["image", "url"];
-	private static readonly HashSet<string> _sizeLabels = ["length", "size", "percentage"];
-
 	/// <summary>
 	/// Always returns true, indicating that any value is valid.
 	/// </summary>
@@ -185,8 +182,8 @@ public static partial class Validators
 	private static bool IsLabelShadow( string label ) => label == "shadow";
 	private static bool IsLabelPosition( string label ) => label == "position";
 	private static bool IsLabelFamilyName( string label ) => label == "family-name";
-	private static bool IsLabelSize( string label ) => _sizeLabels.Contains( label );
-	private static bool IsLabelImage( string label ) => _imageLabels.Contains( label );
+	private static bool IsLabelSize( string label ) => label is "length" or "size" or "percentage";
+	private static bool IsLabelImage( string label ) => label is "image" or "url";
 
 	[GeneratedRegex( @"^\[(?:(\w[\w-]*):)?(.+)\]$", RegexOptions.IgnoreCase )]
 	private static partial Regex ArbitraryValueRegex();
