@@ -2206,17 +2206,18 @@ public class TwMergeConfig
 		};
 
 		OrderSensitiveModifiers = [
-			"before",
-			"after",
-			"placeholder",
-			"file",
-			"marker",
-			"selection",
-			"first-line",
-			"first-letter",
-			"backdrop",
 			"*",
-			"**"
+			"**",
+			"after",
+			"backdrop",
+			"before",
+			"details-content",
+			"file",
+			"first-letter",
+			"first-line",
+			"marker",
+			"placeholder",
+			"selection",
 		];
 	}
 
