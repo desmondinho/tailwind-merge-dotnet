@@ -200,7 +200,9 @@ public class ClassMapFactoryTests
 				"mask-image-y-to-pos",
 				"mask-mode",
 				"mask-origin",
+				"mask-position",
 				"mask-repeat",
+				"mask-size",
 				"mask-type"
 			],
 			["max"] = ["max-h", "max-w"],
