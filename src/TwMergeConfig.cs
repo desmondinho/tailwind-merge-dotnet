@@ -140,7 +140,7 @@ public class TwMergeConfig
 			.. unambiguousSpacingScale
 		];
 		object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
-		object[] gradientStopPositionScale = [V.IsPercent, V.IsArbitraryLength];
+		object[] gradientStopPositionScale = [V.IsPercent, V.IsArbitraryLength, V.IsArbitraryVariableLength];
 		object[] radiusScale = [
 			// Deprecated since Tailwind CSS v4.0.0
 			"",
