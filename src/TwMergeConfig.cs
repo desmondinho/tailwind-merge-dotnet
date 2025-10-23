@@ -84,12 +84,16 @@ public class TwMergeConfig
 			"left",
 			"right",
 			"top-left",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
 			"left-top",
 			"top-right",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
 			"right-top",
 			"bottom-right",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
 			"right-bottom",
 			"bottom-left",
+			// Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
 			"left-bottom"
 		];
 		string[] overflowScale = ["auto", "hidden", "clip", "visible", "scroll"];
