@@ -159,6 +159,7 @@ public class TwMergeConfig
 			.. unambiguousSpacingScale
 		];
 		object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
+		object[] repeatScale = ["no-repeat", new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )];
 		object[] gradientStopPositionScale = [V.IsPercent, V.IsArbitraryLength, V.IsArbitraryVariableLength];
 		object[] radiusScale = [
 			// Deprecated since Tailwind CSS v4.0.0
@@ -1065,10 +1066,7 @@ public class TwMergeConfig
              * Background Repeat
              * See https://tailwindcss.com/docs/background-repeat
              */
-			["bg-repeat"] = new( "bg", [
-				"no-repeat",
-				new ClassGroup( "repeat", ["", "x", "y", "round", "space"] )
-			] ),
+			["bg-repeat"] = new( "bg", repeatScale ),
 			/*
              * Background Size
              * See https://tailwindcss.com/docs/background-size
@@ -1484,6 +1482,46 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/mix-blend-mode
              */
 			["bg-blend"] = new( "bg-blend", blendModeScale ),
+			/*
+			 * Mask Clip
+			 * See https://tailwindcss.com/docs/mask-clip
+			 */
+			["mask-clip"] = new( "mask", [
+				"no-clip", 
+				new ClassGroup( "clip", ["border", "padding", "content", "fill", "stroke", "view"] )
+			]),
+			/*
+			 * Mask Composite
+			 * See https://tailwindcss.com/docs/mask-composite
+			 */
+			["mask-composite"] = new( "mask", ["add", "subtract", "intersect", "exclude"] ),
+			/*
+			 * Mask Mode
+			 * See https://tailwindcss.com/docs/mask-mode
+			 */
+			["mask-mode"] = new( "mask", ["alpha", "luminance", "match"] ),
+			/*
+			 * Mask Origin
+			 * See https://tailwindcss.com/docs/mask-origin
+			 */
+			["mask-origin"] = new( "mask-origin", [
+				"border", 
+				"padding", 
+				"content", 
+				"fill", 
+				"stroke", 
+				"view"
+			] ),
+			/*
+			 * Mask Repeat
+			 * See https://tailwindcss.com/docs/mask-repeat
+			 */
+			["mask-repeat"] = new( "mask", repeatScale ),
+			/*
+			 * Mask Type
+			 * See https://tailwindcss.com/docs/mask-type
+			 */
+			["mask-type"] = new( "mask-type", ["luminance", "alpha"] ),
 
 			// ---------------
 			// --- Filters ---

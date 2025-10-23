@@ -105,6 +105,9 @@ public class TailwindCssVersionsTests
 		"text-shadow-none text-shadow-md text-shadow-red text-shadow-red-500 shadow-red shadow-3xs", 
 		"text-shadow-md text-shadow-red-500 shadow-red shadow-3xs" 
 	)]
+	[InlineData( "mask-add mask-subtract", "mask-subtract" )]
+	[InlineData( "mask-type-luminance mask-type-alpha", "mask-type-alpha" )]
+	[InlineData( "mask-clip-border mask-no-clip", "mask-no-clip" )]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

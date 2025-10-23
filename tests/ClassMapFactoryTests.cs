@@ -152,6 +152,14 @@ public class ClassMapFactoryTests
 			["list"] = ["display", "list-image", "list-style-position", "list-style-type"],
 			["lowercase"] = ["text-transform"],
 			["m"] = ["m"],
+			["mask"] = [
+				"mask-clip",
+				"mask-composite",
+				"mask-mode",
+				"mask-origin",
+				"mask-repeat",
+				"mask-type"
+			],
 			["max"] = ["max-h", "max-w"],
 			["mb"] = ["mb"],
 			["me"] = ["me"],
