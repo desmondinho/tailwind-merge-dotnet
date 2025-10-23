@@ -82,6 +82,7 @@ public class TailwindCssVersionsTests
 	[InlineData( "field-sizing-content field-sizing-fixed", "field-sizing-fixed" )]
 	[InlineData( "scheme-normal scheme-dark", "scheme-dark" )]
 	[InlineData( "font-stretch-expanded font-stretch-[66.66%] font-stretch-50%", "font-stretch-50%" )]
+	[InlineData( "col-span-full col-2 row-span-3 row-4", "col-2 row-4" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

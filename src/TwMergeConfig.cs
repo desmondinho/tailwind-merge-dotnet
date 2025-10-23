@@ -117,6 +117,7 @@ public class TwMergeConfig
 		object[] gridColRowStartAndEndScale = [
 			"auto",
 			new ClassGroup( "span", ["full", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+			V.IsInteger,
 			V.IsArbitraryValue,
 			V.IsArbitraryVariable
 		];
