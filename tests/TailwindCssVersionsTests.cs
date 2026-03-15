@@ -222,6 +222,10 @@ public class TailwindCssVersionsTests
     [InlineData( "tabular-nums font-features-[\"smcp\"]", "tabular-nums font-features-[\"smcp\"]" )]
     [InlineData( "font-features-[\"smcp\"] normal-nums", "font-features-[\"smcp\"] normal-nums" )]
     [InlineData( "font-sans font-features-[\"smcp\"]", "font-sans font-features-[\"smcp\"]" )]
+
+    [InlineData( "aspect-8/11 aspect-8.5/11", "aspect-8.5/11" )]
+    [InlineData( "w-8/11 w-8.5/11", "w-8.5/11" )]
+    [InlineData( "inset-1/2 inset-1.25/2.5", "inset-1.25/2.5" )]
     public void Merge_TailwindCssV42Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act
