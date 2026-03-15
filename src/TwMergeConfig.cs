@@ -1258,25 +1258,35 @@ public class TwMergeConfig
              */
             ["border-w"] = new( "border", borderWidthScale ),
             /*
-             * Border Width X
+             * Border Width Inline
              * See https://tailwindcss.com/docs/border-width
              */
             ["border-w-x"] = new( "border-x", borderWidthScale ),
             /*
-             * Border Width Y
+             * Border Width Block
              * See https://tailwindcss.com/docs/border-width
              */
             ["border-w-y"] = new( "border-y", borderWidthScale ),
             /*
-             * Border Width Start
+             * Border Width Inline Start
              * See https://tailwindcss.com/docs/border-width
              */
             ["border-w-s"] = new( "border-s", borderWidthScale ),
             /*
-             * Border Width End
+             * Border Width Inline End
              * See https://tailwindcss.com/docs/border-width
              */
             ["border-w-e"] = new( "border-e", borderWidthScale ),
+            /*
+             * Border Width Block Start
+             * See https://tailwindcss.com/docs/border-width
+             */
+            ["border-w-bs"] = new( "border-bs", borderWidthScale ),
+            /*
+             * Border Width Block End
+             * See https://tailwindcss.com/docs/border-width
+             */
+            ["border-w-be"] = new( "border-be", borderWidthScale ),
             /*
              * Border Width Top
              * See https://tailwindcss.com/docs/border-width
@@ -1333,25 +1343,35 @@ public class TwMergeConfig
              */
             ["border-color"] = new( "border", colorScale ),
             /*
-             * Border Color X
+             * Border Color Inline
              * See https://tailwindcss.com/docs/border-color
              */
             ["border-color-x"] = new( "border-x", colorScale ),
             /*
-             * Border Color Y
+             * Border Color Block
              * See https://tailwindcss.com/docs/border-color
              */
             ["border-color-y"] = new( "border-y", colorScale ),
             /*
-             * Border Color Start
+             * Border Color Inline Start
              * See https://tailwindcss.com/docs/border-color
              */
             ["border-color-s"] = new( "border-s", colorScale ),
             /*
-             * Border Color End
+             * Border Color Inline End
              * See https://tailwindcss.com/docs/border-color
              */
             ["border-color-e"] = new( "border-e", colorScale ),
+            /*
+             * Border Color Block Start
+             * See https://tailwindcss.com/docs/border-color
+             */
+            ["border-color-bs"] = new( "border-bs", colorScale ),
+            /*
+             * Border Color Block End
+             * See https://tailwindcss.com/docs/border-color
+             */
+            ["border-color-be"] = new( "border-be", colorScale ),
             /*
              * Border Color Top
              * See https://tailwindcss.com/docs/border-color
@@ -2373,6 +2393,8 @@ public class TwMergeConfig
                 "border-w-y",
                 "border-w-s",
                 "border-w-e",
+                "border-w-bs",
+                "border-w-be",
                 "border-w-t",
                 "border-w-r",
                 "border-w-b",
@@ -2385,6 +2407,8 @@ public class TwMergeConfig
                 "border-color-y",
                 "border-color-s",
                 "border-color-e",
+                "border-color-bs",
+                "border-color-be",
                 "border-color-t",
                 "border-color-r",
                 "border-color-b",

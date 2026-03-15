@@ -192,6 +192,18 @@ public class TailwindCssVersionsTests
     [InlineData( "scroll-mbs-1 scroll-mbe-1 scroll-m-0", "scroll-m-0" )]
     [InlineData( "scroll-py-1 scroll-pbs-2 scroll-pbe-3", "scroll-py-1 scroll-pbs-2 scroll-pbe-3" )]
     [InlineData( "scroll-my-1 scroll-mbs-2 scroll-mbe-3", "scroll-my-1 scroll-mbs-2 scroll-mbe-3" )]
+
+    [InlineData( "border-bs-1 border-bs-2", "border-bs-2" )]
+    [InlineData( "border-be-1 border-be-2", "border-be-2" )]
+    [InlineData( "border-bs-red border-bs-blue", "border-bs-blue" )]
+    [InlineData( "border-be-red border-be-blue", "border-be-blue" )]
+    [InlineData( "border-2 border-bs-4 border-be-6", "border-2 border-bs-4 border-be-6" )]
+    [InlineData( "border-bs-4 border-be-6 border-2", "border-2" )]
+    [InlineData( "border-red border-bs-blue border-be-green", "border-red border-bs-blue border-be-green" )]
+    [InlineData( "border-bs-blue border-be-green border-red", "border-red" )]
+    [InlineData( "border-y-2 border-bs-4 border-be-6", "border-y-2 border-bs-4 border-be-6" )]
+    [InlineData( "border-t-2 border-bs-4 border-b-6 border-be-8", "border-t-2 border-bs-4 border-b-6 border-be-8" )]
+    [InlineData( "border-y-red border-bs-blue border-be-green", "border-y-red border-bs-blue border-be-green" )]
     public void Merge_TailwindCssV42Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act
