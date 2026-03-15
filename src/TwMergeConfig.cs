@@ -945,6 +945,11 @@ public class TwMergeConfig
                 V.IsArbitraryVariableFamilyName
             ] ),
             /*
+             * Font Feature Settings
+             * See https://tailwindcss.com/docs/font-feature-settings
+             */
+            ["font-features"] = new( "font-features", [V.IsArbitraryValue] ),
+            /*
              * Font Variant Numeric
              * See https://tailwindcss.com/docs/font-variant-numeric
              */

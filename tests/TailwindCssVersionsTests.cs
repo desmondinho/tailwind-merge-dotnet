@@ -216,6 +216,12 @@ public class TailwindCssVersionsTests
     [InlineData( "size-10 inline-20 block-30", "size-10 inline-20 block-30" )]
     [InlineData( "min-w-10 min-inline-20", "min-w-10 min-inline-20" )]
     [InlineData( "max-h-10 max-block-20", "max-h-10 max-block-20" )]
+
+    [InlineData( "font-features-[\"smcp\"] font-features-[\"onum\"]", "font-features-[\"onum\"]" )]
+    [InlineData( "font-features-[var(--font-features)] font-features-[\"liga\",\"dlig\"]", "font-features-[\"liga\",\"dlig\"]" )]
+    [InlineData( "tabular-nums font-features-[\"smcp\"]", "tabular-nums font-features-[\"smcp\"]" )]
+    [InlineData( "font-features-[\"smcp\"] normal-nums", "font-features-[\"smcp\"] normal-nums" )]
+    [InlineData( "font-sans font-features-[\"smcp\"]", "font-sans font-features-[\"smcp\"]" )]
     public void Merge_TailwindCssV42Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act
