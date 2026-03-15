@@ -655,25 +655,35 @@ public class TwMergeConfig
              */
             ["p"] = new( "p", unambiguousSpacingScale ),
             /*
-             * Padding X
+             * Padding Inline
              * See https://tailwindcss.com/docs/padding
              */
             ["px"] = new( "px", unambiguousSpacingScale ),
             /*
-             * Padding Y
+             * Padding Block
              * See https://tailwindcss.com/docs/padding
              */
             ["py"] = new( "py", unambiguousSpacingScale ),
             /*
-             * Padding Start
+             * Padding Inline Start
              * See https://tailwindcss.com/docs/padding
              */
             ["ps"] = new( "ps", unambiguousSpacingScale ),
             /*
-             * Padding End
+             * Padding Inline End
              * See https://tailwindcss.com/docs/padding
              */
             ["pe"] = new( "pe", unambiguousSpacingScale ),
+            /*
+             * Padding Block Start
+             * See https://tailwindcss.com/docs/padding
+             */
+            ["pbs"] = new( "pbs", unambiguousSpacingScale ),
+            /*
+             * Padding Block End
+             * See https://tailwindcss.com/docs/padding
+             */
+            ["pbe"] = new( "pbe", unambiguousSpacingScale ),
             /*
              * Padding Top
              * See https://tailwindcss.com/docs/padding
@@ -700,25 +710,35 @@ public class TwMergeConfig
              */
             ["m"] = new( "m", marginScale ),
             /*
-             * Margin X
+             * Margin Inline
              * See https://tailwindcss.com/docs/margin
              */
             ["mx"] = new( "mx", marginScale ),
             /*
-             * Margin Y
+             * Margin Block
              * See https://tailwindcss.com/docs/margin
              */
             ["my"] = new( "my", marginScale ),
             /*
-             * Margin Start
+             * Margin Inline Start
              * See https://tailwindcss.com/docs/margin
              */
             ["ms"] = new( "ms", marginScale ),
             /*
-             * Margin End
+             * Margin Inline End
              * See https://tailwindcss.com/docs/margin
              */
             ["me"] = new( "me", marginScale ),
+            /*
+             * Margin Block Start
+             * See https://tailwindcss.com/docs/margin
+             */
+            ["mbs"] = new( "mbs", marginScale ),
+            /*
+             * Margin Block End
+             * See https://tailwindcss.com/docs/margin
+             */
+            ["mbe"] = new( "mbe", marginScale ),
             /*
              * Margin Top
              * See https://tailwindcss.com/docs/margin
@@ -2284,10 +2304,10 @@ public class TwMergeConfig
             ["inset-y"] = ["top", "bottom"],
             ["flex"] = ["basis", "grow", "shrink"],
             ["gap"] = ["gap-x", "gap-y"],
-            ["p"] = ["px", "py", "ps", "pe", "pt", "pr", "pb", "pl"],
+            ["p"] = ["px", "py", "ps", "pe", "pbs", "pbe", "pt", "pr", "pb", "pl"],
             ["px"] = ["pr", "pl"],
             ["py"] = ["pt", "pb"],
-            ["m"] = ["mx", "my", "ms", "me", "mt", "mr", "mb", "ml"],
+            ["m"] = ["mx", "my", "ms", "me", "mbs", "mbe", "mt", "mr", "mb", "ml"],
             ["mx"] = ["mr", "ml"],
             ["my"] = ["mt", "mb"],
             ["size"] = ["w", "h"],

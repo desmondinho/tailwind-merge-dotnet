@@ -162,6 +162,21 @@ public class TailwindCssVersionsTests
     [InlineData( "inset-0 inset-s-1 inset-bs-1", "inset-0 inset-s-1 inset-bs-1" )]
     [InlineData( "inset-y-1 inset-bs-2 inset-be-3", "inset-y-1 inset-bs-2 inset-be-3" )]
     [InlineData( "top-1 inset-bs-2 bottom-3 inset-be-4", "top-1 inset-bs-2 bottom-3 inset-be-4" )]
+
+    [InlineData( "pbs-1 pbs-2", "pbs-2" )]
+    [InlineData( "pbe-1 pbe-2", "pbe-2" )]
+    [InlineData( "mbs-1 mbs-2", "mbs-2" )]
+    [InlineData( "mbe-1 mbe-2", "mbe-2" )]
+    [InlineData( "pt-1 pbs-2", "pt-1 pbs-2" )]
+    [InlineData( "pb-1 pbe-2", "pb-1 pbe-2" )]
+    [InlineData( "mt-1 mbs-2", "mt-1 mbs-2" )]
+    [InlineData( "mb-1 mbe-2", "mb-1 mbe-2" )]
+    [InlineData( "p-0 pbs-1 pbe-1", "p-0 pbs-1 pbe-1" )]
+    [InlineData( "pbs-1 pbe-1 p-0", "p-0" )]
+    [InlineData( "m-0 mbs-1 mbe-1", "m-0 mbs-1 mbe-1" )]
+    [InlineData( "mbs-1 mbe-1 m-0", "m-0" )]
+    [InlineData( "py-1 pbs-2 pbe-3", "py-1 pbs-2 pbe-3" )]
+    [InlineData( "my-1 mbs-2 mbe-3", "my-1 mbs-2 mbe-3" )]
     public void Merge_TailwindCssV42Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act
