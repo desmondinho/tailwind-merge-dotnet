@@ -204,6 +204,18 @@ public class TailwindCssVersionsTests
     [InlineData( "border-y-2 border-bs-4 border-be-6", "border-y-2 border-bs-4 border-be-6" )]
     [InlineData( "border-t-2 border-bs-4 border-b-6 border-be-8", "border-t-2 border-bs-4 border-b-6 border-be-8" )]
     [InlineData( "border-y-red border-bs-blue border-be-green", "border-y-red border-bs-blue border-be-green" )]
+
+    [InlineData( "inline-1/2 inline-3/4", "inline-3/4" )]
+    [InlineData( "block-1/2 block-3/4", "block-3/4" )]
+    [InlineData( "min-inline-auto min-inline-full", "min-inline-full" )]
+    [InlineData( "max-inline-none max-inline-10", "max-inline-10" )]
+    [InlineData( "min-block-auto min-block-lh min-block-10", "min-block-10" )]
+    [InlineData( "max-block-none max-block-lh max-block-10", "max-block-10" )]
+    [InlineData( "w-10 inline-20", "w-10 inline-20" )]
+    [InlineData( "h-10 block-20", "h-10 block-20" )]
+    [InlineData( "size-10 inline-20 block-30", "size-10 inline-20 block-30" )]
+    [InlineData( "min-w-10 min-inline-20", "min-w-10 min-inline-20" )]
+    [InlineData( "max-h-10 max-block-20", "max-h-10 max-block-20" )]
     public void Merge_TailwindCssV42Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act

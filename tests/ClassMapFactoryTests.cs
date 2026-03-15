@@ -51,7 +51,7 @@ public class ClassMapFactoryTests
 				"bg-repeat",
 				"bg-size"
 			],
-			["block"] = ["display"],
+			["block"] = ["block-size", "display"],
 			["blur"] = ["blur"],
 			["border"] = [
 				"border-collapse",
@@ -132,7 +132,7 @@ public class ClassMapFactoryTests
 			["hue"] = ["hue-rotate"],
 			["hyphens"] = ["hyphens"],
 			["indent"] = ["indent"],
-			["inline"] = ["display"],
+			["inline"] = ["display", "inline-size"],
 			["inset"] = [
 				"end",
 				"inset",
@@ -213,12 +213,12 @@ public class ClassMapFactoryTests
 				"mask-size",
 				"mask-type"
 			],
-			["max"] = ["max-h", "max-w"],
+			["max"] = ["max-block-size", "max-h", "max-inline-size", "max-w"],
 			["mb"] = ["mb"],
 			["mbe"] = ["mbe"],
 			["mbs"] = ["mbs"],
 			["me"] = ["me"],
-			["min"] = ["min-h", "min-w"],
+			["min"] = ["min-block-size", "min-h", "min-inline-size", "min-w"],
 			["mix"] = ["mix-blend"],
 			["ml"] = ["ml"],
 			["mr"] = ["mr"],

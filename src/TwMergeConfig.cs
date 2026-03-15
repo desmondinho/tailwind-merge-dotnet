@@ -167,6 +167,31 @@ public class TwMergeConfig
             V.IsFraction,
             .. unambiguousSpacingScale
         ];
+        object[] sizingInlineScale = [
+            "screen",
+            "full",
+            "dvw",
+            "lvw",
+            "svw",
+            "min",
+            "max",
+            "fit",
+            V.IsFraction,
+            .. unambiguousSpacingScale
+        ];
+        object[] sizingBlockScale = [
+            "screen",
+            "full",
+            "lh",
+            "dvh",
+            "lvh",
+            "svh",
+            "min",
+            "max",
+            "fit",
+            V.IsFraction,
+            .. unambiguousSpacingScale
+        ];
         object[] colorScale = [colorTheme, V.IsArbitraryValue, V.IsArbitraryVariable];
         object[] bgPositionScale = [
             ..positionScale,
@@ -789,6 +814,36 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/width#setting-both-width-and-height
              */
             ["size"] = new( "size", sizingScale ),
+            /*
+             * Inline Size
+             * See https://tailwindcss.com/docs/width
+             */
+            ["inline-size"] = new( "inline", ["auto", .. sizingInlineScale] ),
+            /*
+             * Min-Inline Size
+             * See https://tailwindcss.com/docs/min-width
+             */
+            ["min-inline-size"] = new( "min-inline", ["auto", .. sizingInlineScale] ),
+            /*
+             * Max-Inline Size
+             * See https://tailwindcss.com/docs/max-width
+             */
+            ["max-inline-size"] = new( "max-inline", ["none", .. sizingInlineScale] ),
+            /*
+             * Block Size
+             * See https://tailwindcss.com/docs/height
+             */
+            ["block-size"] = new( "block", ["auto", .. sizingBlockScale] ),
+            /*
+             * Min-Block Size
+             * See https://tailwindcss.com/docs/min-height
+             */
+            ["min-block-size"] = new( "min-block", ["auto", .. sizingBlockScale] ),
+            /*
+             * Max-Block Size
+             * See https://tailwindcss.com/docs/max-height
+             */
+            ["max-block-size"] = new( "max-block", ["none", .. sizingBlockScale] ),
             /*
              * Width
              * See https://tailwindcss.com/docs/width
@@ -2329,15 +2384,15 @@ public class TwMergeConfig
             ["overflow"] = ["overflow-x", "overflow-y"],
             ["overscroll"] = ["overscroll-x", "overscroll-y"],
             ["inset"] = [
-                "inset-x", 
-                "inset-y", 
-                "inset-bs", 
-                "inset-be", 
-                "start", 
-                "end", 
-                "top", 
-                "right", 
-                "bottom", 
+                "inset-x",
+                "inset-y",
+                "inset-bs",
+                "inset-be",
+                "start",
+                "end",
+                "top",
+                "right",
+                "bottom",
                 "left"
             ],
             ["inset-x"] = ["right", "left"],
