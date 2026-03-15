@@ -130,13 +130,17 @@ public class ClassMapFactoryTests
 			["indent"] = ["indent"],
 			["inline"] = ["display"],
 			["inset"] = [
+				"end",
 				"inset",
+				"inset-be",
+				"inset-bs",
 				"inset-ring-color",
 				"inset-ring-w",
 				"inset-shadow",
 				"inset-shadow-color",
 				"inset-x",
-				"inset-y"
+				"inset-y",
+				"start"
 			],
 			["invert"] = ["invert"],
 			["invisible"] = ["visibility"],

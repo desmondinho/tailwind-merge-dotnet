@@ -148,4 +148,26 @@ public class TailwindCssVersionsTests
 		// Assert
 		Assert.Equal( expected, actual );
 	}
+
+	[Theory]
+    [InlineData( "inset-s-1 inset-s-2", "inset-s-2" )]
+    [InlineData( "inset-e-1 inset-e-2", "inset-e-2" )]
+    [InlineData( "inset-bs-1 inset-bs-2", "inset-bs-2" )]
+    [InlineData( "inset-be-1 inset-be-2", "inset-be-2" )]
+    [InlineData( "start-1 inset-s-2", "inset-s-2" )]
+    [InlineData( "inset-s-1 start-2", "start-2" )]
+    [InlineData( "end-1 inset-e-2", "inset-e-2" )]
+    [InlineData( "inset-e-1 end-2", "end-2" )]
+    [InlineData( "inset-s-1 inset-e-2 inset-bs-3 inset-be-4 inset-0", "inset-0" )]
+    [InlineData( "inset-0 inset-s-1 inset-bs-1", "inset-0 inset-s-1 inset-bs-1" )]
+    [InlineData( "inset-y-1 inset-bs-2 inset-be-3", "inset-y-1 inset-bs-2 inset-be-3" )]
+    [InlineData( "top-1 inset-bs-2 bottom-3 inset-be-4", "top-1 inset-bs-2 bottom-3 inset-be-4" )]
+    public void Merge_TailwindCssV42Classes_MergesCorrectly( string classLists, string expected )
+    {
+        // Act
+        var actual = new TwMerge().Merge( classLists );
+
+        // Assert
+        Assert.Equal( expected, actual );
+    }
 }
