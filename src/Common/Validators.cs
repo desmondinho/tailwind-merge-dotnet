@@ -191,7 +191,7 @@ public static partial class Validators
 	[GeneratedRegex( @"^\((?:(\w[\w-]*):)?(.+)\)$", RegexOptions.IgnoreCase )]
 	private static partial Regex ArbitraryVariableRegex();
 
-	[GeneratedRegex( @"^\d+\/\d+$" )]
+	[GeneratedRegex( @"^\d+(?:\.\d+)?\/\d+(?:\.\d+)?$" )]
 	private static partial Regex FractionRegex();
 
 	[GeneratedRegex( @"^(\d+(\.\d+)?)?(xs|sm|md|lg|xl)$" )]

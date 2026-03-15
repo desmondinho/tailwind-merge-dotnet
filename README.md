@@ -9,9 +9,9 @@
 
 A utility service to efficiently merge [Tailwind CSS](https://tailwindcss.com) classes in C# without style conflicts.
 
-- Supports Tailwind CSS v4 (if you use Tailwind v3, use tailwind-merge-dotnet v0.3.0)
+- Supports Tailwind CSS v4 up to v4.2 (if you use Tailwind v3, use tailwind-merge-dotnet v0.3.0)
 - Thread-safe LRU caching
-- Compatible with .NET 8 and 9
+- Compatible with .NET 8 / 9 / 10
 
 ## Get Started
 
