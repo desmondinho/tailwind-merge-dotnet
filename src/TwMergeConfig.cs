@@ -410,7 +410,7 @@ public class TwMergeConfig
              */
             ["inset-y"] = new( "inset-y", insetScale ),
             /*
-             * Inset Start
+             * Inset Inline Start
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
             ["start"] = new( [
@@ -419,7 +419,7 @@ public class TwMergeConfig
                 new ClassGroup( "start", insetScale )
             ] ),
             /*      
-             * Inset End
+             * Inset Inline End
              * See https://tailwindcss.com/docs/top-right-bottom-left
              */
             ["end"] = new( [
