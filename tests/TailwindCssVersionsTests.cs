@@ -177,6 +177,21 @@ public class TailwindCssVersionsTests
     [InlineData( "mbs-1 mbe-1 m-0", "m-0" )]
     [InlineData( "py-1 pbs-2 pbe-3", "py-1 pbs-2 pbe-3" )]
     [InlineData( "my-1 mbs-2 mbe-3", "my-1 mbs-2 mbe-3" )]
+
+    [InlineData( "scroll-pbs-1 scroll-pbs-2", "scroll-pbs-2" )]
+    [InlineData( "scroll-pbe-1 scroll-pbe-2", "scroll-pbe-2" )]
+    [InlineData( "scroll-mbs-1 scroll-mbs-2", "scroll-mbs-2" )]
+    [InlineData( "scroll-mbe-1 scroll-mbe-2", "scroll-mbe-2" )]
+    [InlineData( "scroll-pt-1 scroll-pbs-2", "scroll-pt-1 scroll-pbs-2" )]
+    [InlineData( "scroll-pb-1 scroll-pbe-2", "scroll-pb-1 scroll-pbe-2" )]
+    [InlineData( "scroll-mt-1 scroll-mbs-2", "scroll-mt-1 scroll-mbs-2" )]
+    [InlineData( "scroll-mb-1 scroll-mbe-2", "scroll-mb-1 scroll-mbe-2" )]
+    [InlineData( "scroll-p-0 scroll-pbs-1 scroll-pbe-1", "scroll-p-0 scroll-pbs-1 scroll-pbe-1" )]
+    [InlineData( "scroll-pbs-1 scroll-pbe-1 scroll-p-0", "scroll-p-0" )]
+    [InlineData( "scroll-m-0 scroll-mbs-1 scroll-mbe-1", "scroll-m-0 scroll-mbs-1 scroll-mbe-1" )]
+    [InlineData( "scroll-mbs-1 scroll-mbe-1 scroll-m-0", "scroll-m-0" )]
+    [InlineData( "scroll-py-1 scroll-pbs-2 scroll-pbe-3", "scroll-py-1 scroll-pbs-2 scroll-pbe-3" )]
+    [InlineData( "scroll-my-1 scroll-mbs-2 scroll-mbe-3", "scroll-my-1 scroll-mbs-2 scroll-mbe-3" )]
     public void Merge_TailwindCssV42Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act

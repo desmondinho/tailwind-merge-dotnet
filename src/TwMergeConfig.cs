@@ -2106,25 +2106,35 @@ public class TwMergeConfig
              */
             ["scroll-m"] = new( "scroll-m", unambiguousSpacingScale ),
             /*
-             * Scroll Margin X
+             * Scroll Margin Inline
              * See https://tailwindcss.com/docs/scroll-margin
              */
             ["scroll-mx"] = new( "scroll-mx", unambiguousSpacingScale ),
             /*
-             * Scroll Margin Y
+             * Scroll Margin Block
              * See https://tailwindcss.com/docs/scroll-margin
              */
             ["scroll-my"] = new( "scroll-my", unambiguousSpacingScale ),
             /*
-             * Scroll Margin Start
+             * Scroll Margin Inline Start
              * See https://tailwindcss.com/docs/scroll-margin
              */
             ["scroll-ms"] = new( "scroll-ms", unambiguousSpacingScale ),
             /*
-             * Scroll Margin End
+             * Scroll Margin Inline End
              * See https://tailwindcss.com/docs/scroll-margin
              */
             ["scroll-me"] = new( "scroll-me", unambiguousSpacingScale ),
+            /*
+             * Scroll Margin Block Start
+             * See https://tailwindcss.com/docs/scroll-margin
+             */
+            ["scroll-mbs"] = new( "scroll-mbs", unambiguousSpacingScale ),
+            /*
+             * Scroll Margin Block End
+             * See https://tailwindcss.com/docs/scroll-margin
+             */
+            ["scroll-mbe"] = new( "scroll-mbe", unambiguousSpacingScale ),
             /*
              * Scroll Margin Top
              * See https://tailwindcss.com/docs/scroll-margin
@@ -2151,25 +2161,35 @@ public class TwMergeConfig
              */
             ["scroll-p"] = new( "scroll-p", unambiguousSpacingScale ),
             /*
-             * Scroll Padding X
+             * Scroll Padding Inline
              * See https://tailwindcss.com/docs/scroll-padding
              */
             ["scroll-px"] = new( "scroll-px", unambiguousSpacingScale ),
             /*
-             * Scroll Padding Y
+             * Scroll Padding Block
              * See https://tailwindcss.com/docs/scroll-padding
              */
             ["scroll-py"] = new( "scroll-py", unambiguousSpacingScale ),
             /*
-             * Scroll Padding Start
+             * Scroll Padding Inline Start
              * See https://tailwindcss.com/docs/scroll-padding
              */
             ["scroll-ps"] = new( "scroll-ps", unambiguousSpacingScale ),
             /*
-             * Scroll Padding End
+             * Scroll Padding Inline End
              * See https://tailwindcss.com/docs/scroll-padding
              */
             ["scroll-pe"] = new( "scroll-pe", unambiguousSpacingScale ),
+            /*
+             * Scroll Padding Block Start
+             * See https://tailwindcss.com/docs/scroll-padding
+             */
+            ["scroll-pbs"] = new( "scroll-pbs", unambiguousSpacingScale ),
+            /*
+             * Scroll Padding Block End
+             * See https://tailwindcss.com/docs/scroll-padding
+             */
+            ["scroll-pbe"] = new( "scroll-pbe", unambiguousSpacingScale ),
             /*
              * Scroll Padding Top
              * See https://tailwindcss.com/docs/scroll-padding
@@ -2379,6 +2399,8 @@ public class TwMergeConfig
                 "scroll-my",
                 "scroll-ms",
                 "scroll-me",
+                "scroll-mbs",
+                "scroll-mbe",
                 "scroll-mt",
                 "scroll-mr",
                 "scroll-mb",
@@ -2391,6 +2413,8 @@ public class TwMergeConfig
                 "scroll-py",
                 "scroll-ps",
                 "scroll-pe",
+                "scroll-pbs",
+                "scroll-pbe",
                 "scroll-pt",
                 "scroll-pr",
                 "scroll-pb",
