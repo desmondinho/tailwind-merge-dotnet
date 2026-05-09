@@ -867,6 +867,7 @@ public class TwMergeConfig
             ["max-w"] = new( "max-w", [
                 "screen",
                 "none",
+                containerTheme,
 				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
 				"prose",
 				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
