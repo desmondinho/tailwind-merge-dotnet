@@ -24,4 +24,12 @@ public class ExtendedConfig
     /// Gets or sets the conflicting class group modifiers for the configuration extension.
     /// </summary>
     public Dictionary<string, string[]>? ConflictingClassGroupModifiers { get; set; }
+
+    /// <summary>
+    /// Gets or sets the class group IDs which should be resolved again with their postfix modifier attached.
+    /// </summary>
+    /// <remarks>
+    /// This is needed when a slash can make the full class name belong to a different class group than the part before the slash.
+    /// </remarks>
+    public string[]? PostfixLookupClassGroups { get; set; }
 }

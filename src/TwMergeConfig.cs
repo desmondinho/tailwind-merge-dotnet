@@ -44,6 +44,8 @@ public class TwMergeConfig
     /// </summary>
     public Dictionary<string, string[]> ConflictingClassGroupModifiers { get; set; }
 
+    internal HashSet<string> PostfixLookupClassGroups { get; set; }
+
     internal string[] OrderSensitiveModifiers { get; set; }
 
     /// <summary>
@@ -2559,6 +2561,8 @@ public class TwMergeConfig
             ["font-size"] = ["leading"]
         };
 
+        PostfixLookupClassGroups = ["container-type"];
+
         OrderSensitiveModifiers = [
             "*",
             "**",
@@ -2598,6 +2602,12 @@ public class TwMergeConfig
 
         // Extend the conflicting class group modifiers
         Extend( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
+
+        // Extend the postfix lookup class groups
+        if( extendedConfig.PostfixLookupClassGroups is { Length: > 0 } )
+        {
+            PostfixLookupClassGroups.UnionWith( extendedConfig.PostfixLookupClassGroups );
+        }
 
         static void Extend<T2>(
             Dictionary<string, T2[]> originalDict,
@@ -2663,6 +2673,12 @@ public class TwMergeConfig
 
         // Override the conflicting class group modifiers
         Override( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
+
+        // Override the postfix lookup class groups
+        if( extendedConfig.PostfixLookupClassGroups is not null )
+        {
+            PostfixLookupClassGroups = [.. extendedConfig.PostfixLookupClassGroups];
+        }
 
         static void Override<T2>(
             Dictionary<string, T2> originalDict,

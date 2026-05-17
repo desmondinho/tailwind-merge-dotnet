@@ -87,7 +87,7 @@ public partial class TwMerge
 				var baseClassNameWithoutPostfix = baseClassName[..postfixModifierPosition!.Value];
 				classGroupId = _context.GetClassGroupId( baseClassNameWithoutPostfix );
 
-				var classGroupIdWithPostfix = baseClassName[0] == '@'
+				var classGroupIdWithPostfix = !string.IsNullOrEmpty( classGroupId ) && _config.PostfixLookupClassGroups.Contains( classGroupId )
 					? _context.GetClassGroupId( baseClassName )
 					: null;
 				if( !string.IsNullOrEmpty( classGroupIdWithPostfix ) && classGroupIdWithPostfix != classGroupId )
