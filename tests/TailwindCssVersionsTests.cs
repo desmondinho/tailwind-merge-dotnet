@@ -251,6 +251,10 @@ public class TailwindCssVersionsTests
     [InlineData( "zoom-100 zoom-[var(--zoom)]", "zoom-[var(--zoom)]" )]
     [InlineData( "zoom-[1.5] zoom-(--zoom)", "zoom-(--zoom)" )]
     [InlineData( "zoom-50 scale-125", "zoom-50 scale-125" )]
+    [InlineData( "tab-2 tab-8", "tab-8" )]
+    [InlineData( "tab-8 tab-[12px]", "tab-[12px]" )]
+    [InlineData( "tab-[3] tab-(--tab-size)", "tab-(--tab-size)" )]
+    [InlineData( "tab-4 tabular-nums", "tab-4 tabular-nums" )]
     public void Merge_TailwindCssV43Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act

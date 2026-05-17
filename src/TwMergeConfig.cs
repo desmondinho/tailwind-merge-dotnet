@@ -1092,6 +1092,11 @@ public class TwMergeConfig
              */
             ["indent"] = new( "indent", unambiguousSpacingScale ),
             /*
+             * Tab Size
+             * See https://tailwindcss.com/docs/tab-size
+             */
+            ["tab-size"] = new( "tab", [V.IsInteger, V.IsArbitraryVariable, V.IsArbitraryValue] ),
+            /*
              * Vertical Alignment
              * See https://tailwindcss.com/docs/vertical-align
              */

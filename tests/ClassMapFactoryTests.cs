@@ -328,6 +328,7 @@ public class ClassMapFactoryTests
 			["sticky"] = ["position"],
 			["stroke"] = ["stroke", "stroke-w"],
 			["subpixel"] = ["font-smoothing"],
+			["tab"] = ["tab-size"],
 			["table"] = ["display", "table-layout"],
 			["tabular"] = ["fvn-spacing"],
 			["text"] = [
