@@ -305,6 +305,12 @@ public class ClassMapFactoryTests
 				"scroll-px",
 				"scroll-py"
 			],
+			["scrollbar"] = [
+				"scrollbar-gutter",
+				"scrollbar-thumb-color",
+				"scrollbar-track-color",
+				"scrollbar-w"
+			],
 			["select"] = ["select"],
 			["self"] = ["align-self"],
 			["sepia"] = ["sepia"],

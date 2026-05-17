@@ -234,4 +234,25 @@ public class TailwindCssVersionsTests
         // Assert
         Assert.Equal( expected, actual );
     }
+
+    [Theory]
+    [InlineData( "scrollbar-auto scrollbar-thin scrollbar-none", "scrollbar-none" )]
+    [InlineData( "scrollbar-gutter-auto scrollbar-gutter-stable scrollbar-gutter-both", "scrollbar-gutter-both" )]
+    [InlineData( "scrollbar-thumb-red-500 scrollbar-thumb-blue-500", "scrollbar-thumb-blue-500" )]
+    [InlineData( "scrollbar-thumb-red-500 scrollbar-thumb-red-500/50", "scrollbar-thumb-red-500/50" )]
+    [InlineData( "scrollbar-thumb-[#0088cc] scrollbar-thumb-(--thumb-color)", "scrollbar-thumb-(--thumb-color)" )]
+    [InlineData( "scrollbar-track-red-500 scrollbar-track-blue-500", "scrollbar-track-blue-500" )]
+    [InlineData( "scrollbar-track-red-500 scrollbar-track-[color:var(--track-color)]", "scrollbar-track-[color:var(--track-color)]" )]
+    [InlineData(
+        "scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-blue-500",
+        "scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-blue-500"
+    )]
+    public void Merge_TailwindCssV43Classes_MergesCorrectly( string classLists, string expected )
+    {
+        // Act
+        var actual = new TwMerge().Merge( classLists );
+
+        // Assert
+        Assert.Equal( expected, actual );
+    }
 }

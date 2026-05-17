@@ -2182,6 +2182,26 @@ public class TwMergeConfig
              */
             ["scroll-behavior"] = new( "scroll", ["auto", "smooth"] ),
             /*
+             * Scrollbar Width
+             * See TBD - new Tailwind website not deployed yet
+             */
+            ["scrollbar-w"] = new( "scrollbar", ["auto", "thin", "none"] ),
+            /*
+             * Scrollbar Thumb Color
+             * See TBD - new Tailwind website not deployed yet
+             */
+            ["scrollbar-thumb-color"] = new( "scrollbar-thumb", colorScale ),
+            /*
+             * Scrollbar Track Color
+             * See TBD - new Tailwind website not deployed yet
+             */
+            ["scrollbar-track-color"] = new( "scrollbar-track", colorScale ),
+            /*
+             * Scrollbar Gutter
+             * See TBD - new Tailwind website not deployed yet
+             */
+            ["scrollbar-gutter"] = new( "scrollbar-gutter", ["auto", "stable", "both"] ),
+            /*
              * Scroll Margin
              * See https://tailwindcss.com/docs/scroll-margin
              */
