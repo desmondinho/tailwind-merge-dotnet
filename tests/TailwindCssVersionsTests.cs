@@ -247,6 +247,10 @@ public class TailwindCssVersionsTests
         "scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-blue-500",
         "scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-blue-500"
     )]
+    [InlineData( "zoom-50 zoom-100", "zoom-100" )]
+    [InlineData( "zoom-100 zoom-[var(--zoom)]", "zoom-[var(--zoom)]" )]
+    [InlineData( "zoom-[1.5] zoom-(--zoom)", "zoom-(--zoom)" )]
+    [InlineData( "zoom-50 scale-125", "zoom-50 scale-125" )]
     public void Merge_TailwindCssV43Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act

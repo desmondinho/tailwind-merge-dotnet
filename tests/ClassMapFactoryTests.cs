@@ -355,6 +355,7 @@ public class ClassMapFactoryTests
 			["whitespace"] = ["whitespace"],
 			["will"] = ["will-change"],
 			["wrap"] = ["wrap"],
+			["zoom"] = ["zoom"],
 			["z"] = ["z"]
 		};
 

@@ -2051,6 +2051,11 @@ public class TwMergeConfig
                 V.IsArbitraryVariable
             ] ),
             /*
+             * Zoom
+             * See https://tailwindcss.com/docs/zoom
+             */
+            ["zoom"] = new( "zoom", [V.IsInteger, V.IsArbitraryVariable, V.IsArbitraryValue] ),
+            /*
              * Transform Origin
              * See https://tailwindcss.com/docs/transform-origin
              */
