@@ -18,6 +18,7 @@ public class ClassMapFactoryTests
 
 		var expected = new Dictionary<string, List<string>>()
 		{
+			["@container"] = ["container-type"],
 			["absolute"] = ["position"],
 			["accent"] = ["accent"],
 			["align"] = ["vertical-align"],
@@ -361,7 +362,7 @@ public class ClassMapFactoryTests
 		};
 
 		Assert.Null( classMap.ClassGroupId );
-		Assert.Null( classMap.Validators );
+		Assert.Equal( ["container-name"], classMap.Validators!.Select( v => v.ClassGroupId ).ToArray() );
 		Assert.Equal( expected, classGroupsByFirstNode );
 	}
 

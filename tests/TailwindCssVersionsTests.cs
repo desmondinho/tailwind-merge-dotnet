@@ -255,6 +255,36 @@ public class TailwindCssVersionsTests
     [InlineData( "tab-8 tab-[12px]", "tab-[12px]" )]
     [InlineData( "tab-[3] tab-(--tab-size)", "tab-(--tab-size)" )]
     [InlineData( "tab-4 tabular-nums", "tab-4 tabular-nums" )]
+    [InlineData( "@container @container-normal @container-size", "@container-size" )]
+    [InlineData( "@container-[inline-size] @container-(--container-type)", "@container-(--container-type)" )]
+    [InlineData( "@container @container-size/sidebar", "@container-size/sidebar" )]
+    [InlineData( "@container-normal @container-size/sidebar", "@container-size/sidebar" )]
+    [InlineData( "@container-size/sidebar @container", "@container-size/sidebar @container" )]
+    [InlineData( "@container/sidebar @container-normal", "@container/sidebar @container-normal" )]
+    [InlineData(
+        "@container/sidebar @container-normal/sidebar @container-size/content",
+        "@container-size/content"
+    )]
+    [InlineData(
+        "@container/sidebar @container-normal/content @container-size",
+        "@container-normal/content @container-size"
+    )]
+    [InlineData( "@container-size @container/sidebar", "@container/sidebar" )]
+    [InlineData(
+        "@container-size/[sidebar] @container-normal/(--container-name)",
+        "@container-normal/(--container-name)"
+    )]
+    [InlineData( "hover:@container hover:@container-size/sidebar", "hover:@container-size/sidebar" )]
+    [InlineData(
+        "hover:@container-size/sidebar hover:@container",
+        "hover:@container-size/sidebar hover:@container"
+    )]
+    [InlineData( "@container! @container-size/sidebar!", "@container-size/sidebar!" )]
+    [InlineData( "@container-size/sidebar! @container!", "@container-size/sidebar! @container!" )]
+    [InlineData(
+        "@container-foo/sidebar @container-size/sidebar",
+        "@container-foo/sidebar @container-size/sidebar"
+    )]
     public void Merge_TailwindCssV43Classes_MergesCorrectly( string classLists, string expected )
     {
         // Act

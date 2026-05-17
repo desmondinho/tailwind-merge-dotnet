@@ -374,6 +374,30 @@ public class ValidatorsTests
 	}
 
 	[Theory]
+	[InlineData( "@container/sidebar", true )]
+	[InlineData( "@container-normal/sidebar", true )]
+	[InlineData( "@container-size/sidebar", true )]
+	[InlineData( "@container/[sidebar]", true )]
+	[InlineData( "@container-size/(--sidebar)", true )]
+
+	[InlineData( "@container", false )]
+	[InlineData( "@container-normal", false )]
+	[InlineData( "@container-size", false )]
+	[InlineData( "@container/", false )]
+	[InlineData( "@container-normal/", false )]
+	[InlineData( "@container-size/", false )]
+	[InlineData( "@container-[size]/sidebar", false )]
+	[InlineData( "@container-foo/sidebar", false )]
+	[InlineData( "container/sidebar", false )]
+	[InlineData( "hover:@container/sidebar", false )]
+	public void IsNamedContainerQuery( string value, bool expected )
+	{
+		var actual = V.IsNamedContainerQuery( value );
+
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
 	[InlineData( "xs", true )]
 	[InlineData( "sm", true )]
 	[InlineData( "md", true )]

@@ -133,6 +133,15 @@ public static partial class Validators
 	public static Func<string, bool> IsAnyNonArbitrary { get; } = value
 		=> !IsArbitraryValue( value ) && !IsArbitraryVariable( value );
 
+	/// <summary>
+	/// Validates whether a string represents a named container query class.
+	/// </summary>
+	public static Func<string, bool> IsNamedContainerQuery { get; } = value
+		=> value.StartsWith( "@container" )
+			&& ( ( value.Length > 10 && value[10] == '/' && value.Length > 11 )
+				|| ( value.Length > 11 && value[11] == 's' && value.Length > 16 && value.AsSpan( 10 ).StartsWith( "-size/" ) )
+				|| ( value.Length > 11 && value[11] == 'n' && value.Length > 18 && value.AsSpan( 10 ).StartsWith( "-normal/" ) ) );
+
 	private static bool GetIsArbitraryValue(
 		string value,
 		Func<string, bool> testLabel,

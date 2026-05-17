@@ -293,6 +293,16 @@ public class TwMergeConfig
              */
             ["container"] = new( ["container"] ),
             /*
+             * Container Type
+             * See https://tailwindcss.com/docs/responsive-design#container-queries
+             */
+            ["container-type"] = new( "@container", ["", "normal", "size", V.IsArbitraryVariable, V.IsArbitraryValue] ),
+            /*
+             * Container Name
+             * See https://tailwindcss.com/docs/responsive-design#named-containers
+             */
+            ["container-name"] = new( [V.IsNamedContainerQuery] ),
+            /*
              * Columns
              * See https://tailwindcss.com/docs/columns
              */
@@ -2415,8 +2425,9 @@ public class TwMergeConfig
             ["forced-color-adjust"] = new( "forced-color-adjust", ["auto", "none"] )
         };
 
-        ConflictingClassGroups = new( 46 )
+        ConflictingClassGroups = new( 47 )
         {
+            ["container-name"] = ["container-type"],
             ["overflow"] = ["overflow-x", "overflow-y"],
             ["overscroll"] = ["overscroll-x", "overscroll-y"],
             ["inset"] = [

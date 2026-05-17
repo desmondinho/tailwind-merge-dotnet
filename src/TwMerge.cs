@@ -80,11 +80,26 @@ public partial class TwMerge
 			}
 
 			var hasPostfixModifier = postfixModifierPosition.HasValue;
-			var classGroupId = _context.GetClassGroupId(
-				hasPostfixModifier
-					? baseClassName[..postfixModifierPosition!.Value]
-					: baseClassName
-			);
+			string? classGroupId;
+
+			if( hasPostfixModifier )
+			{
+				var baseClassNameWithoutPostfix = baseClassName[..postfixModifierPosition!.Value];
+				classGroupId = _context.GetClassGroupId( baseClassNameWithoutPostfix );
+
+				var classGroupIdWithPostfix = baseClassName[0] == '@'
+					? _context.GetClassGroupId( baseClassName )
+					: null;
+				if( !string.IsNullOrEmpty( classGroupIdWithPostfix ) && classGroupIdWithPostfix != classGroupId )
+				{
+					classGroupId = classGroupIdWithPostfix;
+					hasPostfixModifier = false;
+				}
+			}
+			else
+			{
+				classGroupId = _context.GetClassGroupId( baseClassName );
+			}
 
 			if( string.IsNullOrEmpty( classGroupId ) )
 			{
