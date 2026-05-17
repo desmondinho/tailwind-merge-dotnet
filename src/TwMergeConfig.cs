@@ -298,10 +298,10 @@ public class TwMergeConfig
              */
             ["container-type"] = new( "@container", ["", "normal", "size", V.IsArbitraryVariable, V.IsArbitraryValue] ),
             /*
-             * Container Name
+             * Container Named
              * See https://tailwindcss.com/docs/responsive-design#named-containers
              */
-            ["container-name"] = new( [V.IsNamedContainerQuery] ),
+            ["container-named"] = new( [V.IsNamedContainerQuery] ),
             /*
              * Columns
              * See https://tailwindcss.com/docs/columns
@@ -2427,7 +2427,7 @@ public class TwMergeConfig
 
         ConflictingClassGroups = new( 47 )
         {
-            ["container-name"] = ["container-type"],
+            ["container-named"] = ["container-type"],
             ["overflow"] = ["overflow-x", "overflow-y"],
             ["overscroll"] = ["overscroll-x", "overscroll-y"],
             ["inset"] = [

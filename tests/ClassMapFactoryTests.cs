@@ -362,7 +362,7 @@ public class ClassMapFactoryTests
 		};
 
 		Assert.Null( classMap.ClassGroupId );
-		Assert.Equal( ["container-name"], classMap.Validators!.Select( v => v.ClassGroupId ).ToArray() );
+		Assert.Equal( ["container-named"], classMap.Validators!.Select( v => v.ClassGroupId ).ToArray() );
 		Assert.Equal( expected, classGroupsByFirstNode );
 	}
 
