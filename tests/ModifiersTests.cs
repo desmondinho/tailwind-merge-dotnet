@@ -1,3 +1,9 @@
+using Microsoft.Extensions.Options;
+
+using Moq;
+
+using TailwindMerge.Models;
+
 namespace TailwindMerge.Tests;
 
 public class ModifiersTests
@@ -30,6 +36,39 @@ public class ModifiersTests
         // Assert
         Assert.Equal( expected, actual );
     }
+
+	[Theory]
+	[InlineData( "foo-bar foo-bar/baz", "foo-bar/baz" )]
+	[InlineData( "foo-bar/baz foo-bar", "foo-bar/baz foo-bar" )]
+	public void Merge_ResolvesFullClassNamesForConfiguredPostfixLookupGroups( string classLists, string expected )
+	{
+		// Arrange
+		Func<string, bool> namedValidator = value => value == "foo-bar/baz";
+
+		var config = new TwMergeConfig();
+		config.Override( new ExtendedConfig()
+		{
+			ClassGroups = new()
+			{
+				["base"] = new ClassGroup( "foo", ["bar"] ),
+				["named"] = new ClassGroup( [namedValidator] ),
+			},
+			ConflictingClassGroups = new()
+			{
+				["named"] = ["base"],
+			},
+			PostfixLookupClassGroups = ["base"],
+		} );
+
+		var mockOptions = new Mock<IOptions<TwMergeConfig>>();
+		mockOptions.Setup( ap => ap.Value ).Returns( config );
+
+		// Act
+		var actual = new TwMerge( mockOptions.Object ).Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
 
 	[Theory]
 	[InlineData( "c:d:e:text-lg d:c:e:text-lg", "d:c:e:text-lg" )]

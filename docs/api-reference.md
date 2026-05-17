@@ -141,6 +141,14 @@ public Dictionary<string, string[]>? ConflictingClassGroups { get; set; }
 /// Gets or sets the conflicting class group modifiers for the configuration extension.
 /// </summary>
 public Dictionary<string, string[]>? ConflictingClassGroupModifiers { get; set; }
+
+/// <summary>
+/// Gets or sets the class group IDs which should be resolved again with their postfix modifier attached.
+/// </summary>
+/// <remarks>
+/// This is needed when a slash can make the full class name belong to a different class group than the part before the slash.
+/// </remarks>
+public string[]? PostfixLookupClassGroups { get; set; }
 ```
 
 ## `ThemeGetter`
@@ -290,6 +298,11 @@ public static Func<string, bool> IsArbitraryShadow { get; }
 /// Validates whether a string is not an arbitrary value or variable.
 /// </summary>
 public static Func<string, bool> IsAnyNonArbitrary { get; }
+
+/// <summary>
+/// Validates whether a string represents a named container query class.
+/// </summary>
+public static Func<string, bool> IsNamedContainerQuery { get; }
 ```
 
 A brief summary for each validator:
@@ -311,6 +324,7 @@ A brief summary for each validator:
 - `IsArbitraryVariableShadow` checks whether class part is an arbitrary variable with the `shadow` label or not label at all (`(shadow:--my-shadow)`, `(--my-shadow)`)
 - `IsArbitraryVariableSize` checks whether class part is an arbitrary variable with the `size`, `length` or `percentage` label (`(size:--my-size)`)
 - `IsFraction` checks whether class part is a fraction of two numbers (`1/2`, `127/256`)
+- `IsNamedContainerQuery` checks whether class part is a named container query class (`@container/sidebar`, `@container-size/main`, `@container-normal/content`).
 - `IsInteger` checks for integer values (`3`).
 - `IsNumber` checks for numbers (`3`, `1.5`)
 - `IsPercent` checks for percent values (`12.5%`) which is used for color stop positions.

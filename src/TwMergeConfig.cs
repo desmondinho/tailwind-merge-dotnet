@@ -44,6 +44,8 @@ public class TwMergeConfig
     /// </summary>
     public Dictionary<string, string[]> ConflictingClassGroupModifiers { get; set; }
 
+    internal HashSet<string> PostfixLookupClassGroups { get; set; }
+
     internal string[] OrderSensitiveModifiers { get; set; }
 
     /// <summary>
@@ -292,6 +294,16 @@ public class TwMergeConfig
              * Deprecated since Tailwind CSS v4.0.0
              */
             ["container"] = new( ["container"] ),
+            /*
+             * Container Type
+             * See https://tailwindcss.com/docs/responsive-design#container-queries
+             */
+            ["container-type"] = new( "@container", ["", "normal", "size", V.IsArbitraryVariable, V.IsArbitraryValue] ),
+            /*
+             * Container Named
+             * See https://tailwindcss.com/docs/responsive-design#named-containers
+             */
+            ["container-named"] = new( [V.IsNamedContainerQuery] ),
             /*
              * Columns
              * See https://tailwindcss.com/docs/columns
@@ -1091,6 +1103,11 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/text-indent
              */
             ["indent"] = new( "indent", unambiguousSpacingScale ),
+            /*
+             * Tab Size
+             * See https://tailwindcss.com/docs/tab-size
+             */
+            ["tab-size"] = new( "tab", [V.IsInteger, V.IsArbitraryVariable, V.IsArbitraryValue] ),
             /*
              * Vertical Alignment
              * See https://tailwindcss.com/docs/vertical-align
@@ -2085,6 +2102,11 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/translate
              */
             ["translate-none"] = new( ["translate-none"] ),
+            /*
+             * Zoom
+             * See https://tailwindcss.com/docs/zoom
+             */
+            ["zoom"] = new( "zoom", [V.IsInteger, V.IsArbitraryVariable, V.IsArbitraryValue] ),
 
             // ---------------------
             // --- Interactivity ---
@@ -2181,6 +2203,26 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/scroll-behavior
              */
             ["scroll-behavior"] = new( "scroll", ["auto", "smooth"] ),
+            /*
+             * Scrollbar Thumb Color
+             * See https://tailwindcss.com/docs/scrollbar-color
+             */
+            ["scrollbar-thumb-color"] = new( "scrollbar-thumb", colorScale ),
+            /*
+             * Scrollbar Track Color
+             * See https://tailwindcss.com/docs/scrollbar-color
+             */
+            ["scrollbar-track-color"] = new( "scrollbar-track", colorScale ),
+            /*
+             * Scrollbar Gutter
+             * See https://tailwindcss.com/docs/scrollbar-gutter
+             */
+            ["scrollbar-gutter"] = new( "scrollbar-gutter", ["auto", "stable", "both"] ),
+            /*
+             * Scrollbar Width
+             * See https://tailwindcss.com/docs/scrollbar-width
+             */
+            ["scrollbar-w"] = new( "scrollbar", ["auto", "thin", "none"] ),
             /*
              * Scroll Margin
              * See https://tailwindcss.com/docs/scroll-margin
@@ -2385,8 +2427,9 @@ public class TwMergeConfig
             ["forced-color-adjust"] = new( "forced-color-adjust", ["auto", "none"] )
         };
 
-        ConflictingClassGroups = new( 46 )
+        ConflictingClassGroups = new( 47 )
         {
+            ["container-named"] = ["container-type"],
             ["overflow"] = ["overflow-x", "overflow-y"],
             ["overscroll"] = ["overscroll-x", "overscroll-y"],
             ["inset"] = [
@@ -2518,6 +2561,8 @@ public class TwMergeConfig
             ["font-size"] = ["leading"]
         };
 
+        PostfixLookupClassGroups = ["container-type"];
+
         OrderSensitiveModifiers = [
             "*",
             "**",
@@ -2557,6 +2602,12 @@ public class TwMergeConfig
 
         // Extend the conflicting class group modifiers
         Extend( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
+
+        // Extend the postfix lookup class groups
+        if( extendedConfig.PostfixLookupClassGroups is { Length: > 0 } )
+        {
+            PostfixLookupClassGroups.UnionWith( extendedConfig.PostfixLookupClassGroups );
+        }
 
         static void Extend<T2>(
             Dictionary<string, T2[]> originalDict,
@@ -2622,6 +2673,12 @@ public class TwMergeConfig
 
         // Override the conflicting class group modifiers
         Override( ConflictingClassGroupModifiers, extendedConfig.ConflictingClassGroupModifiers );
+
+        // Override the postfix lookup class groups
+        if( extendedConfig.PostfixLookupClassGroups is not null )
+        {
+            PostfixLookupClassGroups = [.. extendedConfig.PostfixLookupClassGroups];
+        }
 
         static void Override<T2>(
             Dictionary<string, T2> originalDict,

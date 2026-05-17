@@ -18,6 +18,7 @@ public class ClassMapFactoryTests
 
 		var expected = new Dictionary<string, List<string>>()
 		{
+			["@container"] = ["container-type"],
 			["absolute"] = ["position"],
 			["accent"] = ["accent"],
 			["align"] = ["vertical-align"],
@@ -305,6 +306,12 @@ public class ClassMapFactoryTests
 				"scroll-px",
 				"scroll-py"
 			],
+			["scrollbar"] = [
+				"scrollbar-gutter",
+				"scrollbar-thumb-color",
+				"scrollbar-track-color",
+				"scrollbar-w"
+			],
 			["select"] = ["select"],
 			["self"] = ["align-self"],
 			["sepia"] = ["sepia"],
@@ -322,6 +329,7 @@ public class ClassMapFactoryTests
 			["sticky"] = ["position"],
 			["stroke"] = ["stroke", "stroke-w"],
 			["subpixel"] = ["font-smoothing"],
+			["tab"] = ["tab-size"],
 			["table"] = ["display", "table-layout"],
 			["tabular"] = ["fvn-spacing"],
 			["text"] = [
@@ -349,11 +357,12 @@ public class ClassMapFactoryTests
 			["whitespace"] = ["whitespace"],
 			["will"] = ["will-change"],
 			["wrap"] = ["wrap"],
+			["zoom"] = ["zoom"],
 			["z"] = ["z"]
 		};
 
 		Assert.Null( classMap.ClassGroupId );
-		Assert.Null( classMap.Validators );
+		Assert.Equal( ["container-named"], classMap.Validators!.Select( v => v.ClassGroupId ).ToArray() );
 		Assert.Equal( expected, classGroupsByFirstNode );
 	}
 
