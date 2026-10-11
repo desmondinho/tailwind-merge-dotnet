@@ -87,4 +87,94 @@ public class ModifiersTests
 		// Assert
 		Assert.Equal( expected, actual );
 	}
+
+	[Theory]
+	[InlineData( "a:b:block b:a:inline", "a:b:block b:a:inline" )]
+	[InlineData( "before:after:text-lg after:before:text-lg", "before:after:text-lg after:before:text-lg" )]
+	public void Merge_ExtendedOrderSensitiveModifiers_KeepsDefaultAndAddedModifiers( string classLists, string expected )
+	{
+		// Arrange
+		var config = new TwMergeConfig();
+		config.Extend( new ExtendedConfig()
+		{
+			OrderSensitiveModifiers = ["a"]
+		} );
+
+		// Act
+		var actual = CreateTwMerge( config ).Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "a:b:block b:a:inline", "a:b:block b:a:inline" )]
+	[InlineData( "before:after:text-lg after:before:text-lg", "after:before:text-lg" )]
+	public void Merge_OverriddenOrderSensitiveModifiers_ReplacesDefaultModifiers( string classLists, string expected )
+	{
+		// Arrange
+		var config = new TwMergeConfig();
+		config.Override( new ExtendedConfig()
+		{
+			OrderSensitiveModifiers = ["a"]
+		} );
+
+		// Act
+		var actual = CreateTwMerge( config ).Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Fact]
+	public void Merge_OrderSensitiveModifierAddedToConfig_KeepsModifierOrder()
+	{
+		// Arrange
+		var config = new TwMergeConfig();
+		config.OrderSensitiveModifiers.Add( "a" );
+
+		// Act
+		var actual = CreateTwMerge( config ).Merge( "a:b:block b:a:inline" );
+
+		// Assert
+		Assert.Equal( "a:b:block b:a:inline", actual );
+	}
+
+	[Theory]
+	[InlineData( "foo-bar foo-bar/baz", "foo-bar/baz" )]
+	[InlineData( "foo-bar/baz foo-bar", "foo-bar/baz foo-bar" )]
+	public void Merge_PostfixLookupClassGroupAddedToConfig_ResolvesFullClassNames( string classLists, string expected )
+	{
+		// Arrange
+		Func<string, bool> namedValidator = value => value == "foo-bar/baz";
+
+		var config = new TwMergeConfig();
+		config.Override( new ExtendedConfig()
+		{
+			ClassGroups = new()
+			{
+				["base"] = new ClassGroup( "foo", ["bar"] ),
+				["named"] = new ClassGroup( [namedValidator] ),
+			},
+			ConflictingClassGroups = new()
+			{
+				["named"] = ["base"],
+			}
+		} );
+		config.PostfixLookupClassGroups.Add( "base" );
+
+		// Act
+		var actual = CreateTwMerge( config ).Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	private static TwMerge CreateTwMerge( TwMergeConfig config )
+	{
+		var mockOptions = new Mock<IOptions<TwMergeConfig>>();
+		mockOptions.Setup( ap => ap.Value ).Returns( config );
+
+		return new TwMerge( mockOptions.Object );
+	}
 }

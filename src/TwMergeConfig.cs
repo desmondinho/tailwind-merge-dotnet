@@ -44,9 +44,19 @@ public class TwMergeConfig
     /// </summary>
     public Dictionary<string, string[]> ConflictingClassGroupModifiers { get; set; }
 
-    internal HashSet<string> PostfixLookupClassGroups { get; set; }
+    /// <summary>
+    /// Gets or sets the class group IDs which should be resolved again with their postfix modifier attached.
+    /// </summary>
+    /// <remarks>
+    /// This is needed when a slash can make the full class name belong to a different class group than the part before the slash.
+    /// </remarks>
+    public HashSet<string> PostfixLookupClassGroups { get; set; }
 
-    internal string[] OrderSensitiveModifiers { get; set; }
+    /// <summary>
+    /// Gets or sets the modifiers whose order among multiple modifiers is preserved
+    /// because their order changes which element gets targeted.
+    /// </summary>
+    public HashSet<string> OrderSensitiveModifiers { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TwMergeConfig"/> class.
@@ -2616,6 +2626,12 @@ public class TwMergeConfig
             PostfixLookupClassGroups.UnionWith( extendedConfig.PostfixLookupClassGroups );
         }
 
+        // Extend the order-sensitive modifiers
+        if( extendedConfig.OrderSensitiveModifiers is { Length: > 0 } )
+        {
+            OrderSensitiveModifiers.UnionWith( extendedConfig.OrderSensitiveModifiers );
+        }
+
         static void Extend<T2>(
             Dictionary<string, T2[]> originalDict,
             Dictionary<string, T2[]>? extendDict )
@@ -2687,6 +2703,12 @@ public class TwMergeConfig
         if( extendedConfig.PostfixLookupClassGroups is not null )
         {
             PostfixLookupClassGroups = [.. extendedConfig.PostfixLookupClassGroups];
+        }
+
+        // Override the order-sensitive modifiers
+        if( extendedConfig.OrderSensitiveModifiers is not null )
+        {
+            OrderSensitiveModifiers = [.. extendedConfig.OrderSensitiveModifiers];
         }
 
         static void Override<T2>(
