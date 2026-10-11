@@ -85,7 +85,7 @@ public class ThemeTests
             },
             ClassGroups = new()
             {
-                ["px"] = new ClassGroup( "px", [ThemeUtility.FromTheme( "my-theme" )] ),
+                ["px"] = new ClassGroup( "px", [new ThemeReference( "my-theme" )] ),
             }
         } );
 
@@ -96,16 +96,6 @@ public class ThemeTests
 
         // Assert
         Assert.Equal( expected, actual );
-    }
-
-    [Fact]
-    public void FromTheme_ExposesThemeKey()
-    {
-        // Act
-        var themeReference = ThemeUtility.FromTheme( ThemeKeys.Spacing );
-
-        // Assert
-        Assert.Equal( ThemeKeys.Spacing, themeReference.Key );
     }
 
     [Fact]

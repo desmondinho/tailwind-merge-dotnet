@@ -181,26 +181,6 @@ public string[]? OrderSensitiveModifiers { get; set; }
 public sealed record ThemeReference( string Key );
 ```
 
-## `ThemeUtility`
-
-```csharp
-/// <summary>
-/// Provides utility method for working with theme configurations.
-/// </summary>
-public static class ThemeUtility
-```
-
-### Methods
-
-```csharp
-/// <summary>
-/// Creates a <see cref="ThemeReference"/> that references the theme scale with the specified key.
-/// </summary>
-/// <param name="key">The key of the theme scale.</param>
-/// <returns>A <see cref="ThemeReference"/>.</returns>
-public static ThemeReference FromTheme( string key )
-```
-
 ## `ThemeKeys`
 
 ```csharp

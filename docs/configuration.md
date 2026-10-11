@@ -134,7 +134,7 @@ Classes which modify the same CSS property form a class group, and tailwind-merg
 
 - strings for fixed class parts, where an empty string stands for the base class name itself
 - validators from `Validators` (or any `Func<string, bool>`) for class parts that can't be listed, e.g. arbitrary values
-- theme scales referenced with `ThemeUtility.FromTheme`
+- theme scales referenced with `ThemeReference`, e.g. `new ThemeReference( ThemeKeys.Spacing )`
 - nested `ClassGroup` instances for class parts that share a prefix
 
 E.g. a class group for custom `elevation-*` utilities:
@@ -154,7 +154,7 @@ TwMerge.Merge( "elevation-low elevation-high" ); // → "elevation-high"
 
 The key (`"elevation"`) is the ID of the class group. It's only used internally and has to be unique among all class groups. To add values to a default class group, extend it under its ID (e.g. `"shadow"`); the IDs are listed in the [default configuration](../src/TwMergeConfig.cs).
 
-If several of your class groups share the same values, you can put them into a custom theme scale and reference it with `ThemeUtility.FromTheme( "elevation" )` in each class group.
+If several of your class groups share the same values, you can put them into a custom theme scale and reference it with `new ThemeReference( "elevation" )` in each class group.
 
 ---
 
