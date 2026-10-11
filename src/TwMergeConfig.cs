@@ -311,6 +311,7 @@ public class TwMergeConfig
             ["columns"] = new( "columns", [
                 containerTheme,
                 V.IsNumber,
+                "auto",
                 V.IsArbitraryValue,
                 V.IsArbitraryVariable
             ] ),

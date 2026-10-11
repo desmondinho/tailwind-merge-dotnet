@@ -26,10 +26,12 @@ public class ClassGroupsTests
     [InlineData( "basis-full basis-auto", "basis-auto" )]
     [InlineData( "w-full w-fit", "w-fit" )]
     [InlineData( "overflow-x-auto overflow-x-hidden overflow-x-scroll", "overflow-x-scroll" )]
-    [InlineData( 
-        "overflow-x-auto hover:overflow-x-hidden overflow-x-scroll", 
-        "hover:overflow-x-hidden overflow-x-scroll" 
+    [InlineData(
+        "overflow-x-auto hover:overflow-x-hidden overflow-x-scroll",
+        "hover:overflow-x-hidden overflow-x-scroll"
     )]
+    [InlineData( "columns-12 columns-auto", "columns-auto" )]
+    [InlineData( "columns-auto columns-2xl", "columns-2xl" )]
     public void Merge_SameClassGroups_MergesCorrectly( string classLists, string expected )
     {
         // Act
