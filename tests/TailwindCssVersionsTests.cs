@@ -93,6 +93,13 @@ public class TailwindCssVersionsTests
 	[InlineData( "shadow-inner shadow-lg", "shadow-lg" )]
 	[InlineData( "shadow-lg shadow-inner", "shadow-inner" )]
 	[InlineData( "shadow-initial shadow-inner", "shadow-initial shadow-inner" )]
+	[InlineData( "blur-sm blur-lg", "blur-lg" )]
+	[InlineData( "blur blur-none blur-xs", "blur-xs" )]
+	[InlineData( "blur-md blur-[2px] blur-(--my-blur)", "blur-(--my-blur)" )]
+	[InlineData( "blur-[2px] blur-[var(--my-blur)]", "blur-[var(--my-blur)]" )]
+	[InlineData( "backdrop-blur-sm backdrop-blur-lg", "backdrop-blur-lg" )]
+	[InlineData( "backdrop-blur-md backdrop-blur-[2px] backdrop-blur-(--my-blur)", "backdrop-blur-(--my-blur)" )]
+	[InlineData( "blur-sm backdrop-blur-lg", "blur-sm backdrop-blur-lg" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

@@ -227,9 +227,9 @@ public class TwMergeConfig
 			// Deprecated since Tailwind CSS v4.0.0
 			"",
             "none",
-            V.IsNumber,
-            V.IsArbitraryLength,
-            V.IsArbitraryVariableLength
+            blurTheme,
+            V.IsArbitraryValue,
+            V.IsArbitraryVariable
         ];
         object[] rotateScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
         object[] scaleScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
