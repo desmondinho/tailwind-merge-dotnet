@@ -67,6 +67,8 @@ public class ValidatorsTests
 	[InlineData( "[12px", false )]
 	[InlineData( "12px]", false )]
 	[InlineData( "one", false )]
+	[InlineData( "[color(display-p3_1_0_0/50%)]", false )]
+	[InlineData( "[light-dark(white,rgb(0_0_0/50%))]", false )]
 	public void IsArbitraryLength( string value, bool expected )
 	{
 		// Act
