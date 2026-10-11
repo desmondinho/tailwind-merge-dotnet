@@ -170,6 +170,7 @@ public class TwMergeConfig
             .. unambiguousSpacingScale
         ];
         object[] sizingInlineScale = [
+            containerTheme,
             "screen",
             "full",
             "dvw",
@@ -829,32 +830,32 @@ public class TwMergeConfig
             ["size"] = new( "size", sizingScale ),
             /*
              * Inline Size
-             * See https://tailwindcss.com/docs/width
+             * See https://tailwindcss.com/docs/inline-size
              */
             ["inline-size"] = new( "inline", ["auto", .. sizingInlineScale] ),
             /*
              * Min-Inline Size
-             * See https://tailwindcss.com/docs/min-width
+             * See https://tailwindcss.com/docs/min-inline-size
              */
             ["min-inline-size"] = new( "min-inline", ["auto", .. sizingInlineScale] ),
             /*
              * Max-Inline Size
-             * See https://tailwindcss.com/docs/max-width
+             * See https://tailwindcss.com/docs/max-inline-size
              */
             ["max-inline-size"] = new( "max-inline", ["none", .. sizingInlineScale] ),
             /*
              * Block Size
-             * See https://tailwindcss.com/docs/height
+             * See https://tailwindcss.com/docs/block-size
              */
             ["block-size"] = new( "block", ["auto", .. sizingBlockScale] ),
             /*
              * Min-Block Size
-             * See https://tailwindcss.com/docs/min-height
+             * See https://tailwindcss.com/docs/min-block-size
              */
             ["min-block-size"] = new( "min-block", ["auto", .. sizingBlockScale] ),
             /*
              * Max-Block Size
-             * See https://tailwindcss.com/docs/max-height
+             * See https://tailwindcss.com/docs/max-block-size
              */
             ["max-block-size"] = new( "max-block", ["none", .. sizingBlockScale] ),
             /*
