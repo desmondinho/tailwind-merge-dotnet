@@ -7,14 +7,27 @@ namespace TailwindMerge;
 
 internal partial class TwMergeContext
 {
-	private readonly TwMergeConfig _config;
 	private readonly ClassNameNode _classMap;
+	private readonly string? _prefix;
+	private readonly Dictionary<string, string[]> _conflictingClassGroups;
+	private readonly Dictionary<string, string[]> _conflictingClassGroupModifiers;
+	private readonly HashSet<string> _postfixLookupClassGroups;
+	private readonly HashSet<string> _orderSensitiveModifiers;
 
+	// Everything needed for merging is copied from the configuration,
+	// so changes made to it afterwards have no effect
 	internal TwMergeContext( TwMergeConfig config )
 	{
-		_config = config;
 		_classMap = TwMergeMapFactory.Create( config );
+		_prefix = config.Prefix;
+		_conflictingClassGroups = new( config.ConflictingClassGroups );
+		_conflictingClassGroupModifiers = new( config.ConflictingClassGroupModifiers );
+		_postfixLookupClassGroups = [.. config.PostfixLookupClassGroups];
+		_orderSensitiveModifiers = [.. config.OrderSensitiveModifiers];
 	}
+
+	internal bool IsPostfixLookupClassGroup( string classGroupId )
+		=> _postfixLookupClassGroups.Contains( classGroupId );
 
 	internal string? GetClassGroupId( string className )
 	{
@@ -32,10 +45,10 @@ internal partial class TwMergeContext
 
 	internal string[]? GetConflictingClassGroupIds( string classGroupId, bool hasPostfixModifier )
 	{
-		var conflicts = _config.ConflictingClassGroups.GetValueOrDefault( classGroupId );
+		var conflicts = _conflictingClassGroups.GetValueOrDefault( classGroupId );
 
 		if( hasPostfixModifier &&
-			_config.ConflictingClassGroupModifiers.TryGetValue( classGroupId, out var conflictingModifiers ) )
+			_conflictingClassGroupModifiers.TryGetValue( classGroupId, out var conflictingModifiers ) )
 		{
 			return [
 				.. conflicts,
@@ -110,9 +123,9 @@ internal partial class TwMergeContext
 			);
 		};
 
-		if( !string.IsNullOrEmpty( _config.Prefix ) )
+		if( !string.IsNullOrEmpty( _prefix ) )
 		{
-			var fullPrefix = _config.Prefix + Constants.ModifierSeparator;
+			var fullPrefix = _prefix + Constants.ModifierSeparator;
 			var parseClassNameOriginal = parseClassName;
 
 			parseClassName = ( className ) =>
@@ -152,7 +165,7 @@ internal partial class TwMergeContext
 
 		foreach( var modifier in modifiers )
 		{
-			var isPositionSensitive = modifier.StartsWith( '[' ) || _config.OrderSensitiveModifiers.Contains( modifier );
+			var isPositionSensitive = modifier.StartsWith( '[' ) || _orderSensitiveModifiers.Contains( modifier );
 
 			if( isPositionSensitive )
 			{
