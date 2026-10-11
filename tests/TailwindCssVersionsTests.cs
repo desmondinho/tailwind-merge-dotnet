@@ -75,6 +75,10 @@ public class TailwindCssVersionsTests
 	[InlineData( "perspective-origin-center perspective-origin-top-left", "perspective-origin-top-left" )]
 	[InlineData( "bg-linear-to-r bg-linear-45", "bg-linear-45" )]
 	[InlineData( "bg-linear-to-r bg-radial-[something] bg-conic-10", "bg-conic-10" )]
+	[InlineData( "bg-conic bg-conic-10", "bg-conic-10" )]
+	[InlineData( "bg-conic-10 bg-conic", "bg-conic" )]
+	[InlineData( "bg-radial bg-conic/decreasing", "bg-conic/decreasing" )]
+	[InlineData( "bg-red-500 bg-conic", "bg-red-500 bg-conic" )]
 	[InlineData(
 		"ring-4 ring-orange inset-ring inset-ring-3 inset-ring-blue",
 		"ring-4 ring-orange inset-ring-3 inset-ring-blue"
