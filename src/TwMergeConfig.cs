@@ -1014,6 +1014,7 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/line-height
              */
             ["leading"] = new( "leading", [
+                "none",
 				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
 				leadingTheme,
                 .. unambiguousSpacingScale
