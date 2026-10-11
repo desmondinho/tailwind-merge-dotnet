@@ -86,6 +86,20 @@ public Dictionary<string, string[]> ConflictingClassGroups { get; set; }
 /// Gets or sets the conflicting class group modifiers of the configuration.
 /// </summary>
 public Dictionary<string, string[]> ConflictingClassGroupModifiers { get; set; }
+
+/// <summary>
+/// Gets or sets the class group IDs which should be resolved again with their postfix modifier attached.
+/// </summary>
+/// <remarks>
+/// This is needed when a slash can make the full class name belong to a different class group than the part before the slash.
+/// </remarks>
+public HashSet<string> PostfixLookupClassGroups { get; set; }
+
+/// <summary>
+/// Gets or sets the modifiers whose order among multiple modifiers is preserved
+/// because their order changes which element gets targeted.
+/// </summary>
+public HashSet<string> OrderSensitiveModifiers { get; set; }
 ```
 
 ### Methods 
@@ -149,6 +163,12 @@ public Dictionary<string, string[]>? ConflictingClassGroupModifiers { get; set; 
 /// This is needed when a slash can make the full class name belong to a different class group than the part before the slash.
 /// </remarks>
 public string[]? PostfixLookupClassGroups { get; set; }
+
+/// <summary>
+/// Gets or sets the modifiers whose order among multiple modifiers is preserved
+/// because their order changes which element gets targeted.
+/// </summary>
+public string[]? OrderSensitiveModifiers { get; set; }
 ```
 
 ## `ThemeGetter`

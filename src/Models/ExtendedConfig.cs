@@ -32,4 +32,10 @@ public class ExtendedConfig
     /// This is needed when a slash can make the full class name belong to a different class group than the part before the slash.
     /// </remarks>
     public string[]? PostfixLookupClassGroups { get; set; }
+
+    /// <summary>
+    /// Gets or sets the modifiers whose order among multiple modifiers is preserved
+    /// because their order changes which element gets targeted.
+    /// </summary>
+    public string[]? OrderSensitiveModifiers { get; set; }
 }
