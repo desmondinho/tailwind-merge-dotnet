@@ -237,7 +237,7 @@ public class TwMergeConfig
         object[] traslateScale = ["full", V.IsFraction, .. unambiguousSpacingScale];
 
         CacheSize = 500;
-        Theme = new( 18 )
+        Theme = new( 19 )
         {
             [ThemeKeys.Animate] = ["spin", "ping", "pulse", "bounce"],
             [ThemeKeys.Aspect] = ["video"],
@@ -270,7 +270,7 @@ public class TwMergeConfig
             [ThemeKeys.Tracking] = ["tighter", "tight", "normal", "wide", "wider", "widest"],
         };
 
-        ClassGroups = new( 270 )
+        ClassGroups = new( 378 )
         {
             // --------------
             // --- Layout ---
@@ -2434,7 +2434,7 @@ public class TwMergeConfig
             ["forced-color-adjust"] = new( "forced-color-adjust", ["auto", "none"] )
         };
 
-        ConflictingClassGroups = new( 47 )
+        ConflictingClassGroups = new( 49 )
         {
             ["container-named"] = ["container-type"],
             ["overflow"] = ["overflow-x", "overflow-y"],

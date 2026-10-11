@@ -10,7 +10,7 @@ internal class TwMergeMapFactory
         // Initialize a root node of the map
         var classMap = new ClassNameNode()
         {
-            Next = new( 158 )
+            Next = new( 168 )
         };
 
         foreach( var (classGroupId, classGroup) in config.ClassGroups )
