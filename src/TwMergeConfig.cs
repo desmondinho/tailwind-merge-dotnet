@@ -310,9 +310,9 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/columns
              */
             ["columns"] = new( "columns", [
+                "auto",
                 containerTheme,
                 V.IsNumber,
-                "auto",
                 V.IsArbitraryValue,
                 V.IsArbitraryVariable
             ] ),
