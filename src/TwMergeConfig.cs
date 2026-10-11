@@ -1212,13 +1212,13 @@ public class TwMergeConfig
                         "tl"
                     ] ),
                     V.IsInteger,
-                    V.IsArbitraryVariable,
-                    V.IsArbitraryValue
+                    V.IsArbitraryValue,
+                    V.IsArbitraryVariable
                 ] ),
-                new ClassGroup( "radial", ["", V.IsArbitraryVariable, V.IsArbitraryValue] ),
-                new ClassGroup( "conic", ["", V.IsInteger, V.IsArbitraryVariable, V.IsArbitraryValue] ),
-                V.IsArbitraryVariableImage,
-                V.IsArbitraryImage
+                new ClassGroup( "radial", ["", V.IsArbitraryValue, V.IsArbitraryVariable] ),
+                new ClassGroup( "conic", ["", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+                V.IsArbitraryImage,
+                V.IsArbitraryVariableImage
             ] ),
             /*
              * Background Color
