@@ -1491,8 +1491,8 @@ public class TwMergeConfig
              */
             ["outline-offset"] = new( "outline-offset", [
                 V.IsNumber,
-                V.IsArbitraryLength,
-                V.IsArbitraryVariableLength
+                V.IsArbitraryValue,
+                V.IsArbitraryVariable
             ] ),
             /*
              * Outline Width

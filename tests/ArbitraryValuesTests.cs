@@ -133,6 +133,8 @@ public class ArbitraryValuesTests
 	[InlineData( "bg-linear-(--my-angle) bg-conic", "bg-conic" )]
 	[InlineData( "z-10 z-(--my-z)", "z-(--my-z)" )]
 	[InlineData( "z-(--my-z) z-auto", "z-auto" )]
+	[InlineData( "outline-offset-2 outline-offset-(--my-offset)", "outline-offset-(--my-offset)" )]
+	[InlineData( "outline-offset-2 outline-offset-[var(--my-offset)]", "outline-offset-[var(--my-offset)]" )]
 	public void Merge_ArbitraryCustomProperties_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
