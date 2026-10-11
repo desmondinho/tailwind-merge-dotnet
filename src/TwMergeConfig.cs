@@ -170,7 +170,6 @@ public class TwMergeConfig
             .. unambiguousSpacingScale
         ];
         object[] sizingInlineScale = [
-            containerTheme,
             "screen",
             "full",
             "dvw",
@@ -179,6 +178,7 @@ public class TwMergeConfig
             "min",
             "max",
             "fit",
+            containerTheme,
             V.IsFraction,
             .. unambiguousSpacingScale
         ];
