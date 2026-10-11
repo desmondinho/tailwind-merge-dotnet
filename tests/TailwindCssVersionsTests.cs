@@ -89,6 +89,10 @@ public class TailwindCssVersionsTests
 	[InlineData( "col-span-full col-2 row-span-3 row-4", "col-2 row-4" )]
 	[InlineData( "via-red-500 via-(--mobile-header-gradient)", "via-(--mobile-header-gradient)" )]
 	[InlineData( "via-red-500 via-(length:--mobile-header-gradient)", "via-red-500 via-(length:--mobile-header-gradient)" )]
+	// shadow-inner is deprecated in v4 but still sets --tw-shadow, so it conflicts with other shadow utilities and not with shadow color utilities
+	[InlineData( "shadow-inner shadow-lg", "shadow-lg" )]
+	[InlineData( "shadow-lg shadow-inner", "shadow-inner" )]
+	[InlineData( "shadow-initial shadow-inner", "shadow-initial shadow-inner" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

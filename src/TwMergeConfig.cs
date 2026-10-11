@@ -1519,6 +1519,8 @@ public class TwMergeConfig
             ["shadow"] = new( "shadow", [
 				// Deprecated since Tailwind CSS v4.0.0
 				"",
+				// Deprecated since Tailwind CSS v4.0.0
+				"inner",
                 "none",
                 shadowTheme,
                 V.IsArbitraryShadow,
