@@ -63,28 +63,28 @@ public class TwMergeConfig
     /// </summary>
     public TwMergeConfig()
     {
-        // Theme getters for theme variable namespaces
+        // Theme references for theme variable namespaces
         // See https://tailwindcss.com/docs/theme#theme-variable-namespaces
 
-        var colorTheme = ThemeUtility.FromTheme( ThemeKeys.Color );
-        var fontTheme = ThemeUtility.FromTheme( ThemeKeys.Font );
-        var textTheme = ThemeUtility.FromTheme( ThemeKeys.Text );
-        var fontWeightTheme = ThemeUtility.FromTheme( ThemeKeys.FontWeight );
-        var trackingTheme = ThemeUtility.FromTheme( ThemeKeys.Tracking );
-        var leadingTheme = ThemeUtility.FromTheme( ThemeKeys.Leading );
-        var breakpointTheme = ThemeUtility.FromTheme( ThemeKeys.Breakpoint );
-        var containerTheme = ThemeUtility.FromTheme( ThemeKeys.Container );
-        var spacingTheme = ThemeUtility.FromTheme( ThemeKeys.Spacing );
-        var radiusTheme = ThemeUtility.FromTheme( ThemeKeys.Radius );
-        var shadowTheme = ThemeUtility.FromTheme( ThemeKeys.Shadow );
-        var insetShadowTheme = ThemeUtility.FromTheme( ThemeKeys.InsetShadow );
-        var textShadowTheme = ThemeUtility.FromTheme( ThemeKeys.TextShadow );
-        var dropShadowTheme = ThemeUtility.FromTheme( ThemeKeys.DropShadow );
-        var blurTheme = ThemeUtility.FromTheme( ThemeKeys.Blur );
-        var perspectiveTheme = ThemeUtility.FromTheme( ThemeKeys.Perspective );
-        var aspectTheme = ThemeUtility.FromTheme( ThemeKeys.Aspect );
-        var easeTheme = ThemeUtility.FromTheme( ThemeKeys.Ease );
-        var animateTheme = ThemeUtility.FromTheme( ThemeKeys.Animate );
+        var colorTheme = new ThemeReference( ThemeKeys.Color );
+        var fontTheme = new ThemeReference( ThemeKeys.Font );
+        var textTheme = new ThemeReference( ThemeKeys.Text );
+        var fontWeightTheme = new ThemeReference( ThemeKeys.FontWeight );
+        var trackingTheme = new ThemeReference( ThemeKeys.Tracking );
+        var leadingTheme = new ThemeReference( ThemeKeys.Leading );
+        var breakpointTheme = new ThemeReference( ThemeKeys.Breakpoint );
+        var containerTheme = new ThemeReference( ThemeKeys.Container );
+        var spacingTheme = new ThemeReference( ThemeKeys.Spacing );
+        var radiusTheme = new ThemeReference( ThemeKeys.Radius );
+        var shadowTheme = new ThemeReference( ThemeKeys.Shadow );
+        var insetShadowTheme = new ThemeReference( ThemeKeys.InsetShadow );
+        var textShadowTheme = new ThemeReference( ThemeKeys.TextShadow );
+        var dropShadowTheme = new ThemeReference( ThemeKeys.DropShadow );
+        var blurTheme = new ThemeReference( ThemeKeys.Blur );
+        var perspectiveTheme = new ThemeReference( ThemeKeys.Perspective );
+        var aspectTheme = new ThemeReference( ThemeKeys.Aspect );
+        var easeTheme = new ThemeReference( ThemeKeys.Ease );
+        var animateTheme = new ThemeReference( ThemeKeys.Animate );
 
         // Helpers to avoid repeating the same scales
 

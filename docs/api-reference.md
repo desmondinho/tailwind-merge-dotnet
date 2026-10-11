@@ -171,35 +171,14 @@ public string[]? PostfixLookupClassGroups { get; set; }
 public string[]? OrderSensitiveModifiers { get; set; }
 ```
 
-## `ThemeGetter`
+## `ThemeReference`
 
 ```csharp
 /// <summary>
-/// Represents a method that retrieves an array of objects from a theme based on a specified key.
+/// Represents a reference to a theme scale that is resolved when the class map is built.
 /// </summary>
-/// <param name="theme">The theme to retrieve values from.</param>
-/// <returns>An array of objects associated with the specified key in the theme.</returns>
-public delegate object[] ThemeGetter( Dictionary<string, object[]> theme );
-```
-
-## `ThemeUtility`
-
-```csharp
-/// <summary>
-/// Provides utility method for working with theme configurations.
-/// </summary>
-public static class ThemeUtility
-```
-
-### Methods
-
-```csharp
-/// <summary>
-/// Creates a <see cref="ThemeGetter"/> delegate that retrieves values from a theme based on the specified key.
-/// </summary>
-/// <param name="key">The key to use for retrieving values from the theme.</param>
-/// <returns>A <see cref="ThemeGetter"/>.</returns>
-public static ThemeGetter FromTheme( string key )
+/// <param name="Key">The key of the theme scale.</param>
+public sealed record ThemeReference( string Key );
 ```
 
 ## `ThemeKeys`

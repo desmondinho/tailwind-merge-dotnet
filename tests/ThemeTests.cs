@@ -85,7 +85,7 @@ public class ThemeTests
             },
             ClassGroups = new()
             {
-                ["px"] = new ClassGroup( "px", [ThemeUtility.FromTheme( "my-theme" )] ),
+                ["px"] = new ClassGroup( "px", [new ThemeReference( "my-theme" )] ),
             }
         } );
 

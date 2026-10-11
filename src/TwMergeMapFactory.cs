@@ -59,9 +59,10 @@ internal class TwMergeMapFactory
                 continue;
             }
 
-            if( definition is ThemeGetter themeGetter )
+            if( definition is ThemeReference themeReference )
             {
-                ProcessClassGroupsRecursively( current, classGroupId, null, themeGetter( theme ), theme );
+                var themeValues = theme.GetValueOrDefault( themeReference.Key ) ?? [];
+                ProcessClassGroupsRecursively( current, classGroupId, null, themeValues, theme );
                 continue;
             }
 
