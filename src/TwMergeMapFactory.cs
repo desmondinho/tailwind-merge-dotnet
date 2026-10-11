@@ -67,8 +67,13 @@ internal class TwMergeMapFactory
 
             if( definition is ClassGroup nestedClassGroup )
             {
-                var next = current.AddNextNode( nestedClassGroup.BaseClassName! );
-                ProcessClassGroupsRecursively( next, classGroupId, null, nestedClassGroup.Definitions, theme );
+                ProcessClassGroupsRecursively(
+                    current,
+                    classGroupId,
+                    nestedClassGroup.BaseClassName,
+                    nestedClassGroup.Definitions,
+                    theme
+                );
             }
         }
     }

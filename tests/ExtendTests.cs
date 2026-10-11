@@ -55,4 +55,31 @@ public class ExtendTests
         // Assert
         Assert.Equal( expected, actual );
     }
+
+    [Theory]
+    [InlineData( "elevated shadow-lg", "shadow-lg" )]
+    [InlineData( "shadow-lg elevated", "elevated" )]
+    [InlineData( "shadow-sm shadow-lg", "shadow-lg" )]
+    [InlineData( "sm lg", "sm lg" )]
+    public void Extend_ClassGroupWithDifferentBaseClassName_KeepsExistingDefinitions( string classLists, string expected )
+    {
+        // Arrange
+        var mockOptions = new Mock<IOptions<TwMergeConfig>>();
+        var config = new TwMergeConfig();
+
+        config.Extend( new ExtendedConfig()
+        {
+            ClassGroups = new()
+            {
+                ["shadow"] = new ClassGroup( ["elevated"] )
+            }
+        } );
+        mockOptions.Setup( ap => ap.Value ).Returns( config );
+
+        // Act
+        var actual = new TwMerge( mockOptions.Object ).Merge( classLists );
+
+        // Assert
+        Assert.Equal( expected, actual );
+    }
 }

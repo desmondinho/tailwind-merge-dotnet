@@ -2652,8 +2652,10 @@ public class TwMergeConfig
             {
                 if( ClassGroups.TryGetValue( classGroupId, out var existingGroup ) )
                 {
-                    var mergedDefinitions = MergeArrays( existingGroup.Definitions, classGroup.Definitions );
-                    ClassGroups[classGroupId] = new ClassGroup( classGroup.BaseClassName, mergedDefinitions );
+                    // Groups with different base class names are nested so that each keeps its own base class name
+                    ClassGroups[classGroupId] = existingGroup.BaseClassName == classGroup.BaseClassName
+                        ? new ClassGroup( classGroup.BaseClassName, MergeArrays( existingGroup.Definitions, classGroup.Definitions ) )
+                        : new ClassGroup( [existingGroup, classGroup] );
                 }
                 else
                 {
