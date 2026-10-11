@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using V = TailwindMerge.Common.Validators;
 
 namespace TailwindMerge.Tests;
@@ -368,6 +370,9 @@ public class ValidatorsTests
 	[InlineData( "1", true )]
 	[InlineData( "123", true )]
 	[InlineData( "8312", true )]
+	[InlineData( "1.0", true )]
+	[InlineData( "1e3", true )]
+	[InlineData( "99999999999", true )]
 
 	[InlineData( "[8312]", false )]
 	[InlineData( "[2]", false )]
@@ -380,6 +385,8 @@ public class ValidatorsTests
 	[InlineData( "1/2", false )]
 	[InlineData( "1%", false )]
 	[InlineData( "1px", false )]
+	[InlineData( "1,000", false )]
+	[InlineData( "NaN", false )]
 	public void IsInteger( string value, bool expected )
 	{
 		// Act
@@ -405,6 +412,9 @@ public class ValidatorsTests
 	[InlineData( "1/2", false )]
 	[InlineData( "1%", false )]
 	[InlineData( "1px", false )]
+	[InlineData( "1,000", false )]
+	[InlineData( "1,5", false )]
+	[InlineData( "NaN", false )]
 	public void IsNumber( string value, bool expected )
 	{
 		// Act
@@ -412,6 +422,29 @@ public class ValidatorsTests
 
 		// Assert
 		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "fa-IR" )]
+	[InlineData( "ar-SA" )]
+	[InlineData( "de-DE" )]
+	public void IsNumberAndIsInteger_DontDependOnCurrentCulture( string cultureName )
+	{
+		// Arrange
+		var originalCulture = CultureInfo.CurrentCulture;
+		CultureInfo.CurrentCulture = new CultureInfo( cultureName );
+
+		try
+		{
+			// Act & Assert
+			Assert.True( V.IsInteger( "-1" ) );
+			Assert.True( V.IsNumber( "-1.5" ) );
+			Assert.False( V.IsNumber( "1,5" ) );
+		}
+		finally
+		{
+			CultureInfo.CurrentCulture = originalCulture;
+		}
 	}
 
 	[Theory]

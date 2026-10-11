@@ -23,13 +23,13 @@ public static partial class Validators
 	/// Validates whether a string represents a number.
 	/// </summary>
 	public static Func<string, bool> IsNumber { get; } = value
-		=> !string.IsNullOrEmpty( value ) && double.TryParse( value, CultureInfo.InvariantCulture, out _ );
+		=> TryParseNumber( value, out var number ) && !double.IsNaN( number );
 
 	/// <summary>
 	/// Validates whether a string represents an integer.
 	/// </summary>
 	public static Func<string, bool> IsInteger { get; } = value
-		=> !string.IsNullOrEmpty( value ) && int.TryParse( value, out _ );
+		=> TryParseNumber( value, out var number ) && double.IsInteger( number );
 
 	/// <summary>
 	/// Validates whether a string represents a percentage.
@@ -196,6 +196,13 @@ public static partial class Validators
 		}
 
 		return false;
+	}
+
+	private static bool TryParseNumber( string value, out double number )
+	{
+		number = 0;
+		return !string.IsNullOrEmpty( value )
+			&& double.TryParse( value, NumberStyles.Float, CultureInfo.InvariantCulture, out number );
 	}
 
 	private static bool IsLengthOnly( string value )
