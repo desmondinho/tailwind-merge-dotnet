@@ -14,7 +14,6 @@ namespace TailwindMerge;
 /// </summary>
 public partial class TwMerge
 {
-	private readonly TwMergeConfig _config;
 	private readonly TwMergeContext _context;
 	private readonly LruCache<string, string> _cache;
 
@@ -24,9 +23,9 @@ public partial class TwMerge
 	/// <param name="options">The configuration options.</param>
 	public TwMerge( IOptions<TwMergeConfig>? options = null )
 	{
-		_config = options?.Value ?? TwMergeConfig.Default();
-		_context = new TwMergeContext( _config );
-		_cache = new LruCache<string, string>( _config.CacheSize );
+		var config = options?.Value ?? TwMergeConfig.Default();
+		_context = new TwMergeContext( config );
+		_cache = new LruCache<string, string>( config.CacheSize );
 	}
 
 	/// <summary>
@@ -87,7 +86,7 @@ public partial class TwMerge
 				var baseClassNameWithoutPostfix = baseClassName[..postfixModifierPosition!.Value];
 				classGroupId = _context.GetClassGroupId( baseClassNameWithoutPostfix );
 
-				var classGroupIdWithPostfix = !string.IsNullOrEmpty( classGroupId ) && _config.PostfixLookupClassGroups.Contains( classGroupId )
+				var classGroupIdWithPostfix = !string.IsNullOrEmpty( classGroupId ) && _context.IsPostfixLookupClassGroup( classGroupId )
 					? _context.GetClassGroupId( baseClassName )
 					: null;
 				if( !string.IsNullOrEmpty( classGroupIdWithPostfix ) && classGroupIdWithPostfix != classGroupId )
