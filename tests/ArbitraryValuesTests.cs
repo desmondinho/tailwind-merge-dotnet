@@ -131,6 +131,8 @@ public class ArbitraryValuesTests
 	[InlineData( "bg-radial bg-radial-(--my-position)", "bg-radial-(--my-position)" )]
 	[InlineData( "bg-conic-10 bg-conic-(--my-angle)", "bg-conic-(--my-angle)" )]
 	[InlineData( "bg-linear-(--my-angle) bg-conic", "bg-conic" )]
+	[InlineData( "z-10 z-(--my-z)", "z-(--my-z)" )]
+	[InlineData( "z-(--my-z) z-auto", "z-auto" )]
 	public void Merge_ArbitraryCustomProperties_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

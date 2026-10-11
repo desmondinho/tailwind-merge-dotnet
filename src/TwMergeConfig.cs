@@ -505,7 +505,7 @@ public class TwMergeConfig
              * Z-Index
              * See https://tailwindcss.com/docs/z-index
              */
-            ["z"] = new( "z", ["auto", V.IsInteger, V.IsInteger, V.IsArbitraryValue] ),
+            ["z"] = new( "z", ["auto", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable] ),
 
             // ------------------------
             // --- Flexbox and Grid ---
