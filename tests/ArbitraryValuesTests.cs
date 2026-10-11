@@ -121,8 +121,16 @@ public class ArbitraryValuesTests
     )]
 	[InlineData( 
         "shadow-xs shadow-(shadow:--something) shadow-red shadow-(--some-other-shadow) shadow-(color:--some-color)", 
-        "shadow-(--some-other-shadow) shadow-(color:--some-color)" 
+        "shadow-(--some-other-shadow) shadow-(color:--some-color)"
     )]
+	[InlineData( "bg-red-500 bg-(image:--my-image)", "bg-red-500 bg-(image:--my-image)" )]
+	[InlineData( "bg-(image:--my-image) bg-red-500", "bg-(image:--my-image) bg-red-500" )]
+	[InlineData( "bg-none bg-(image:--my-image)", "bg-(image:--my-image)" )]
+	[InlineData( "bg-(url:--my-image) bg-linear-to-r", "bg-linear-to-r" )]
+	[InlineData( "bg-linear-45 bg-linear-(--my-angle)", "bg-linear-(--my-angle)" )]
+	[InlineData( "bg-radial bg-radial-(--my-position)", "bg-radial-(--my-position)" )]
+	[InlineData( "bg-conic-10 bg-conic-(--my-angle)", "bg-conic-(--my-angle)" )]
+	[InlineData( "bg-linear-(--my-angle) bg-conic", "bg-conic" )]
 	public void Merge_ArbitraryCustomProperties_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
