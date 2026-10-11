@@ -105,6 +105,15 @@ public class ArbitraryValuesTests
         "border-[color-mix(in_oklab,var(--background),var(--calendar-color)_30%)] border",
         "border-[color-mix(in_oklab,var(--background),var(--calendar-color)_30%)] border"
     )]
+    [InlineData( "font-[400] font-[600]", "font-[600]" )]
+    [InlineData( "font-[var(--a)] font-[var(--b)]", "font-[var(--b)]" )]
+    [InlineData( "font-[weight:var(--a)] font-[var(--b)]", "font-[var(--b)]" )]
+    [InlineData( "font-[400] font-[weight:var(--b)]", "font-[weight:var(--b)]" )]
+    [InlineData( "font-[weight:var(--a)] font-[weight:var(--b)]", "font-[weight:var(--b)]" )]
+    [InlineData(
+        "font-[family-name:var(--a)] font-[var(--b)]",
+        "font-[family-name:var(--a)] font-[var(--b)]"
+    )]
     public void Merge_AmbiguousArbitraryValues_MergesCorrectly( string classLists, string expected )
     {
         // Act
@@ -131,6 +140,9 @@ public class ArbitraryValuesTests
 	[InlineData( "bg-radial bg-radial-(--my-position)", "bg-radial-(--my-position)" )]
 	[InlineData( "bg-conic-10 bg-conic-(--my-angle)", "bg-conic-(--my-angle)" )]
 	[InlineData( "bg-linear-(--my-angle) bg-conic", "bg-conic" )]
+	[InlineData( "font-(--a) font-(--b)", "font-(--b)" )]
+	[InlineData( "font-(weight:--a) font-(--b)", "font-(--b)" )]
+	[InlineData( "font-(family-name:--a) font-(--b)", "font-(family-name:--a) font-(--b)" )]
 	[InlineData( "z-10 z-(--my-z)", "z-(--my-z)" )]
 	[InlineData( "z-(--my-z) z-auto", "z-auto" )]
 	[InlineData( "outline-offset-2 outline-offset-(--my-offset)", "outline-offset-(--my-offset)" )]

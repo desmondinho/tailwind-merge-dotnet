@@ -92,6 +92,12 @@ public static partial class Validators
 		=> GetIsArbitraryVariable( value, IsLabelShadow, true );
 
 	/// <summary>
+	/// Validates whether a string represents an arbitrary variable font weight value.
+	/// </summary>
+	public static Func<string, bool> IsArbitraryVariableWeight { get; } = value
+		=> GetIsArbitraryVariable( value, IsLabelWeight, true );
+
+	/// <summary>
 	/// Validates whether a string represents an arbitrary size.
 	/// </summary>
 	public static Func<string, bool> IsArbitrarySize { get; } = value
@@ -108,6 +114,18 @@ public static partial class Validators
 	/// </summary>
 	public static Func<string, bool> IsArbitraryNumber { get; } = value
 		=> GetIsArbitraryValue( value, IsLabelNumber, IsNumber );
+
+	/// <summary>
+	/// Validates whether a string represents an arbitrary font weight value.
+	/// </summary>
+	public static Func<string, bool> IsArbitraryWeight { get; } = value
+		=> GetIsArbitraryValue( value, IsLabelWeight, IsAny );
+
+	/// <summary>
+	/// Validates whether a string represents an arbitrary font family name value.
+	/// </summary>
+	public static Func<string, bool> IsArbitraryFamilyName { get; } = value
+		=> GetIsArbitraryValue( value, IsLabelFamilyName, IsNever );
 
 	/// <summary>
 	/// Validates whether a string represents an arbitrary position.
@@ -191,6 +209,7 @@ public static partial class Validators
 	private static bool IsLabelShadow( string label ) => label == "shadow";
 	private static bool IsLabelPosition( string label ) => label is "position" or "percentage";
 	private static bool IsLabelFamilyName( string label ) => label == "family-name";
+	private static bool IsLabelWeight( string label ) => label is "number" or "weight";
 	private static bool IsLabelSize( string label ) => label is "length" or "size" or "bg-size";
 	private static bool IsLabelImage( string label ) => label is "image" or "url";
 

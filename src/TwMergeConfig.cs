@@ -932,7 +932,7 @@ public class TwMergeConfig
              * Font Weight
              * See https://tailwindcss.com/docs/font-weight
              */
-            ["font-weight"] = new( "font", [fontWeightTheme, V.IsArbitraryNumber, V.IsArbitraryVariable] ),
+            ["font-weight"] = new( "font", [fontWeightTheme, V.IsArbitraryVariableWeight, V.IsArbitraryWeight] ),
             /*
              * Font Stretch
              * See https://tailwindcss.com/docs/font-stretch
@@ -956,7 +956,7 @@ public class TwMergeConfig
              */
             ["font-family"] = new( "font", [
                 fontTheme,
-                V.IsArbitraryValue,
+                V.IsArbitraryFamilyName,
                 V.IsArbitraryVariableFamilyName
             ] ),
             /*

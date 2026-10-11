@@ -34,6 +34,24 @@ public class ValidatorsTests
 	}
 
 	[Theory]
+	[InlineData( "[family-name:Open_Sans]", true )]
+	[InlineData( "[family-name:var(--my-font)]", true )]
+
+	[InlineData( "[Open_Sans]", false )]
+	[InlineData( "[number:400]", false )]
+	[InlineData( "[weight:400]", false )]
+	[InlineData( "family-name:test", false )]
+	[InlineData( "(family-name:test)", false )]
+	public void IsArbitraryFamilyName( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryFamilyName( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
 	[InlineData( "[url:var(--my-url)]", true )]
 	[InlineData( "[url(something)]", true )]
 	[InlineData( "[url:bla]", true )]
@@ -288,6 +306,43 @@ public class ValidatorsTests
 	{
 		// Act
 		var actual = V.IsArbitraryVariableSize( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "(weight:test)", true )]
+	[InlineData( "(number:test)", true )]
+	[InlineData( "(--my-weight)", true )]
+
+	[InlineData( "(other:test)", false )]
+	[InlineData( "weight:test", false )]
+	[InlineData( "[weight:test]", false )]
+	public void IsArbitraryVariableWeight( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariableWeight( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "[weight:400]", true )]
+	[InlineData( "[weight:bold]", true )]
+	[InlineData( "[number:400]", true )]
+	[InlineData( "[number:var(--my-weight)]", true )]
+	[InlineData( "[400]", true )]
+	[InlineData( "[bold]", true )]
+
+	[InlineData( "[family-name:test]", false )]
+	[InlineData( "weight:400", false )]
+	[InlineData( "(weight:400)", false )]
+	public void IsArbitraryWeight( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryWeight( value );
 
 		// Assert
 		Assert.Equal( expected, actual );
