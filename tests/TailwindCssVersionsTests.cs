@@ -23,6 +23,7 @@ public class TailwindCssVersionsTests
 		"from-0% from-10% from-[12.5%] via-0% via-10% via-[12.5%] to-0% to-10% to-[12.5%]",
 		"from-[12.5%] via-[12.5%] to-[12.5%]"
 	)]
+	[InlineData( "from-0% from-red", "from-0% from-red" )]
 	[InlineData(
 		"list-image-none list-image-[url(./my-image.png)] list-image-[var(--value)]",
 		"list-image-[var(--value)]"

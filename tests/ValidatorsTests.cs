@@ -303,6 +303,7 @@ public class ValidatorsTests
 	[InlineData( "(other:test)", false )]
 	[InlineData( "(test)", false )]
 	[InlineData( "shadow:test", false )]
+	[InlineData( "size:test", false )]
 	[InlineData( "(percentage:test)", false )]
 	public void IsArbitraryVariableSize( string value, bool expected )
 	{

@@ -59,8 +59,14 @@ public class ClassGroupsTests
         "overflow-x-auto hover:overflow-x-hidden overflow-x-scroll",
         "hover:overflow-x-hidden overflow-x-scroll"
     )]
+    [InlineData(
+        "overflow-x-auto hover:overflow-x-hidden hover:overflow-x-auto overflow-x-scroll",
+        "hover:overflow-x-auto overflow-x-scroll"
+    )]
+    [InlineData( "col-span-1 col-span-full", "col-span-full" )]
     [InlineData( "columns-12 columns-auto", "columns-auto" )]
     [InlineData( "columns-auto columns-2xl", "columns-2xl" )]
+    [InlineData( "gap-2 gap-px basis-px basis-3", "gap-px basis-3" )]
     public void Merge_SameClassGroups_MergesCorrectly( string classLists, string expected )
     {
         // Act

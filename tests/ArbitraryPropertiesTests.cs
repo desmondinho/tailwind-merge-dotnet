@@ -34,6 +34,10 @@ public class ArbitraryPropertiesTests
         "[paint-order:markers] [paint-order:normal] [--my-var:2rem] lg:[--my-var:4px]",
         "[paint-order:normal] [--my-var:2rem] lg:[--my-var:4px]"
     )]
+    [InlineData(
+        "bg-[#B91C1C] bg-radial-[at_50%_75%] bg-radial-[at_25%_25%]",
+        "bg-[#B91C1C] bg-radial-[at_25%_25%]"
+    )]
     public void Merge_ArbitraryPropertiesWithModifiers_MergesCorrectly( string classLists, string expected )
     {
         // Act
