@@ -102,10 +102,10 @@ public class ThemeTests
     public void FromTheme_ExposesThemeKey()
     {
         // Act
-        var themeGetter = ThemeUtility.FromTheme( ThemeKeys.Spacing );
+        var themeReference = ThemeUtility.FromTheme( ThemeKeys.Spacing );
 
         // Assert
-        Assert.Equal( ThemeKeys.Spacing, themeGetter.Key );
+        Assert.Equal( ThemeKeys.Spacing, themeReference.Key );
     }
 
     [Fact]

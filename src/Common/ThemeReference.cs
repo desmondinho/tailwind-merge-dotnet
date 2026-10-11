@@ -4,7 +4,7 @@
 /// Represents a reference to a theme scale that is resolved when the class map is built.
 /// </summary>
 /// <param name="Key">The key of the theme scale.</param>
-public sealed record ThemeGetter( string Key );
+public sealed record ThemeReference( string Key );
 
 /// <summary>
 /// Provides utility method for working with theme configurations.
@@ -12,9 +12,9 @@ public sealed record ThemeGetter( string Key );
 public static class ThemeUtility
 {
     /// <summary>
-    /// Creates a <see cref="ThemeGetter"/> that references the theme scale with the specified key.
+    /// Creates a <see cref="ThemeReference"/> that references the theme scale with the specified key.
     /// </summary>
     /// <param name="key">The key of the theme scale.</param>
-    /// <returns>A <see cref="ThemeGetter"/>.</returns>
-    public static ThemeGetter FromTheme( string key ) => new( key );
+    /// <returns>A <see cref="ThemeReference"/>.</returns>
+    public static ThemeReference FromTheme( string key ) => new( key );
 }

@@ -63,7 +63,7 @@ public class TwMergeConfig
     /// </summary>
     public TwMergeConfig()
     {
-        // Theme getters for theme variable namespaces
+        // Theme references for theme variable namespaces
         // See https://tailwindcss.com/docs/theme#theme-variable-namespaces
 
         var colorTheme = ThemeUtility.FromTheme( ThemeKeys.Color );
