@@ -42,6 +42,22 @@ public class ClassGroupsTests
     }
 
     [Theory]
+    [InlineData( "max-w-lg max-w-none", "max-w-none" )]
+    [InlineData( "max-w-none max-w-lg", "max-w-lg" )]
+    [InlineData( "max-h-96 max-h-none", "max-h-none" )]
+    [InlineData( "max-h-none max-h-96", "max-h-96" )]
+    [InlineData( "max-h-[300px] max-h-none", "max-h-none" )]
+    [InlineData( "max-h-none max-h-screen", "max-h-screen" )]
+    public void Merge_NoneValuesInSizingGroups_MergesCorrectly( string classLists, string expected )
+    {
+        // Act
+        var actual = new TwMerge().Merge( classLists );
+
+        // Assert
+        Assert.Equal( expected, actual );
+    }
+
+    [Theory]
     [InlineData( "ring shadow", "ring shadow" )]
     [InlineData( "ring-2 shadow-md", "ring-2 shadow-md" )]
     [InlineData( "shadow ring", "shadow ring" )]

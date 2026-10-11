@@ -902,7 +902,7 @@ public class TwMergeConfig
              * Max-Height
              * See https://tailwindcss.com/docs/max-height
              */
-            ["max-h"] = new( "max-h", ["screen", .. sizingScale] ),
+            ["max-h"] = new( "max-h", ["screen", "none", .. sizingScale] ),
 
             // ------------------
             // --- Typography ---
