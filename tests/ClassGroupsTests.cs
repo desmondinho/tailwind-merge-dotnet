@@ -21,6 +21,35 @@ public class ClassGroupsTests
         Assert.Equal( expected, actual );
     }
 
+    // Since Tailwind CSS v4 the axis utilities compile to logical shorthand properties (px → padding-inline),
+    // which fully override their logical-side longhands (ps → padding-inline-start) in every writing mode.
+    [Theory]
+    [InlineData( "ps-2 px-4", "px-4" )]
+    [InlineData( "pe-2 px-4", "px-4" )]
+    [InlineData( "px-4 ps-2", "px-4 ps-2" )]
+    [InlineData( "pbs-2 py-4", "py-4" )]
+    [InlineData( "ms-2 mx-4", "mx-4" )]
+    [InlineData( "mbe-2 my-4", "my-4" )]
+    [InlineData( "start-2 inset-x-4", "inset-x-4" )]
+    [InlineData( "end-2 inset-x-4", "inset-x-4" )]
+    [InlineData( "inset-bs-2 inset-y-4", "inset-y-4" )]
+    [InlineData( "border-s-2 border-x-4", "border-x-4" )]
+    [InlineData( "border-be-2 border-y-4", "border-y-4" )]
+    [InlineData( "border-s-red-500 border-x-blue-500", "border-x-blue-500" )]
+    [InlineData( "border-bs-red-500 border-y-blue-500", "border-y-blue-500" )]
+    [InlineData( "scroll-ms-2 scroll-mx-4", "scroll-mx-4" )]
+    [InlineData( "scroll-mbs-2 scroll-my-4", "scroll-my-4" )]
+    [InlineData( "scroll-ps-2 scroll-px-4", "scroll-px-4" )]
+    [InlineData( "scroll-pbe-2 scroll-py-4", "scroll-py-4" )]
+    public void Merge_AxisShorthandsOverrideLogicalSides_MergesCorrectly( string classLists, string expected )
+    {
+        // Act
+        var actual = new TwMerge().Merge( classLists );
+
+        // Assert
+        Assert.Equal( expected, actual );
+    }
+
     [Theory]
     [InlineData( "overflow-x-auto overflow-x-hidden", "overflow-x-hidden" )]
     [InlineData( "basis-full basis-auto", "basis-auto" )]
