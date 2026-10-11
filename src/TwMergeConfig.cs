@@ -892,17 +892,17 @@ public class TwMergeConfig
              * Height
              * See https://tailwindcss.com/docs/height
              */
-            ["h"] = new( "h", ["screen", .. sizingScale] ),
+            ["h"] = new( "h", ["screen", "lh", .. sizingScale] ),
             /*
              * Min-Height
              * See https://tailwindcss.com/docs/min-height
              */
-            ["min-h"] = new( "min-h", ["screen", "none", .. sizingScale] ),
+            ["min-h"] = new( "min-h", ["screen", "lh", "none", .. sizingScale] ),
             /*
              * Max-Height
              * See https://tailwindcss.com/docs/max-height
              */
-            ["max-h"] = new( "max-h", ["screen", "none", .. sizingScale] ),
+            ["max-h"] = new( "max-h", ["screen", "lh", "none", .. sizingScale] ),
 
             // ------------------
             // --- Typography ---

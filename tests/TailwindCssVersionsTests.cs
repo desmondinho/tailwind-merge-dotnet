@@ -158,6 +158,19 @@ public class TailwindCssVersionsTests
 	}
 
 	[Theory]
+	[InlineData( "h-12 h-lh", "h-lh" )]
+	[InlineData( "min-h-12 min-h-lh", "min-h-lh" )]
+	[InlineData( "max-h-12 max-h-lh", "max-h-lh" )]
+	public void Merge_TailwindCssV415Classes_MergesCorrectly( string classLists, string expected )
+	{
+		// Act
+		var actual = new TwMerge().Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
     [InlineData( "inset-s-1 inset-s-2", "inset-s-2" )]
     [InlineData( "inset-e-1 inset-e-2", "inset-e-2" )]
     [InlineData( "inset-bs-1 inset-bs-2", "inset-bs-2" )]
