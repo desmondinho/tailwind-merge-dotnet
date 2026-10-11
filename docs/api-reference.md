@@ -265,6 +265,11 @@ public static Func<string, bool> IsArbitraryVariableImage { get; }
 public static Func<string, bool> IsArbitraryVariableShadow { get; }
 
 /// <summary>
+/// Validates whether a string represents an arbitrary variable font weight value.
+/// </summary>
+public static Func<string, bool> IsArbitraryVariableWeight { get; }
+
+/// <summary>
 /// Validates whether a string represents an arbitrary size.
 /// </summary>
 public static Func<string, bool> IsArbitrarySize { get; }
@@ -278,6 +283,16 @@ public static Func<string, bool> IsArbitraryLength { get; }
 /// Validates whether a string represents an arbitrary number.
 /// </summary>
 public static Func<string, bool> IsArbitraryNumber { get; }
+
+/// <summary>
+/// Validates whether a string represents an arbitrary font weight value.
+/// </summary>
+public static Func<string, bool> IsArbitraryWeight { get; }
+
+/// <summary>
+/// Validates whether a string represents an arbitrary font family name value.
+/// </summary>
+public static Func<string, bool> IsArbitraryFamilyName { get; }
 
 /// <summary>
 /// Validates whether a string represents an arbitrary position.
@@ -309,9 +324,10 @@ A brief summary for each validator:
 
 - `IsAny` always returns true. Be careful with this validator as it might match unwanted classes. I use it primarily to match colors or when I'm certain there are no other class groups in a namespace.
 - `IsAnyNonArbitrary` checks if the class part is not an arbitrary value or arbitrary variable.
+- `IsArbitraryFamilyName` checks whether class part is an arbitrary value which starts with `family-name:` (`[family-name:Open_Sans]`) which is necessary for font-family classNames.
 - `IsArbitraryImage` checks whether class part is an arbitrary value which is an iamge, e.g. by starting with `image:`, `url:`, `linear-gradient(` or `url(` (`[url('/path-to-image.png')]`, `image:var(--maybe-an-image-at-runtime)]`) which is necessary for background-image classNames.
 - `IsArbitraryLength` checks for arbitrary length values (`[3%]`, `[4px]`, `[length:var(--my-var)]`).
-- `IsArbitraryNumber` checks whether class part is an arbitrary value which starts with `number:` or is a number (`[number:var(--value)]`, `[450]`) which is necessary for font-weight and stroke-width classNames.
+- `IsArbitraryNumber` checks whether class part is an arbitrary value which starts with `number:` or is a number (`[number:var(--value)]`, `[450]`) which is necessary for line-clamp and stroke-width classNames.
 - `IsArbitraryPosition` checks whether class part is an arbitrary value which starts with `position:` (`[position:200px_100px]`) which is necessary for background-position classNames.
 - `IsArbitraryShadow` checks whether class part is an arbitrary value which starts with the same pattern as a shadow value (`[0_35px_60px_-15px_rgba(0,0,0,0.3)]`), namely with two lengths separated by a underscore, optionally prepended by `inset`.
 - `IsArbitrarySize` checks whether class part is an arbitrary value which starts with `size:` (`[size:200px_100px]`) which is necessary for background-size classNames.
@@ -323,6 +339,8 @@ A brief summary for each validator:
 - `IsArbitraryVariablePosition` checks whether class part is an arbitrary variable with the `position` label (`(position:--my-position)`)
 - `IsArbitraryVariableShadow` checks whether class part is an arbitrary variable with the `shadow` label or not label at all (`(shadow:--my-shadow)`, `(--my-shadow)`)
 - `IsArbitraryVariableSize` checks whether class part is an arbitrary variable with the `size`, `length` or `percentage` label (`(size:--my-size)`)
+- `IsArbitraryVariableWeight` checks whether class part is an arbitrary variable with the `weight` or `number` label or no label at all (`(weight:--my-weight)`, `(--my-weight)`)
+- `IsArbitraryWeight` checks whether class part is an arbitrary value which starts with `weight:` or `number:` or has no label at all (`[weight:var(--value)]`, `[400]`, `[bold]`) which is necessary for font-weight classNames.
 - `IsFraction` checks whether class part is a fraction of two numbers (`1/2`, `127/256`)
 - `IsNamedContainerQuery` checks whether class part is a named container query class (`@container/sidebar`, `@container-size/main`, `@container-normal/content`).
 - `IsInteger` checks for integer values (`3`).

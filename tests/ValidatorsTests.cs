@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using V = TailwindMerge.Common.Validators;
 
 namespace TailwindMerge.Tests;
@@ -30,6 +32,24 @@ public class ValidatorsTests
 	{
 		var actual = V.IsAnyNonArbitrary( value );
 
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "[family-name:Open_Sans]", true )]
+	[InlineData( "[family-name:var(--my-font)]", true )]
+
+	[InlineData( "[Open_Sans]", false )]
+	[InlineData( "[number:400]", false )]
+	[InlineData( "[weight:400]", false )]
+	[InlineData( "family-name:test", false )]
+	[InlineData( "(family-name:test)", false )]
+	public void IsArbitraryFamilyName( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryFamilyName( value );
+
+		// Assert
 		Assert.Equal( expected, actual );
 	}
 
@@ -67,6 +87,9 @@ public class ValidatorsTests
 	[InlineData( "[12px", false )]
 	[InlineData( "12px]", false )]
 	[InlineData( "one", false )]
+	[InlineData( "[color(display-p3_1_0_0/50%)]", false )]
+	[InlineData( "[light-dark(white,rgb(0_0_0/50%))]", false )]
+	[InlineData( "[color-mix(in_srgb,red_50%,blue)]", false )]
 	public void IsArbitraryLength( string value, bool expected )
 	{
 		// Act
@@ -280,11 +303,49 @@ public class ValidatorsTests
 	[InlineData( "(other:test)", false )]
 	[InlineData( "(test)", false )]
 	[InlineData( "shadow:test", false )]
+	[InlineData( "size:test", false )]
 	[InlineData( "(percentage:test)", false )]
 	public void IsArbitraryVariableSize( string value, bool expected )
 	{
 		// Act
 		var actual = V.IsArbitraryVariableSize( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "(weight:test)", true )]
+	[InlineData( "(number:test)", true )]
+	[InlineData( "(--my-weight)", true )]
+
+	[InlineData( "(other:test)", false )]
+	[InlineData( "weight:test", false )]
+	[InlineData( "[weight:test]", false )]
+	public void IsArbitraryVariableWeight( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryVariableWeight( value );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "[weight:400]", true )]
+	[InlineData( "[weight:bold]", true )]
+	[InlineData( "[number:400]", true )]
+	[InlineData( "[number:var(--my-weight)]", true )]
+	[InlineData( "[400]", true )]
+	[InlineData( "[bold]", true )]
+
+	[InlineData( "[family-name:test]", false )]
+	[InlineData( "weight:400", false )]
+	[InlineData( "(weight:400)", false )]
+	public void IsArbitraryWeight( string value, bool expected )
+	{
+		// Act
+		var actual = V.IsArbitraryWeight( value );
 
 		// Assert
 		Assert.Equal( expected, actual );
@@ -310,6 +371,9 @@ public class ValidatorsTests
 	[InlineData( "1", true )]
 	[InlineData( "123", true )]
 	[InlineData( "8312", true )]
+	[InlineData( "1.0", true )]
+	[InlineData( "1e3", true )]
+	[InlineData( "99999999999", true )]
 
 	[InlineData( "[8312]", false )]
 	[InlineData( "[2]", false )]
@@ -322,6 +386,8 @@ public class ValidatorsTests
 	[InlineData( "1/2", false )]
 	[InlineData( "1%", false )]
 	[InlineData( "1px", false )]
+	[InlineData( "1,000", false )]
+	[InlineData( "NaN", false )]
 	public void IsInteger( string value, bool expected )
 	{
 		// Act
@@ -347,6 +413,9 @@ public class ValidatorsTests
 	[InlineData( "1/2", false )]
 	[InlineData( "1%", false )]
 	[InlineData( "1px", false )]
+	[InlineData( "1,000", false )]
+	[InlineData( "1,5", false )]
+	[InlineData( "NaN", false )]
 	public void IsNumber( string value, bool expected )
 	{
 		// Act
@@ -354,6 +423,29 @@ public class ValidatorsTests
 
 		// Assert
 		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "fa-IR" )]
+	[InlineData( "ar-SA" )]
+	[InlineData( "de-DE" )]
+	public void IsNumberAndIsInteger_DontDependOnCurrentCulture( string cultureName )
+	{
+		// Arrange
+		var originalCulture = CultureInfo.CurrentCulture;
+		CultureInfo.CurrentCulture = new CultureInfo( cultureName );
+
+		try
+		{
+			// Act & Assert
+			Assert.True( V.IsInteger( "-1" ) );
+			Assert.True( V.IsNumber( "-1.5" ) );
+			Assert.False( V.IsNumber( "1,5" ) );
+		}
+		finally
+		{
+			CultureInfo.CurrentCulture = originalCulture;
+		}
 	}
 
 	[Theory]

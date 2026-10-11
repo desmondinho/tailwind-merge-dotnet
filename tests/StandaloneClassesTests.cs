@@ -8,6 +8,7 @@ public class StandaloneClassesTests
     [InlineData( "line-through no-underline", "no-underline" )]
     [InlineData( "hover:block hover:inline", "hover:inline" )]
     [InlineData( "hover:inline hover:block", "hover:block" )]
+    [InlineData( "hover:block hover:block", "hover:block" )]
     [InlineData( 
         "inline hover:inline focus:inline hover:block hover:focus:block", 
         "inline focus:inline hover:block hover:focus:block" 

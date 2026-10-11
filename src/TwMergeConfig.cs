@@ -178,6 +178,7 @@ public class TwMergeConfig
             "min",
             "max",
             "fit",
+            containerTheme,
             V.IsFraction,
             .. unambiguousSpacingScale
         ];
@@ -226,9 +227,9 @@ public class TwMergeConfig
 			// Deprecated since Tailwind CSS v4.0.0
 			"",
             "none",
-            V.IsNumber,
-            V.IsArbitraryLength,
-            V.IsArbitraryVariableLength
+            blurTheme,
+            V.IsArbitraryValue,
+            V.IsArbitraryVariable
         ];
         object[] rotateScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
         object[] scaleScale = ["none", V.IsNumber, V.IsArbitraryValue, V.IsArbitraryVariable];
@@ -309,6 +310,7 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/columns
              */
             ["columns"] = new( "columns", [
+                "auto",
                 containerTheme,
                 V.IsNumber,
                 V.IsArbitraryValue,
@@ -503,7 +505,7 @@ public class TwMergeConfig
              * Z-Index
              * See https://tailwindcss.com/docs/z-index
              */
-            ["z"] = new( "z", ["auto", V.IsInteger, V.IsInteger, V.IsArbitraryValue] ),
+            ["z"] = new( "z", ["auto", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable] ),
 
             // ------------------------
             // --- Flexbox and Grid ---
@@ -828,32 +830,32 @@ public class TwMergeConfig
             ["size"] = new( "size", sizingScale ),
             /*
              * Inline Size
-             * See https://tailwindcss.com/docs/width
+             * See https://tailwindcss.com/docs/inline-size
              */
             ["inline-size"] = new( "inline", ["auto", .. sizingInlineScale] ),
             /*
              * Min-Inline Size
-             * See https://tailwindcss.com/docs/min-width
+             * See https://tailwindcss.com/docs/min-inline-size
              */
             ["min-inline-size"] = new( "min-inline", ["auto", .. sizingInlineScale] ),
             /*
              * Max-Inline Size
-             * See https://tailwindcss.com/docs/max-width
+             * See https://tailwindcss.com/docs/max-inline-size
              */
             ["max-inline-size"] = new( "max-inline", ["none", .. sizingInlineScale] ),
             /*
              * Block Size
-             * See https://tailwindcss.com/docs/height
+             * See https://tailwindcss.com/docs/block-size
              */
             ["block-size"] = new( "block", ["auto", .. sizingBlockScale] ),
             /*
              * Min-Block Size
-             * See https://tailwindcss.com/docs/min-height
+             * See https://tailwindcss.com/docs/min-block-size
              */
             ["min-block-size"] = new( "min-block", ["auto", .. sizingBlockScale] ),
             /*
              * Max-Block Size
-             * See https://tailwindcss.com/docs/max-height
+             * See https://tailwindcss.com/docs/max-block-size
              */
             ["max-block-size"] = new( "max-block", ["none", .. sizingBlockScale] ),
             /*
@@ -890,17 +892,17 @@ public class TwMergeConfig
              * Height
              * See https://tailwindcss.com/docs/height
              */
-            ["h"] = new( "h", ["screen", .. sizingScale] ),
+            ["h"] = new( "h", ["screen", "lh", .. sizingScale] ),
             /*
              * Min-Height
              * See https://tailwindcss.com/docs/min-height
              */
-            ["min-h"] = new( "min-h", ["screen", "none", .. sizingScale] ),
+            ["min-h"] = new( "min-h", ["screen", "lh", "none", .. sizingScale] ),
             /*
              * Max-Height
              * See https://tailwindcss.com/docs/max-height
              */
-            ["max-h"] = new( "max-h", ["screen", .. sizingScale] ),
+            ["max-h"] = new( "max-h", ["screen", "lh", "none", .. sizingScale] ),
 
             // ------------------
             // --- Typography ---
@@ -930,7 +932,7 @@ public class TwMergeConfig
              * Font Weight
              * See https://tailwindcss.com/docs/font-weight
              */
-            ["font-weight"] = new( "font", [fontWeightTheme, V.IsArbitraryNumber, V.IsArbitraryVariable] ),
+            ["font-weight"] = new( "font", [fontWeightTheme, V.IsArbitraryWeight, V.IsArbitraryVariableWeight] ),
             /*
              * Font Stretch
              * See https://tailwindcss.com/docs/font-stretch
@@ -954,7 +956,7 @@ public class TwMergeConfig
              */
             ["font-family"] = new( "font", [
                 fontTheme,
-                V.IsArbitraryValue,
+                V.IsArbitraryFamilyName,
                 V.IsArbitraryVariableFamilyName
             ] ),
             /*
@@ -1012,6 +1014,7 @@ public class TwMergeConfig
              * See https://tailwindcss.com/docs/line-height
              */
             ["leading"] = new( "leading", [
+                "none",
 				// Deprecated since Tailwind CSS v4.0.0. See https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757
 				leadingTheme,
                 .. unambiguousSpacingScale
@@ -1209,11 +1212,13 @@ public class TwMergeConfig
                         "tl"
                     ] ),
                     V.IsInteger,
-                    V.IsArbitraryValue
+                    V.IsArbitraryValue,
+                    V.IsArbitraryVariable
                 ] ),
-                new ClassGroup( "radial", ["", V.IsArbitraryValue] ),
-                new ClassGroup( "conic", [V.IsInteger, V.IsArbitraryValue] ),
-                V.IsArbitraryImage
+                new ClassGroup( "radial", ["", V.IsArbitraryValue, V.IsArbitraryVariable] ),
+                new ClassGroup( "conic", ["", V.IsInteger, V.IsArbitraryValue, V.IsArbitraryVariable] ),
+                V.IsArbitraryImage,
+                V.IsArbitraryVariableImage
             ] ),
             /*
              * Background Color
@@ -1486,8 +1491,8 @@ public class TwMergeConfig
              */
             ["outline-offset"] = new( "outline-offset", [
                 V.IsNumber,
-                V.IsArbitraryLength,
-                V.IsArbitraryVariableLength
+                V.IsArbitraryValue,
+                V.IsArbitraryVariable
             ] ),
             /*
              * Outline Width
@@ -1516,6 +1521,8 @@ public class TwMergeConfig
             ["shadow"] = new( "shadow", [
 				// Deprecated since Tailwind CSS v4.0.0
 				"",
+				// Deprecated since Tailwind CSS v4.0.0
+				"inner",
                 "none",
                 shadowTheme,
                 V.IsArbitraryShadow,
@@ -2444,16 +2451,16 @@ public class TwMergeConfig
                 "bottom",
                 "left"
             ],
-            ["inset-x"] = ["right", "left"],
-            ["inset-y"] = ["top", "bottom"],
+            ["inset-x"] = ["start", "end", "right", "left"],
+            ["inset-y"] = ["inset-bs", "inset-be", "top", "bottom"],
             ["flex"] = ["basis", "grow", "shrink"],
             ["gap"] = ["gap-x", "gap-y"],
             ["p"] = ["px", "py", "ps", "pe", "pbs", "pbe", "pt", "pr", "pb", "pl"],
-            ["px"] = ["pr", "pl"],
-            ["py"] = ["pt", "pb"],
+            ["px"] = ["ps", "pe", "pr", "pl"],
+            ["py"] = ["pbs", "pbe", "pt", "pb"],
             ["m"] = ["mx", "my", "ms", "me", "mbs", "mbe", "mt", "mr", "mb", "ml"],
-            ["mx"] = ["mr", "ml"],
-            ["my"] = ["mt", "mb"],
+            ["mx"] = ["ms", "me", "mr", "ml"],
+            ["my"] = ["mbs", "mbe", "mt", "mb"],
             ["size"] = ["w", "h"],
             ["font-size"] = ["leading"],
             ["fvn-normal"] = [
@@ -2504,8 +2511,8 @@ public class TwMergeConfig
                 "border-w-b",
                 "border-w-l"
             ],
-            ["border-w-x"] = ["border-w-r", "border-w-l"],
-            ["border-w-y"] = ["border-w-t", "border-w-b"],
+            ["border-w-x"] = ["border-w-s", "border-w-e", "border-w-r", "border-w-l"],
+            ["border-w-y"] = ["border-w-bs", "border-w-be", "border-w-t", "border-w-b"],
             ["border-color"] = [
                 "border-color-x",
                 "border-color-y",
@@ -2518,8 +2525,8 @@ public class TwMergeConfig
                 "border-color-b",
                 "border-color-l"
             ],
-            ["border-color-x"] = ["border-color-r", "border-color-l"],
-            ["border-color-y"] = ["border-color-t", "border-color-b"],
+            ["border-color-x"] = ["border-color-s", "border-color-e", "border-color-r", "border-color-l"],
+            ["border-color-y"] = ["border-color-bs", "border-color-be", "border-color-t", "border-color-b"],
             ["translate"] = ["translate-x", "translate-y", "translate-none"],
             ["translate-none"] = ["translate", "translate-x", "translate-y", "translate-z"],
             ["scroll-m"] = [
@@ -2534,8 +2541,8 @@ public class TwMergeConfig
                 "scroll-mb",
                 "scroll-ml"
             ],
-            ["scroll-mx"] = ["scroll-mr", "scroll-ml"],
-            ["scroll-my"] = ["scroll-mt", "scroll-mb"],
+            ["scroll-mx"] = ["scroll-ms", "scroll-me", "scroll-mr", "scroll-ml"],
+            ["scroll-my"] = ["scroll-mbs", "scroll-mbe", "scroll-mt", "scroll-mb"],
             ["scroll-p"] = [
                 "scroll-px",
                 "scroll-py",
@@ -2548,8 +2555,8 @@ public class TwMergeConfig
                 "scroll-pb",
                 "scroll-pl"
             ],
-            ["scroll-px"] = ["scroll-pr", "scroll-pl"],
-            ["scroll-py"] = ["scroll-pt", "scroll-pb"],
+            ["scroll-px"] = ["scroll-ps", "scroll-pe", "scroll-pr", "scroll-pl"],
+            ["scroll-py"] = ["scroll-pbs", "scroll-pbe", "scroll-pt", "scroll-pb"],
             ["touch"] = ["touch-x", "touch-y", "touch-pz"],
             ["touch-x"] = ["touch"],
             ["touch-y"] = ["touch"],

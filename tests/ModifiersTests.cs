@@ -75,6 +75,10 @@ public class ModifiersTests
 	[InlineData( "before:after:text-lg before:after:text-lg", "before:after:text-lg" )]
 	[InlineData( "before:after:text-lg after:before:text-lg", "before:after:text-lg after:before:text-lg" )]
 	[InlineData( "x:y:before:z:text-lg y:x:before:z:text-lg", "y:x:before:z:text-lg" )]
+	[InlineData( "c:d:e:block d:c:e:inline", "d:c:e:inline" )]
+	[InlineData( "*:before:block *:before:inline", "*:before:inline" )]
+	[InlineData( "*:before:block before:*:inline", "*:before:block before:*:inline" )]
+	[InlineData( "x:y:*:z:block y:x:*:z:inline", "y:x:*:z:inline" )]
 	public void Merge_ClassesWithOrderSensitiveModifiers_MergesCorrectly( string classLists, string expected )
 	{
 		// Act

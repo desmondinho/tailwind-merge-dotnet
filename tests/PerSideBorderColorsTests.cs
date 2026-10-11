@@ -5,6 +5,8 @@ public class PerSideBorderColorsTests
     [Theory]
     [InlineData( "border-t-some-blue border-t-other-blue", "border-t-other-blue" )]
     [InlineData( "border-t-some-blue border-some-blue", "border-some-blue" )]
+    [InlineData( "border-some-blue border-s-some-blue", "border-some-blue border-s-some-blue" )]
+    [InlineData( "border-e-some-blue border-some-blue", "border-some-blue" )]
     public void Merge_PerSideBorderColors_MergesCorrectly( string classLists, string expected )
     {
         // Act

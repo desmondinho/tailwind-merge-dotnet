@@ -23,6 +23,7 @@ public class TailwindCssVersionsTests
 		"from-0% from-10% from-[12.5%] via-0% via-10% via-[12.5%] to-0% to-10% to-[12.5%]",
 		"from-[12.5%] via-[12.5%] to-[12.5%]"
 	)]
+	[InlineData( "from-0% from-red", "from-0% from-red" )]
 	[InlineData(
 		"list-image-none list-image-[url(./my-image.png)] list-image-[var(--value)]",
 		"list-image-[var(--value)]"
@@ -75,6 +76,10 @@ public class TailwindCssVersionsTests
 	[InlineData( "perspective-origin-center perspective-origin-top-left", "perspective-origin-top-left" )]
 	[InlineData( "bg-linear-to-r bg-linear-45", "bg-linear-45" )]
 	[InlineData( "bg-linear-to-r bg-radial-[something] bg-conic-10", "bg-conic-10" )]
+	[InlineData( "bg-conic bg-conic-10", "bg-conic-10" )]
+	[InlineData( "bg-conic-10 bg-conic", "bg-conic" )]
+	[InlineData( "bg-radial bg-conic/decreasing", "bg-conic/decreasing" )]
+	[InlineData( "bg-red-500 bg-conic", "bg-red-500 bg-conic" )]
 	[InlineData(
 		"ring-4 ring-orange inset-ring inset-ring-3 inset-ring-blue",
 		"ring-4 ring-orange inset-ring-3 inset-ring-blue"
@@ -85,6 +90,17 @@ public class TailwindCssVersionsTests
 	[InlineData( "col-span-full col-2 row-span-3 row-4", "col-2 row-4" )]
 	[InlineData( "via-red-500 via-(--mobile-header-gradient)", "via-(--mobile-header-gradient)" )]
 	[InlineData( "via-red-500 via-(length:--mobile-header-gradient)", "via-red-500 via-(length:--mobile-header-gradient)" )]
+	// shadow-inner is deprecated in v4 but still sets --tw-shadow, so it conflicts with other shadow utilities and not with shadow color utilities
+	[InlineData( "shadow-inner shadow-lg", "shadow-lg" )]
+	[InlineData( "shadow-lg shadow-inner", "shadow-inner" )]
+	[InlineData( "shadow-initial shadow-inner", "shadow-initial shadow-inner" )]
+	[InlineData( "blur-sm blur-lg", "blur-lg" )]
+	[InlineData( "blur blur-none blur-xs", "blur-xs" )]
+	[InlineData( "blur-md blur-[2px] blur-(--my-blur)", "blur-(--my-blur)" )]
+	[InlineData( "blur-[2px] blur-[var(--my-blur)]", "blur-[var(--my-blur)]" )]
+	[InlineData( "backdrop-blur-sm backdrop-blur-lg", "backdrop-blur-lg" )]
+	[InlineData( "backdrop-blur-md backdrop-blur-[2px] backdrop-blur-(--my-blur)", "backdrop-blur-(--my-blur)" )]
+	[InlineData( "blur-sm backdrop-blur-lg", "blur-sm backdrop-blur-lg" )]
 	public void Merge_TailwindCssV4Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
@@ -141,6 +157,19 @@ public class TailwindCssVersionsTests
 	[InlineData( "drop-shadow-[#123456] drop-shadow-some-color", "drop-shadow-some-color" )]
 	[InlineData( "drop-shadow-2xl drop-shadow-[shadow:foo]", "drop-shadow-[shadow:foo]" )]
 	public void Merge_TailwindCssV41Classes_MergesCorrectly( string classLists, string expected )
+	{
+		// Act
+		var actual = new TwMerge().Merge( classLists );
+
+		// Assert
+		Assert.Equal( expected, actual );
+	}
+
+	[Theory]
+	[InlineData( "h-12 h-lh", "h-lh" )]
+	[InlineData( "min-h-12 min-h-lh", "min-h-lh" )]
+	[InlineData( "max-h-12 max-h-lh", "max-h-lh" )]
+	public void Merge_TailwindCssV415Classes_MergesCorrectly( string classLists, string expected )
 	{
 		// Act
 		var actual = new TwMerge().Merge( classLists );
@@ -211,6 +240,9 @@ public class TailwindCssVersionsTests
     [InlineData( "max-inline-none max-inline-10", "max-inline-10" )]
     [InlineData( "min-block-auto min-block-lh min-block-10", "min-block-10" )]
     [InlineData( "max-block-none max-block-lh max-block-10", "max-block-10" )]
+    [InlineData( "inline-2xl inline-3xl", "inline-3xl" )]
+    [InlineData( "min-inline-xs min-inline-1/2", "min-inline-1/2" )]
+    [InlineData( "max-inline-svw max-inline-xl", "max-inline-xl" )]
     [InlineData( "w-10 inline-20", "w-10 inline-20" )]
     [InlineData( "h-10 block-20", "h-10 block-20" )]
     [InlineData( "size-10 inline-20 block-30", "size-10 inline-20 block-30" )]

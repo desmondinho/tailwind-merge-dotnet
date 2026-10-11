@@ -23,13 +23,13 @@ public static partial class Validators
 	/// Validates whether a string represents a number.
 	/// </summary>
 	public static Func<string, bool> IsNumber { get; } = value
-		=> !string.IsNullOrEmpty( value ) && double.TryParse( value, CultureInfo.InvariantCulture, out _ );
+		=> TryParseNumber( value, out var number ) && !double.IsNaN( number );
 
 	/// <summary>
 	/// Validates whether a string represents an integer.
 	/// </summary>
 	public static Func<string, bool> IsInteger { get; } = value
-		=> !string.IsNullOrEmpty( value ) && int.TryParse( value, out _ );
+		=> TryParseNumber( value, out var number ) && double.IsInteger( number );
 
 	/// <summary>
 	/// Validates whether a string represents a percentage.
@@ -92,6 +92,12 @@ public static partial class Validators
 		=> GetIsArbitraryVariable( value, IsLabelShadow, true );
 
 	/// <summary>
+	/// Validates whether a string represents an arbitrary variable font weight value.
+	/// </summary>
+	public static Func<string, bool> IsArbitraryVariableWeight { get; } = value
+		=> GetIsArbitraryVariable( value, IsLabelWeight, true );
+
+	/// <summary>
 	/// Validates whether a string represents an arbitrary size.
 	/// </summary>
 	public static Func<string, bool> IsArbitrarySize { get; } = value
@@ -108,6 +114,18 @@ public static partial class Validators
 	/// </summary>
 	public static Func<string, bool> IsArbitraryNumber { get; } = value
 		=> GetIsArbitraryValue( value, IsLabelNumber, IsNumber );
+
+	/// <summary>
+	/// Validates whether a string represents an arbitrary font weight value.
+	/// </summary>
+	public static Func<string, bool> IsArbitraryWeight { get; } = value
+		=> GetIsArbitraryValue( value, IsLabelWeight, IsAny );
+
+	/// <summary>
+	/// Validates whether a string represents an arbitrary font family name value.
+	/// </summary>
+	public static Func<string, bool> IsArbitraryFamilyName { get; } = value
+		=> GetIsArbitraryValue( value, IsLabelFamilyName, IsNever );
 
 	/// <summary>
 	/// Validates whether a string represents an arbitrary position.
@@ -180,6 +198,13 @@ public static partial class Validators
 		return false;
 	}
 
+	private static bool TryParseNumber( string value, out double number )
+	{
+		number = 0;
+		return !string.IsNullOrEmpty( value )
+			&& double.TryParse( value, NumberStyles.Float, CultureInfo.InvariantCulture, out number );
+	}
+
 	private static bool IsLengthOnly( string value )
 		=> LengthUnitRegex().IsMatch( value ) && !ColorFunctionRegex().IsMatch( value );
 	private static bool IsNever( string _ ) => false;
@@ -191,6 +216,7 @@ public static partial class Validators
 	private static bool IsLabelShadow( string label ) => label == "shadow";
 	private static bool IsLabelPosition( string label ) => label is "position" or "percentage";
 	private static bool IsLabelFamilyName( string label ) => label == "family-name";
+	private static bool IsLabelWeight( string label ) => label is "number" or "weight";
 	private static bool IsLabelSize( string label ) => label is "length" or "size" or "bg-size";
 	private static bool IsLabelImage( string label ) => label is "image" or "url";
 
@@ -209,7 +235,7 @@ public static partial class Validators
 	[GeneratedRegex( @"\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$" )]
 	private static partial Regex LengthUnitRegex();
 
-	[GeneratedRegex( @"^(rgba?|hsla?|hwb|(ok)?(lab|lch))\(.+\)$" )]
+	[GeneratedRegex( @"^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix|color|light-dark)\(.+\)$" )]
 	private static partial Regex ColorFunctionRegex();
 
 	[GeneratedRegex( @"^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)" )]
