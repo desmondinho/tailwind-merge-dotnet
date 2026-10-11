@@ -1,3 +1,5 @@
+using System.Reflection;
+
 using Microsoft.Extensions.Options;
 
 using Moq;
@@ -94,5 +96,21 @@ public class ThemeTests
 
         // Assert
         Assert.Equal( expected, actual );
+    }
+
+    [Fact]
+    public void ThemeKeys_MatchDefaultThemeKeys()
+    {
+        // Arrange
+        var themeKeys = typeof( ThemeKeys )
+            .GetFields( BindingFlags.Public | BindingFlags.Static )
+            .Where( field => field.IsLiteral )
+            .Select( field => (string)field.GetRawConstantValue()! );
+
+        // Act
+        var defaultThemeKeys = new TwMergeConfig().Theme.Keys;
+
+        // Assert
+        Assert.Equal( defaultThemeKeys.Order(), themeKeys.Order() );
     }
 }

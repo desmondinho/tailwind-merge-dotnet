@@ -56,25 +56,25 @@ public class TwMergeConfig
         // Theme getters for theme variable namespaces
         // See https://tailwindcss.com/docs/theme#theme-variable-namespaces
 
-        var colorTheme = ThemeUtility.FromTheme( "color" );
-        var fontTheme = ThemeUtility.FromTheme( "font" );
-        var textTheme = ThemeUtility.FromTheme( "text" );
-        var fontWeightTheme = ThemeUtility.FromTheme( "font-weight" );
-        var trackingTheme = ThemeUtility.FromTheme( "tracking" );
-        var leadingTheme = ThemeUtility.FromTheme( "leading" );
-        var breakpointTheme = ThemeUtility.FromTheme( "breakpoint" );
-        var containerTheme = ThemeUtility.FromTheme( "container" );
-        var spacingTheme = ThemeUtility.FromTheme( "spacing" );
-        var radiusTheme = ThemeUtility.FromTheme( "radius" );
-        var shadowTheme = ThemeUtility.FromTheme( "shadow" );
-        var insetShadowTheme = ThemeUtility.FromTheme( "inset-shadow" );
-        var textShadowTheme = ThemeUtility.FromTheme( "text-shadow" );
-        var dropShadowTheme = ThemeUtility.FromTheme( "drop-shadow" );
-        var blurTheme = ThemeUtility.FromTheme( "blur" );
-        var perspectiveTheme = ThemeUtility.FromTheme( "perspective" );
-        var aspectTheme = ThemeUtility.FromTheme( "aspect" );
-        var easeTheme = ThemeUtility.FromTheme( "ease" );
-        var animateTheme = ThemeUtility.FromTheme( "animate" );
+        var colorTheme = ThemeUtility.FromTheme( ThemeKeys.Color );
+        var fontTheme = ThemeUtility.FromTheme( ThemeKeys.Font );
+        var textTheme = ThemeUtility.FromTheme( ThemeKeys.Text );
+        var fontWeightTheme = ThemeUtility.FromTheme( ThemeKeys.FontWeight );
+        var trackingTheme = ThemeUtility.FromTheme( ThemeKeys.Tracking );
+        var leadingTheme = ThemeUtility.FromTheme( ThemeKeys.Leading );
+        var breakpointTheme = ThemeUtility.FromTheme( ThemeKeys.Breakpoint );
+        var containerTheme = ThemeUtility.FromTheme( ThemeKeys.Container );
+        var spacingTheme = ThemeUtility.FromTheme( ThemeKeys.Spacing );
+        var radiusTheme = ThemeUtility.FromTheme( ThemeKeys.Radius );
+        var shadowTheme = ThemeUtility.FromTheme( ThemeKeys.Shadow );
+        var insetShadowTheme = ThemeUtility.FromTheme( ThemeKeys.InsetShadow );
+        var textShadowTheme = ThemeUtility.FromTheme( ThemeKeys.TextShadow );
+        var dropShadowTheme = ThemeUtility.FromTheme( ThemeKeys.DropShadow );
+        var blurTheme = ThemeUtility.FromTheme( ThemeKeys.Blur );
+        var perspectiveTheme = ThemeUtility.FromTheme( ThemeKeys.Perspective );
+        var aspectTheme = ThemeUtility.FromTheme( ThemeKeys.Aspect );
+        var easeTheme = ThemeUtility.FromTheme( ThemeKeys.Ease );
+        var animateTheme = ThemeUtility.FromTheme( ThemeKeys.Animate );
 
         // Helpers to avoid repeating the same scales
 
@@ -239,16 +239,16 @@ public class TwMergeConfig
         CacheSize = 500;
         Theme = new( 18 )
         {
-            ["animate"] = ["spin", "ping", "pulse", "bounce"],
-            ["aspect"] = ["video"],
-            ["blur"] = [V.IsTshirtSize],
-            ["breakpoint"] = [V.IsTshirtSize],
-            ["color"] = [V.IsAny],
-            ["container"] = [V.IsTshirtSize],
-            ["drop-shadow"] = [V.IsTshirtSize],
-            ["ease"] = ["in", "out", "in-out"],
-            ["font"] = [V.IsAnyNonArbitrary],
-            ["font-weight"] = [
+            [ThemeKeys.Animate] = ["spin", "ping", "pulse", "bounce"],
+            [ThemeKeys.Aspect] = ["video"],
+            [ThemeKeys.Blur] = [V.IsTshirtSize],
+            [ThemeKeys.Breakpoint] = [V.IsTshirtSize],
+            [ThemeKeys.Color] = [V.IsAny],
+            [ThemeKeys.Container] = [V.IsTshirtSize],
+            [ThemeKeys.DropShadow] = [V.IsTshirtSize],
+            [ThemeKeys.Ease] = ["in", "out", "in-out"],
+            [ThemeKeys.Font] = [V.IsAnyNonArbitrary],
+            [ThemeKeys.FontWeight] = [
                 "thin",
                 "extralight",
                 "light",
@@ -259,15 +259,15 @@ public class TwMergeConfig
                 "extrabold",
                 "black"
             ],
-            ["inset-shadow"] = [V.IsTshirtSize],
-            ["leading"] = ["none", "tight", "snug", "normal", "relaxed", "loose"],
-            ["perspective"] = ["dramatic", "near", "normal", "midrange", "distant", "none"],
-            ["radius"] = [V.IsTshirtSize],
-            ["shadow"] = [V.IsTshirtSize],
-            ["spacing"] = ["px", V.IsNumber],
-            ["text"] = [V.IsTshirtSize],
-            ["text-shadow"] = [V.IsTshirtSize],
-            ["tracking"] = ["tighter", "tight", "normal", "wide", "wider", "widest"],
+            [ThemeKeys.InsetShadow] = [V.IsTshirtSize],
+            [ThemeKeys.Leading] = ["none", "tight", "snug", "normal", "relaxed", "loose"],
+            [ThemeKeys.Perspective] = ["dramatic", "near", "normal", "midrange", "distant", "none"],
+            [ThemeKeys.Radius] = [V.IsTshirtSize],
+            [ThemeKeys.Shadow] = [V.IsTshirtSize],
+            [ThemeKeys.Spacing] = ["px", V.IsNumber],
+            [ThemeKeys.Text] = [V.IsTshirtSize],
+            [ThemeKeys.TextShadow] = [V.IsTshirtSize],
+            [ThemeKeys.Tracking] = ["tighter", "tight", "normal", "wide", "wider", "widest"],
         };
 
         ClassGroups = new( 270 )
