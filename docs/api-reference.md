@@ -175,11 +175,10 @@ public string[]? OrderSensitiveModifiers { get; set; }
 
 ```csharp
 /// <summary>
-/// Represents a method that retrieves an array of objects from a theme based on a specified key.
+/// Represents a reference to a theme scale that is resolved when the class map is built.
 /// </summary>
-/// <param name="theme">The theme to retrieve values from.</param>
-/// <returns>An array of objects associated with the specified key in the theme.</returns>
-public delegate object[] ThemeGetter( Dictionary<string, object[]> theme );
+/// <param name="Key">The key of the theme scale.</param>
+public sealed record ThemeGetter( string Key );
 ```
 
 ## `ThemeUtility`
@@ -195,9 +194,9 @@ public static class ThemeUtility
 
 ```csharp
 /// <summary>
-/// Creates a <see cref="ThemeGetter"/> delegate that retrieves values from a theme based on the specified key.
+/// Creates a <see cref="ThemeGetter"/> that references the theme scale with the specified key.
 /// </summary>
-/// <param name="key">The key to use for retrieving values from the theme.</param>
+/// <param name="key">The key of the theme scale.</param>
 /// <returns>A <see cref="ThemeGetter"/>.</returns>
 public static ThemeGetter FromTheme( string key )
 ```

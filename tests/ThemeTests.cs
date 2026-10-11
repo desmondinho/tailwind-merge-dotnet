@@ -99,6 +99,16 @@ public class ThemeTests
     }
 
     [Fact]
+    public void FromTheme_ExposesThemeKey()
+    {
+        // Act
+        var themeGetter = ThemeUtility.FromTheme( ThemeKeys.Spacing );
+
+        // Assert
+        Assert.Equal( ThemeKeys.Spacing, themeGetter.Key );
+    }
+
+    [Fact]
     public void ThemeKeys_MatchDefaultThemeKeys()
     {
         // Arrange
