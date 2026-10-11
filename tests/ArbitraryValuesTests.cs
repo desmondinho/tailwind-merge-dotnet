@@ -101,6 +101,10 @@ public class ArbitraryValuesTests
         "bg-none bg-[url(.)] bg-[image:.] bg-[url:.] bg-[linear-gradient(.)] bg-linear-to-r",
 		"bg-linear-to-r"
 	)]
+    [InlineData(
+        "border-[color-mix(in_oklab,var(--background),var(--calendar-color)_30%)] border",
+        "border-[color-mix(in_oklab,var(--background),var(--calendar-color)_30%)] border"
+    )]
     public void Merge_AmbiguousArbitraryValues_MergesCorrectly( string classLists, string expected )
     {
         // Act

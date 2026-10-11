@@ -209,7 +209,7 @@ public static partial class Validators
 	[GeneratedRegex( @"\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$" )]
 	private static partial Regex LengthUnitRegex();
 
-	[GeneratedRegex( @"^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color|light-dark)\(.+\)$" )]
+	[GeneratedRegex( @"^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix|color|light-dark)\(.+\)$" )]
 	private static partial Regex ColorFunctionRegex();
 
 	[GeneratedRegex( @"^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)" )]
