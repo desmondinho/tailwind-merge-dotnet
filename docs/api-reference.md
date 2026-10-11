@@ -182,6 +182,39 @@ public static class ThemeUtility
 public static ThemeGetter FromTheme( string key )
 ```
 
+## `ThemeKeys`
+
+```csharp
+/// <summary>
+/// Provides the keys of the theme scales in the default configuration.
+/// </summary>
+public static class ThemeKeys
+```
+
+### Constants
+
+| Constant | Value | Tailwind CSS namespace |
+| --- | --- | --- |
+| `ThemeKeys.Color` | `color` | `--color-*` |
+| `ThemeKeys.Font` | `font` | `--font-*` |
+| `ThemeKeys.Text` | `text` | `--text-*` |
+| `ThemeKeys.FontWeight` | `font-weight` | `--font-weight-*` |
+| `ThemeKeys.Tracking` | `tracking` | `--tracking-*` |
+| `ThemeKeys.Leading` | `leading` | `--leading-*` |
+| `ThemeKeys.Breakpoint` | `breakpoint` | `--breakpoint-*` |
+| `ThemeKeys.Container` | `container` | `--container-*` |
+| `ThemeKeys.Spacing` | `spacing` | `--spacing-*` |
+| `ThemeKeys.Radius` | `radius` | `--radius-*` |
+| `ThemeKeys.Shadow` | `shadow` | `--shadow-*` |
+| `ThemeKeys.InsetShadow` | `inset-shadow` | `--inset-shadow-*` |
+| `ThemeKeys.TextShadow` | `text-shadow` | `--text-shadow-*` |
+| `ThemeKeys.DropShadow` | `drop-shadow` | `--drop-shadow-*` |
+| `ThemeKeys.Blur` | `blur` | `--blur-*` |
+| `ThemeKeys.Perspective` | `perspective` | `--perspective-*` |
+| `ThemeKeys.Aspect` | `aspect` | `--aspect-*` |
+| `ThemeKeys.Ease` | `ease` | `--ease-*` |
+| `ThemeKeys.Animate` | `animate` | `--animate-*` |
+
 ## Validators
 
 ```csharp
